@@ -16,6 +16,9 @@ public class mainMenuController {
     Parent scene;
 
     @FXML
+    private ToggleGroup appointmentView;
+
+    @FXML
     private TableColumn<?, ?> apptIDCol;
 
     @FXML

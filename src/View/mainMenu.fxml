@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -19,7 +20,7 @@
    <children>
       <HBox prefHeight="600.0" prefWidth="800.0">
          <children>
-            <VBox prefHeight="600.0" prefWidth="550.0" style="-fx-background-color: DodgerBlue;">
+            <VBox prefHeight="600.0" prefWidth="550.0">
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="300.0">
                      <children>
@@ -51,15 +52,18 @@
                                           <Font name="System Bold" size="14.0" />
                                        </font>
                                     </Label>
-                                    <RadioButton mnemonicParsing="false" onAction="#onActionDisplayWeekly" text="Weekly">
+                                    <RadioButton mnemonicParsing="false" onAction="#onActionDisplayWeekly" selected="true" text="Weekly">
                                        <HBox.margin>
                                           <Insets left="250.0" />
                                        </HBox.margin>
                                        <font>
                                           <Font name="SansSerif Regular" size="13.0" />
                                        </font>
+                                       <toggleGroup>
+                                          <ToggleGroup fx:id="appointmentView" />
+                                       </toggleGroup>
                                     </RadioButton>
-                                    <RadioButton mnemonicParsing="false" onAction="#onActionDisplayMonthlyAppts" text="Monthly">
+                                    <RadioButton mnemonicParsing="false" onAction="#onActionDisplayMonthlyAppts" text="Monthly" toggleGroup="$appointmentView">
                                        <padding>
                                           <Insets left="10.0" />
                                        </padding>
@@ -169,7 +173,7 @@
                   </Pane>
                </children>
             </VBox>
-            <VBox prefHeight="600.0" prefWidth="250.0" style="-fx-background-color: DodgerBlue;">
+            <VBox prefHeight="600.0" prefWidth="250.0">
                <children>
                   <Pane prefHeight="200.0" prefWidth="250.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
                      <children>

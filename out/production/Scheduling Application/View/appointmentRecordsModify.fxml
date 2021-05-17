@@ -20,7 +20,7 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Label text="Add Appointment">
+                        <Label text="Modify Appointment">
                             <HBox.margin>
                                 <Insets left="40.0" />
                             </HBox.margin>
