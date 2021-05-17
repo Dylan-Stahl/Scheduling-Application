@@ -1,9 +1,15 @@
 package Model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import Utilities.DBConnection;
+import Utilities.DBQuery;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.sql.*;
 
 public class Appointments {
+    private static ObservableList<Appointments> allAppts = FXCollections.observableArrayList();
+
     private int Appointment_ID;
     private String Title;
     private String Description;
@@ -37,6 +43,44 @@ public class Appointments {
         Customer_ID = customer_ID;
         User_ID = user_ID;
         Contact_ID = contact_ID;
+    }
+
+    public static ObservableList<Appointments> initalizeAppts() throws SQLException {
+        allAppts.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("SELECT * FROM appointments;"))) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int Appointment_ID = rs.getInt("Appointment_ID");
+                String Title = rs.getString("Customer_ID");
+                String Description = rs.getString("Description");
+                String Location = rs.getString("Location");
+                String Type = rs.getString("Type");
+                Date Start = rs.getDate("Start");
+                Date End = rs.getDate("End");
+                Date Create_Date = rs.getDate("Create_Date");
+                String Created_By = rs.getString("Created_By");
+                Timestamp Last_Update = rs.getTimestamp("Last_Update");
+                String Last_Updated_By = rs.getString("Last_Updated_By");
+                int Customer_ID = rs.getInt("Customer_ID");
+                int User_ID = rs.getInt("User_ID");
+                int Contact_ID = rs.getInt("Contact_ID");
+
+                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type, Start,
+                        End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID);
+                allAppts.add(newAppointment);
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return allAppts;
+    }
+
+    public static ObservableList<Appointments> returnAllAppts() {
+        return allAppts;
     }
 
     public int getAppointment_ID() {

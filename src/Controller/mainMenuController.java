@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Appointments;
 import Model.Customers;
 import Utilities.DBConnection;
 import javafx.event.ActionEvent;
@@ -23,7 +24,7 @@ public class mainMenuController {
     Customers customerToModify;
 
     @FXML
-    private TableView<?> apptTableView;
+    private TableView<Appointments> apptTableView;
 
     @FXML
     private ToggleGroup appointmentView;
@@ -216,6 +217,18 @@ public class mainMenuController {
         customersNameCol.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
         customersAddressCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
         customersPostalCol.setCellValueFactory(new PropertyValueFactory<>("Postal_Code"));
+
+        apptTableView.setItems(Appointments.initalizeAppts());
+
+        apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
+        apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        apptDescCol.setCellValueFactory(new PropertyValueFactory<>("Description"));
+        apptLocCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
+        apptContactCol.setCellValueFactory(new PropertyValueFactory<>("Contact_ID"));
+        apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Starts"));
+        apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("Ends"));
+        apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
 
     }
 }

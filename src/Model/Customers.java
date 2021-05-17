@@ -40,39 +40,32 @@ public class Customers {
 
     public static ObservableList<Customers> initializeCustomers() throws SQLException {
         allCustomers.clear();
-        DBQuery.setStatment(DBConnection.getConnection()); //Create statement object
-        Statement statement = DBQuery.getStatement(); //get statement reference
-
-        String selectCustomers = "SELECT * FROM customers;";
-        statement.execute(selectCustomers);
-
-        ResultSet rs = statement.getResultSet();
-
-        while(rs.next()) {
-            int Customer_ID = rs.getInt("Customer_ID");
-            String Customer_Name = rs.getString("Customer_Name");
-            String Address = rs.getString("Address");
-            String Postal_Code = rs.getString("Postal_Code");
-            String Phone = rs.getString("Phone");
-            Date Create_Date = rs.getDate("Create_Date");
-            String Created_By = rs.getString("Created_By");
-            Timestamp Last_Update = rs.getTimestamp("Last_Update");
-            String Last_Updated_By = rs.getString("Last_Updated_By");
-            int Division_ID = rs.getInt("Division_ID");
 
 
-            for(Customers customer: getAllCustomers()) {
-                if (customer.getCustomer_ID() == Customer_ID) {
-                    System.out.println("Table updating correctly!");
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM customers;")) {
+            ResultSet rs = ps.executeQuery();
 
-                }
+            while(rs.next()) {
+                int Customer_ID = rs.getInt("Customer_ID");
+                String Customer_Name = rs.getString("Customer_Name");
+                String Address = rs.getString("Address");
+                String Postal_Code = rs.getString("Postal_Code");
+                String Phone = rs.getString("Phone");
+                Date Create_Date = rs.getDate("Create_Date");
+                String Created_By = rs.getString("Created_By");
+                Timestamp Last_Update = rs.getTimestamp("Last_Update");
+                String Last_Updated_By = rs.getString("Last_Updated_By");
+                int Division_ID = rs.getInt("Division_ID");
+
+                Customers newCustomer = new Customers(Customer_ID,Customer_Name,Address, Postal_Code,Phone, Create_Date,
+                        Created_By, Last_Update, Last_Updated_By, Division_ID);
+                allCustomers.add(newCustomer);
+
             }
-
-
-            Customers newCustomer = new Customers(Customer_ID,Customer_Name,Address, Postal_Code,Phone, Create_Date,
-                    Created_By, Last_Update, Last_Updated_By, Division_ID);
-            allCustomers.add(newCustomer);
-
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
         }
 
         return allCustomers;
