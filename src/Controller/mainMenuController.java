@@ -226,8 +226,8 @@ public class mainMenuController {
         apptLocCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("Contact_ID"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
-        apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Starts"));
-        apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("Ends"));
+       // apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Starts"));
+       // apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("Ends"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
 
     }

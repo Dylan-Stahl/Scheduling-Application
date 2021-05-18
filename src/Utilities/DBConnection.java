@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 
-public class DBConnection {
+public final class DBConnection {
 
     //JDBC URL Parts
     private static final String protocol = "jdbc";
@@ -23,7 +23,7 @@ public class DBConnection {
     //Password
     private  static final String password = "53689347344";
 
-    public static Connection startConnection() {
+    public final static Connection startConnection() {
         try {
             Class.forName(MYSQLJDBCDriver);
             conn = (Connection)DriverManager.getConnection(jdbcURL, username, password);
@@ -38,11 +38,11 @@ public class DBConnection {
         return conn;
     }
 
-    public static Connection getConnection() {
+    public final static Connection getConnection() {
         return conn;
     }
 
-    public static void closeConnection() {
+    public final static void closeConnection() {
         try {
             conn.close();
             System.out.println("Connection Closed");

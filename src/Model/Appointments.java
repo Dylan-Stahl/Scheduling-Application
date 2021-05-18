@@ -72,9 +72,11 @@ public class Appointments {
                         End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID);
                 allAppts.add(newAppointment);
             }
+            rs.close();
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
         }
         return allAppts;
     }
