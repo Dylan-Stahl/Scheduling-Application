@@ -89,6 +89,21 @@ public class Appointments {
         return allAppts;
     }
 
+    public static void delecteAppt(Appointments apptToDelete) {
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("DELETE FROM appointments WHERE ?"))) {
+            ps.setString(1, String.valueOf(apptToDelete.getAppointment_ID()));
+
+            ps.executeUpdate();
+
+
+            System.out.println("Deleted: " + ps.getUpdateCount() + " rows.");
+            allAppts.remove(apptToDelete);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
     public static ObservableList<Appointments> returnAllAppts() {
         return allAppts;
     }

@@ -104,7 +104,7 @@
                                           <Insets left="10.0" top="5.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionDeletePart" prefWidth="60.0" text="Delete">
+                                    <Button mnemonicParsing="false" onAction="#onActionDeleteAppt" prefWidth="60.0" text="Delete">
                                        <HBox.margin>
                                           <Insets left="10.0" top="5.0" />
                                        </HBox.margin>

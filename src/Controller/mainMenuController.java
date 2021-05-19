@@ -25,6 +25,7 @@ public class mainMenuController {
 
     //Used to open modify menu correctly
     Customers customerToModify;
+    Appointments appointmentToModify;
 
     @FXML
     private TableView<Appointments> apptTableView;
@@ -139,8 +140,32 @@ public class mainMenuController {
 
 
     @FXML
-    void onActionDeletePart(ActionEvent event) {
+    void onActionDeleteAppt(ActionEvent event) {
+        try {
+            if(apptTableView.getSelectionModel().getSelectedItem() == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialogue");
+                alert.setContentText("No appointment to delete!");
+                alert.showAndWait();
+            }
+            else {
+                Appointments apptToDelete = apptTableView.getSelectionModel().getSelectedItem();;
+                //Tells user they are unable to delete a product with a part associated to that product.
 
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete the appointment selected?");
+                alert.setTitle("Deleting Appointment!");
+                Optional<ButtonType> result = alert.showAndWait();
+                if(result.isPresent() && result.get() == ButtonType.OK) {
+                    Appointments.delecteAppt(apptToDelete);
+                }
+            }
+
+        }catch(NullPointerException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialogue");
+            alert.setContentText("Select a customer!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
@@ -155,10 +180,25 @@ public class mainMenuController {
 
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws IOException {
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(mainMenuController.class.getResource("/view/appointmentRecordsModify.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+        appointmentToModify = apptTableView.getSelectionModel().getSelectedItem();
+        if(appointmentToModify != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/View/appointmentRecordsModify.fxml"));
+            loader.load();
+            appointmentRecordsModifyController modifyAppt = loader.getController();
+            modifyAppt.sendAppt(appointmentToModify);
+
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
+        else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialogue");
+            alert.setContentText("Select an appointment!");
+            alert.showAndWait();
+        }
     }
 
     @FXML
