@@ -14,6 +14,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Optional;
 
 public class mainMenuController {
@@ -25,51 +28,37 @@ public class mainMenuController {
 
     @FXML
     private TableView<Appointments> apptTableView;
-
     @FXML
     private ToggleGroup appointmentView;
-
     @FXML
-    private TableColumn<?, ?> apptIDCol;
-
+    private TableColumn<Appointments, Integer> apptIDCol;
     @FXML
-    private TableColumn<?, ?> apptTitleCol;
-
+    private TableColumn<Appointments, String> apptTitleCol;
     @FXML
-    private TableColumn<?, ?> apptDescCol;
-
+    private TableColumn<Appointments, String> apptDescCol;
     @FXML
-    private TableColumn<?, ?> apptLocCol;
-
+    private TableColumn<Appointments, String> apptLocCol;
     @FXML
-    private TableColumn<?, ?> apptContactCol;
-
+    private TableColumn<Appointments, Integer> apptContactCol;
     @FXML
-    private TableColumn<?, ?> apptTypeCol;
-
+    private TableColumn<Appointments, String> apptTypeCol;
     @FXML
-    private TableColumn<?, ?> apptStartsCol;
-
+    private TableColumn<Appointments, LocalDateTime> apptStartsCol;
     @FXML
-    private TableColumn<?, ?> apptEndsCol;
-
+    private TableColumn<Appointments, LocalDate> apptEndsCol;
     @FXML
-    private TableColumn<?, ?> apptCustIDCol;
+    private TableColumn<Appointments, Integer> apptCustIDCol;
 
     @FXML
     private TableView<Customers> customerTableView;
-
     @FXML
-    private TableColumn<?, ?> customersIDCol;
-
+    private TableColumn<Customers, Integer> customersIDCol;
     @FXML
-    private TableColumn<?, ?> customersNameCol;
-
+    private TableColumn<Customers, String> customersNameCol;
     @FXML
-    private TableColumn<?, ?> customersAddressCol;
-
+    private TableColumn<Customers, String> customersAddressCol;
     @FXML
-    private TableColumn<?, ?> customersPostalCol;
+    private TableColumn<Customers, String> customersPostalCol;
 
     @FXML
     void onActionExit(ActionEvent event) {
@@ -226,8 +215,8 @@ public class mainMenuController {
         apptLocCol.setCellValueFactory(new PropertyValueFactory<>("Location"));
         apptContactCol.setCellValueFactory(new PropertyValueFactory<>("Contact_ID"));
         apptTypeCol.setCellValueFactory(new PropertyValueFactory<>("Type"));
-       // apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Starts"));
-       // apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("Ends"));
+        apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
+        apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("End"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
 
     }

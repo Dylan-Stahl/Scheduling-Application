@@ -29,6 +29,8 @@ public class Main extends Application {
         //Connect to database
         DBConnection.startConnection();
 
+
+
         //Working with sql statements
         DBQuery.setStatment(DBConnection.getConnection()); //Create statement object
         Statement statement = DBQuery.getStatement(); //get statement reference

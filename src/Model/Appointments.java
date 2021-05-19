@@ -4,8 +4,12 @@ import Utilities.DBConnection;
 import Utilities.DBQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.util.converter.DateTimeStringConverter;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class Appointments {
     private static ObservableList<Appointments> allAppts = FXCollections.observableArrayList();
@@ -15,8 +19,8 @@ public class Appointments {
     private String Description;
     private String Location;
     private String Type;
-    private Date Start;
-    private Date End;
+    private LocalDateTime Start;
+    private LocalDateTime End;
     private Date Create_Date;
     private String Created_By;
     private Timestamp Last_Update;
@@ -24,10 +28,12 @@ public class Appointments {
     private int Customer_ID;
     private int User_ID;
     private int Contact_ID;
+    private String startDateTime;
+    private String endDateTime;
 
 
     public Appointments(int appointment_ID, String title, String description, String location, String type,
-                        Date start, Date end, Date create_Date, String created_By, Timestamp last_Update,
+                        LocalDateTime start, LocalDateTime end, Date create_Date, String created_By, Timestamp last_Update,
                         String last_Updated_By, int customer_ID, int user_ID, int contact_ID) {
         Appointment_ID = appointment_ID;
         Title = title;
@@ -58,8 +64,8 @@ public class Appointments {
                 String Description = rs.getString("Description");
                 String Location = rs.getString("Location");
                 String Type = rs.getString("Type");
-                Date Start = rs.getDate("Start");
-                Date End = rs.getDate("End");
+                LocalDateTime Start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime End = rs.getTimestamp("End").toLocalDateTime();
                 Date Create_Date = rs.getDate("Create_Date");
                 String Created_By = rs.getString("Created_By");
                 Timestamp Last_Update = rs.getTimestamp("Last_Update");
@@ -68,8 +74,10 @@ public class Appointments {
                 int User_ID = rs.getInt("User_ID");
                 int Contact_ID = rs.getInt("Contact_ID");
 
-                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type, Start,
-                        End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID);
+
+                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type,
+                        Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID,
+                        User_ID, Contact_ID);
                 allAppts.add(newAppointment);
             }
             rs.close();
@@ -125,19 +133,19 @@ public class Appointments {
         Type = type;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return Start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         Start = start;
     }
 
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return End;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDateTime end) {
         End = end;
     }
 

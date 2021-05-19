@@ -168,16 +168,16 @@
                         </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
+                        <Insets bottom="5.0" left="20.0" top="10.0" />
                      </VBox.margin>
                   </Pane>
                </children>
             </VBox>
             <VBox prefHeight="600.0" prefWidth="250.0">
                <children>
-                  <Pane prefHeight="200.0" prefWidth="250.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="250.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="250.0">
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="250.0">
                            <children>
                               <Label text="Reports">
                                  <VBox.margin>
@@ -218,12 +218,12 @@
                         </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets left="5.0" right="5.0" top="72.0" />
+                        <Insets left="5.0" right="5.0" top="70.0" />
                      </VBox.margin>
                   </Pane>
                   <Button mnemonicParsing="false" onAction="#onActionExit" text="Exit Application">
                      <VBox.margin>
-                        <Insets left="135.0" top="250.0" />
+                        <Insets left="135.0" top="30.0" />
                      </VBox.margin>
                   </Button>
                </children>
