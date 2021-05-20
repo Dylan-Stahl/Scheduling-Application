@@ -91,7 +91,7 @@ public class Appointments {
 
     public static void delecteAppt(Appointments apptToDelete) {
         Connection conn = DBConnection.getConnection();
-        try(PreparedStatement ps = (conn.prepareStatement("DELETE FROM appointments WHERE ?"))) {
+        try(PreparedStatement ps = (conn.prepareStatement("DELETE FROM appointments WHERE Appointment_ID = ?"))) {
             ps.setString(1, String.valueOf(apptToDelete.getAppointment_ID()));
 
             ps.executeUpdate();

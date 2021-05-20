@@ -150,7 +150,7 @@ public class mainMenuController {
             }
             else {
                 Appointments apptToDelete = apptTableView.getSelectionModel().getSelectedItem();;
-                //Tells user they are unable to delete a product with a part associated to that product.
+
 
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete the appointment selected?");
                 alert.setTitle("Deleting Appointment!");
@@ -163,7 +163,7 @@ public class mainMenuController {
         }catch(NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialogue");
-            alert.setContentText("Select a customer!");
+            alert.setContentText("Select an appointment!");
             alert.showAndWait();
         }
     }

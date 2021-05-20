@@ -126,7 +126,7 @@
                 </GridPane>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button mnemonicParsing="false" text="Add">
+                        <Button mnemonicParsing="false" onAction="#onActionSaveAppt" text="Add">
                             <HBox.margin>
                                 <Insets right="20.0" />
                             </HBox.margin>

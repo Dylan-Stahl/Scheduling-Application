@@ -68,21 +68,27 @@ public class appointmentRecordsModifyController {
         addApptStartsDatepicker.setValue(appointmentToModify.getStart().toLocalDate());
         addApptTypeField.setText(String.valueOf(appointmentToModify.getType()));
         addCustomerIDField.setText(String.valueOf(appointmentToModify.getCustomer_ID()));
-        startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour());
+
+
         startsMinuteCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getMinute());
         if(appointmentToModify.getStart().toLocalTime().getHour() > 12) {
             startsAMPMCombo.getSelectionModel().select("PM");
+            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour() - 12);
+
         }
         else {
             startsAMPMCombo.getSelectionModel().select("AM");
+            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour());
         }
-        endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour());
+
         endsMinuteCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getMinute());
         if(appointmentToModify.getEnd().toLocalTime().getHour() > 12) {
             endsAMPMCombo.getSelectionModel().select("PM");
+            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour() - 12);
         }
         else {
             endsAMPMCombo.getSelectionModel().select("AM");
+            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour());
         }
 
     }
