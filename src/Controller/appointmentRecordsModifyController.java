@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Appointments;
+import Model.Contacts;
 import Model.Date_Time;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ public class appointmentRecordsModifyController {
     private TextField addApptLocField;
 
     @FXML
-    private TextField addApptContactField;
+    private javafx.scene.control.ComboBox<Contacts> contactCombo;
 
     @FXML
     private DatePicker addApptEndsDatepicker;
@@ -64,7 +65,8 @@ public class appointmentRecordsModifyController {
         addApptTitleField.setText(String.valueOf(appointmentToModify.getTitle()));
         addApptDescField.setText(String.valueOf(appointmentToModify.getDescription()));
         addApptLocField.setText(String.valueOf(appointmentToModify.getLocation()));
-        addApptContactField.setText(String.valueOf(appointmentToModify.getContact_ID()));
+        contactCombo.setItems(Contacts.initializeContacts());
+        contactCombo.getSelectionModel().select(Contacts.returnContact(appointmentToModify));
         addApptEndsDatepicker.setValue(appointmentToModify.getEnd().toLocalDate());
         addApptStartsDatepicker.setValue(appointmentToModify.getStart().toLocalDate());
         addApptTypeField.setText(String.valueOf(appointmentToModify.getType()));
@@ -72,8 +74,7 @@ public class appointmentRecordsModifyController {
 
         //Sets minute combo box for start.
         if(appointmentToModify.getStart().toLocalTime().getMinute() == 0) {
-            startsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0) );
-            System.out.println("" + Model.ComboBox.getAppointmentMinutes().get(0) + "");
+            startsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0));
         }
         else if (appointmentToModify.getStart().toLocalTime().getMinute() == 15) {
             startsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(1));
@@ -88,7 +89,6 @@ public class appointmentRecordsModifyController {
         //Sets minute combo box for end
         if(appointmentToModify.getEnd().toLocalTime().getMinute() == 0) {
             endsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0) );
-            System.out.println("" + Model.ComboBox.getAppointmentMinutes().get(0) + "");
         }
         else if (appointmentToModify.getStart().toLocalTime().getMinute() == 15) {
             endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(1));

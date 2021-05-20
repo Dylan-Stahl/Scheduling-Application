@@ -1,7 +1,13 @@
 package Model;
 
+import Utilities.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public final class ComboBox {
     private final static ObservableList<String> appointmentHours = FXCollections.observableArrayList("1","2","3",
@@ -22,4 +28,6 @@ public final class ComboBox {
     public final static ObservableList<String> getAppointmentTimes() {
         return appointmentHours;
     }
+
+
 }

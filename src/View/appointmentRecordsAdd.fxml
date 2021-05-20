@@ -75,7 +75,6 @@
                         <TextField fx:id="addApptTitleField" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="addApptDescField" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="addApptLocField" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <TextField fx:id="addApptContactField" maxWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                         <Label text="Type:" GridPane.rowIndex="5">
                             <GridPane.margin>
                                 <Insets left="20.0" />
@@ -112,6 +111,7 @@
                         <ComboBox fx:id="startsAMPMCombo" prefWidth="100.0" promptText="AM/PM" />
                      </children>
                   </HBox>
+                  <ComboBox fx:id="contactCombo" prefWidth="150.0" promptText="Select a Contact" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                      <children>
                         <ComboBox fx:id="endsHourCombo" prefWidth="70.0" promptText="Hour" />

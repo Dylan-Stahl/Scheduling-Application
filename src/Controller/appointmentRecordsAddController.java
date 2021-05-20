@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.ComboBox;
+import Model.Contacts;
 import Utilities.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ public class appointmentRecordsAddController {
     @FXML
     private TextField addApptLocField;
     @FXML
-    private TextField addApptContactField;
+    private javafx.scene.control.ComboBox<Contacts> contactCombo;
     @FXML
     private DatePicker addApptEndsDatepicker;
     @FXML
@@ -61,15 +62,15 @@ public class appointmentRecordsAddController {
 
     @FXML
     void onActionSaveAppt(ActionEvent event) throws IOException {
-        //FIXME use combobox for contact field instead;
+        //Collection data from entered information.
         String newApptTitle = addApptTitleField.getText();
         String newApptDesc = addApptDescField.getText();
         String newApptLoc = addApptLocField.getText();
-        int newApptContact = Integer.parseInt(addApptContactField.getText());
         String newApptType = addApptTypeField.getText();
         int newCustID = Integer.parseInt(addCustomerIDField.getText());
         String newApptEndDate = ((TextField)addApptEndsDatepicker.getEditor()).getText();
         String newApptStartDate = ((TextField)addApptStartsDatepicker.getEditor()).getText();
+        int contactID = Contacts.returnContactID(contactCombo.getSelectionModel().getSelectedItem());
 
         //FIXME alert user if incorrect data is entered
         //Values will be passed into sql statement for date time.
@@ -77,13 +78,9 @@ public class appointmentRecordsAddController {
         String startHourString;
         String minInComboStart = startsMinuteCombo.getValue().toString();
 
-
         int endHourCombo;
         String endsHourComboString;
         String minInComboEnd = startsMinuteCombo.getValue().toString();
-
-
-
 
         if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
             startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;
@@ -158,7 +155,7 @@ public class appointmentRecordsAddController {
             ps.setTimestamp(5, Timestamp.valueOf(startsDateTime));
             ps.setTimestamp(6, Timestamp.valueOf(endsDateTime));
             ps.setInt(7, newCustID);
-            ps.setInt(8, newApptContact);
+            ps.setInt(8, contactID);
 
             ps.executeUpdate();
             mainMenuController.returnToMain(event);
@@ -177,6 +174,7 @@ public class appointmentRecordsAddController {
         endsHourCombo.setItems(ComboBox.getAppointmentTimes());
         endsMinuteCombo.setItems(ComboBox.getAppointmentMinutes());
         endsAMPMCombo.setItems(ComboBox.getAppointmentAMPM());
+        contactCombo.setItems(Contacts.initializeContacts());
 
         String pattern = "yyyy-MM-dd";
         addApptStartsDatepicker.setPromptText(pattern.toLowerCase());
