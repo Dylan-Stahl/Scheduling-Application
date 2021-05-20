@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Appointments;
+import Model.Date_Time;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -69,26 +70,57 @@ public class appointmentRecordsModifyController {
         addApptTypeField.setText(String.valueOf(appointmentToModify.getType()));
         addCustomerIDField.setText(String.valueOf(appointmentToModify.getCustomer_ID()));
 
+        //Sets minute combo box for start.
+        if(appointmentToModify.getStart().toLocalTime().getMinute() == 0) {
+            startsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0) );
+            System.out.println("" + Model.ComboBox.getAppointmentMinutes().get(0) + "");
+        }
+        else if (appointmentToModify.getStart().toLocalTime().getMinute() == 15) {
+            startsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(1));
+        }
+        else if( appointmentToModify.getStart().toLocalTime().getMinute() == 30) {
+            startsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(2));
+        }
+        else {
+            startsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(3));
+        }
 
-        startsMinuteCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getMinute());
+        //Sets minute combo box for end
+        if(appointmentToModify.getEnd().toLocalTime().getMinute() == 0) {
+            endsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0) );
+            System.out.println("" + Model.ComboBox.getAppointmentMinutes().get(0) + "");
+        }
+        else if (appointmentToModify.getStart().toLocalTime().getMinute() == 15) {
+            endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(1));
+        }
+        else if( appointmentToModify.getStart().toLocalTime().getMinute() == 30) {
+            endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(2));
+        }
+        else {
+            endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(3));
+        }
+
+       //Sets hour combo box for start
         if(appointmentToModify.getStart().toLocalTime().getHour() > 12) {
             startsAMPMCombo.getSelectionModel().select("PM");
-            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour() - 12);
-
+            //startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour() - 12);
+            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour() - 12 - 1);
+            System.out.println(appointmentToModify.getStart().getHour() - 12);
         }
         else {
             startsAMPMCombo.getSelectionModel().select("AM");
-            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour());
+            //startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour());
+            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour() - 1);
         }
 
-        endsMinuteCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getMinute());
+        //Sets hour combo box for end
         if(appointmentToModify.getEnd().toLocalTime().getHour() > 12) {
             endsAMPMCombo.getSelectionModel().select("PM");
-            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour() - 12);
+            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour() - 12 - 1);
         }
         else {
             endsAMPMCombo.getSelectionModel().select("AM");
-            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour());
+            endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour() - 1);
         }
 
     }

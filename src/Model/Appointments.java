@@ -60,7 +60,7 @@ public class Appointments {
 
             while (rs.next()) {
                 int Appointment_ID = rs.getInt("Appointment_ID");
-                String Title = rs.getString("Customer_ID");
+                String Title = rs.getString("Title");
                 String Description = rs.getString("Description");
                 String Location = rs.getString("Location");
                 String Type = rs.getString("Type");

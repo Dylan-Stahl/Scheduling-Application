@@ -10,11 +10,11 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 
@@ -72,8 +72,6 @@ public class appointmentRecordsAddController {
         String newApptStartDate = ((TextField)addApptStartsDatepicker.getEditor()).getText();
 
         //FIXME alert user if incorrect data is entered
-        //FIXME Data is being entered in UTC and displaying incorrectly
-        //FIXME Convert time entered into UTC and then add.
         //Values will be passed into sql statement for date time.
         int startHourCombo;
         String startHourString;
@@ -85,29 +83,69 @@ public class appointmentRecordsAddController {
         String minInComboEnd = startsMinuteCombo.getValue().toString();
 
 
-        String seconds = "00";
+
 
         if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
             startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;
             startHourString = String.valueOf(startHourCombo);
-            System.out.println("testeres");
         }
         else{
             startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString());
-            startHourString = String.valueOf(startHourCombo);
+            if(startHourCombo < 10) {
+                startHourString = "0" + String.valueOf(startHourCombo);
+            }
+            else {
+                startHourString = String.valueOf(startHourCombo);
+            }
         }
 
         if(endsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
             endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString()) + 12;
             endsHourComboString = String.valueOf(endHourCombo);
-            System.out.println("testee");
+
         }
         else{
             endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString());
-            endsHourComboString = String.valueOf(endHourCombo);
+            if(endHourCombo < 10) {
+                endsHourComboString = "0" + String.valueOf(endHourCombo);
+            }
+            else{
+                endsHourComboString = String.valueOf(endHourCombo);
+            }
+
         }
 
+        //Created strings of the dates and times from the form that are to be converted into local date times.
+        String startsDateTimeStr = newApptStartDate + " " + startHourString + "" + minInComboStart;
+        String endsDateTimeStr = newApptEndDate + " " + endsHourComboString + "" + minInComboEnd;
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        //DateTimes that will be converted into UTC time before being entered into database
+        LocalDateTime startsDateTime = LocalDateTime.parse(startsDateTimeStr, formatter);
+        LocalDateTime endsDateTime = LocalDateTime.parse(endsDateTimeStr, formatter);
+
+        /* database automatically converts to correct time
+        System.out.println(startsDateTime);
+
+        //Convert localdate time of entered data into local zoneddatetime
+        ZoneId zoneId = ZoneId.systemDefault();
+        ZonedDateTime startsDateTimeLocal = startsDateTime.atZone(zoneId);
+        ZonedDateTime endsDateTimeLocal = endsDateTime.atZone(zoneId);
+
+        System.out.println(startsDateTimeLocal);
+
+        //Convert local zoneddatetime into UTC zoneddatetime
+        ZonedDateTime startsDateTimeUTC = startsDateTimeLocal.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime endsDateTimeUTC = endsDateTimeLocal.withZoneSameInstant(ZoneId.of("UTC"));
+        System.out.println(startsDateTimeUTC);
+
+        //Convert utc zoneddate time into localdatetime
+
+        LocalDateTime startsDateTimeUTCLCD = startsDateTimeUTC.toLocalDateTime();
+        LocalDateTime endsDateTimeUTCLCD = endsDateTimeUTC.toLocalDateTime();
+        System.out.println(startsDateTimeUTCLCD);
+        System.out.println(Timestamp.valueOf(startsDateTimeUTCLCD)); */
 
         Connection conn = DBConnection.getConnection();
         String sqlInsert = "INSERT INTO appointments(Title,Description,Location,Type," +
@@ -117,10 +155,8 @@ public class appointmentRecordsAddController {
             ps.setString(2, newApptDesc);
             ps.setString(3, newApptLoc);
             ps.setString(4, newApptType);
-            ps.setString(5, newApptStartDate + " " + startHourString + ":" + minInComboStart +":" +
-                    seconds);
-            ps.setString(6, newApptEndDate + " " + endsHourComboString + ":" + minInComboEnd + ":" +
-                    seconds);
+            ps.setTimestamp(5, Timestamp.valueOf(startsDateTime));
+            ps.setTimestamp(6, Timestamp.valueOf(endsDateTime));
             ps.setInt(7, newCustID);
             ps.setInt(8, newApptContact);
 
@@ -142,7 +178,6 @@ public class appointmentRecordsAddController {
         endsMinuteCombo.setItems(ComboBox.getAppointmentMinutes());
         endsAMPMCombo.setItems(ComboBox.getAppointmentAMPM());
 
-        //Stackoverflow
         String pattern = "yyyy-MM-dd";
         addApptStartsDatepicker.setPromptText(pattern.toLowerCase());
 
