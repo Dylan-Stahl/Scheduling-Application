@@ -14,6 +14,9 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Main extends Application {
 
@@ -21,7 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../View/loginMenu.fxml"));
         primaryStage.setTitle("Scheduling Application");
-        primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setScene(new Scene(root, 450, 400));
         primaryStage.show();
     }
 
@@ -29,11 +32,28 @@ public class Main extends Application {
         //Connect to database
         DBConnection.startConnection();
 
+        //Locale france = new Locale("fr");
+        //Locale.setDefault(france);
 
 
+        try{
+            ResourceBundle rb = ResourceBundle.getBundle("ResourceBundle/Nat" , Locale.getDefault());
+            if(Locale.getDefault().getLanguage().equals("fr")) {
+                System.out.println(rb.getString("Login") + " " + rb.getString("Password"));
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        System.out.println(ZoneId.getAvailableZoneIds());
+
+
+
+        /*
         //Working with sql statements
         DBQuery.setStatment(DBConnection.getConnection()); //Create statement object
         Statement statement = DBQuery.getStatement(); //get statement reference
+
 
         String selectStatement = "select * from country_test";
         statement.execute(selectStatement);
@@ -75,7 +95,7 @@ public class Main extends Application {
         //String deleteStatement = "DELETE FROM customers_test" +
         //                         " WHERE userID = 3";
         //statement.execute(deleteStatement);
-
+        */
 
 
 

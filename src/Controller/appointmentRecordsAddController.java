@@ -80,7 +80,7 @@ public class appointmentRecordsAddController {
 
         int endHourCombo;
         String endsHourComboString;
-        String minInComboEnd = startsMinuteCombo.getValue().toString();
+        String minInComboEnd = endsMinuteCombo.getValue().toString();
 
         if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
             startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;

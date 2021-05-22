@@ -6,6 +6,10 @@ import java.sql.SQLException;
 
 public final class DBConnection {
 
+    //Login information
+    private static final String loginUsername = "test";
+    private static final String loginPassword = "test";
+
     //JDBC URL Parts
     private static final String protocol = "jdbc";
     private static final String vendorName = ":mysql:";
@@ -49,5 +53,25 @@ public final class DBConnection {
         }
         catch(Exception e) {
         }
+    }
+
+    public final static boolean readPassword(String enteredPassword) {
+        boolean isCorrect = false;
+
+        if(enteredPassword.equals(loginUsername)) {
+            isCorrect = true;
+        }
+
+        return isCorrect;
+    }
+
+    public final static boolean readUsername(String enteredUsername) {
+        boolean isCorrect = false;
+
+        if(enteredUsername.equals(loginPassword)) {
+            isCorrect = true;
+        }
+
+        return isCorrect;
     }
 }
