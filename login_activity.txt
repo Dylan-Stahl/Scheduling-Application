@@ -1,0 +1,135 @@
+Login Attempt at 2021-05-22T09:18:31.037130700 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T09:19:47.265841600 America/Phoenix
+Username entered: tes
+Password entered: tes
+Incorrect username or password entered!
+
+Login Attempt at 2021-05-22T09:19:55.814991900 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T09:57:12.343403500 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T09:59:01.782866 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:01:08.710551900 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:05:42.212440100 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:07:16.661951900 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:08:48.322925800 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:09:51.257701 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:10:12.197714200 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:10:30.824919400 America/Phoenix
+Username entered: 
+Password entered: 
+Incorrect username or password entered!
+
+Login Attempt at 2021-05-22T10:10:35.889381300 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T10:58:07.012626 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:02:34.131780100 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:03:21.415389700 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:04:44.020625400 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:06:37.572095100 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:10:13.142922800 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:15:02.588072300 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:16:57.533881600 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:17:14.111539800 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:38:38.845022900 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:41:00.868625500 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:42:03.447365 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:43:08.733869500 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+
+Login Attempt at 2021-05-22T11:44:28.011173200 America/Phoenix
+Username entered: test
+Password entered: test
+Login successful!
+

@@ -22,10 +22,13 @@ public class Customers {
     private Timestamp Last_Update;
     private String Last_Updated_By;
     private int Division_ID;
+    private String Country;
+    private String Division_IDStr;
+
 
     public Customers(int customer_ID, String customer_Name, String address, String postal_Code, String phone,
                      Date create_Date, String created_By, Timestamp last_Update, String last_Updated_By,
-                     int division_ID){
+                     int division_ID, String division_IDStr, String country){
         this.Customer_ID = customer_ID;
         this.Customer_Name = customer_Name;
         this.Address = address;
@@ -36,6 +39,10 @@ public class Customers {
         this.Last_Update = last_Update;
         this.Last_Updated_By = last_Updated_By;
         this.Division_ID = division_ID;
+        this.Division_IDStr = division_IDStr;
+        this.Country = country;
+        this.Division_IDStr = division_IDStr;
+        this.Country = country;
     }
 
     public static ObservableList<Customers> initializeCustomers() throws SQLException {
@@ -58,8 +65,13 @@ public class Customers {
                 String Last_Updated_By = rs.getString("Last_Updated_By");
                 int Division_ID = rs.getInt("Division_ID");
 
+                //Division and country data require the methods in the Country class because sql statements are needed.
+                String Division_IDStr = Model.Country.returnDivision(Division_ID);
+                int Country_ID = Model.Country.returnCountryID(Division_ID);
+                String Country = Model.Country.returnCountry(Country_ID);
+
                 Customers newCustomer = new Customers(Customer_ID,Customer_Name,Address, Postal_Code,Phone, Create_Date,
-                        Created_By, Last_Update, Last_Updated_By, Division_ID);
+                        Created_By, Last_Update, Last_Updated_By, Division_ID, Division_IDStr, Country);
                 allCustomers.add(newCustomer);
 
             }
@@ -69,7 +81,6 @@ public class Customers {
             System.out.println(e.getMessage());
             System.out.println(e.getSQLState());
         }
-
         return allCustomers;
     }
 
@@ -99,6 +110,21 @@ public class Customers {
 
     }
 
+    public String getCountry() {
+        return Country;
+    }
+
+    public void setCountry(String country) {
+        Country = country;
+    }
+
+    public String getDivision_IDStr() {
+        return Division_IDStr;
+    }
+
+    public void setDivision_IDStr(String division_IDStr) {
+        Division_IDStr = division_IDStr;
+    }
 
     public int getCustomer_ID() {
         return Customer_ID;

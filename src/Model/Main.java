@@ -45,7 +45,7 @@ public class Main extends Application {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        System.out.println(ZoneId.getAvailableZoneIds());
+
 
 
 

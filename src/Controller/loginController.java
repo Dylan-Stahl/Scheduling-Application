@@ -7,8 +7,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -32,19 +37,33 @@ public class loginController {
 
     @FXML
     void onActionLogin(ActionEvent event) throws IOException {
+        //Login validation
         String incorrectInformation = "Incorrect username or password!";
         String enteredUsername = userIdField.getText();
         String enteredPassword = passwordField.getText();
+
+        //Tracking user activity
+        File fileReport = new File("login_activity.txt");
+        FileWriter file = new FileWriter(fileReport, true);
+        PrintWriter printWriter = new PrintWriter(file);
+
+        printWriter.println("Login Attempt at " + LocalDateTime.now() + " " + ZoneId.systemDefault());
+        printWriter.println("Username entered: " + enteredUsername);
+        printWriter.println("Password entered: " + enteredPassword);
 
         boolean usernameResults = DBConnection.readUsername(enteredUsername);
         boolean passwordResults = DBConnection.readUsername(enteredPassword);
 
         if(usernameResults && passwordResults) {
             mainMenuController.returnToMain(event);
+            printWriter.println("Login successful!");
+            printWriter.println("");
         }
         else {
             try{
                 errorLabel.setText(incorrectInformation);
+                printWriter.println("Incorrect username or password entered!");
+                printWriter.println("");
 
                 ResourceBundle rb = ResourceBundle.getBundle("ResourceBundle/Nat" , Locale.getDefault());
                 if(Locale.getDefault().getLanguage().equals("fr")) {
@@ -55,6 +74,7 @@ public class loginController {
                 System.out.println(e.getMessage());
             }
         }
+        printWriter.close();
     }
 
     @FXML

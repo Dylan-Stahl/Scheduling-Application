@@ -30,8 +30,6 @@ public class mainMenuController {
     @FXML
     private TableView<Appointments> apptTableView;
     @FXML
-    private ToggleGroup appointmentView;
-    @FXML
     private TableColumn<Appointments, Integer> apptIDCol;
     @FXML
     private TableColumn<Appointments, String> apptTitleCol;
@@ -60,6 +58,10 @@ public class mainMenuController {
     private TableColumn<Customers, String> customersAddressCol;
     @FXML
     private TableColumn<Customers, String> customersPostalCol;
+    @FXML
+    private TableColumn<Customers, String> customerCountryCol;
+    @FXML
+    private TableColumn<Customers, String> customerFLDCol;
 
     @FXML
     void onActionExit(ActionEvent event) {
@@ -246,6 +248,9 @@ public class mainMenuController {
         customersNameCol.setCellValueFactory(new PropertyValueFactory<>("Customer_Name"));
         customersAddressCol.setCellValueFactory(new PropertyValueFactory<>("Address"));
         customersPostalCol.setCellValueFactory(new PropertyValueFactory<>("Postal_Code"));
+        customerCountryCol.setCellValueFactory(new PropertyValueFactory<>("Country"));
+        customerFLDCol.setCellValueFactory(new PropertyValueFactory<>("Division_IDStr"));
+
 
         apptTableView.setItems(Appointments.initalizeAppts());
 
