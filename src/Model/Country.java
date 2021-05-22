@@ -1,6 +1,8 @@
 package Model;
 
 import Utilities.DBConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,8 +11,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Country {
+    private static ObservableList<Country> countries = FXCollections.observableArrayList();
+    private String countryName;
 
+    public Country(String countryName) {
+        this.countryName = countryName;
+    }
 
+    //FIXME add to division
     public static String returnDivision(int division_ID) {
         String Division_IDStr;
 
@@ -56,7 +64,7 @@ public class Country {
         return  countryResultsID.get(0);
     }
 
-    public static String returnCountry(int country_ID) {
+    public static String returnCountryString(int country_ID) {
         ArrayList<String> countryStr = new ArrayList<>();
 
         Connection conn = DBConnection.getConnection();
@@ -80,5 +88,31 @@ public class Country {
         return countryStr.get(0);
     }
 
+    public static ObservableList<Country> initializeAllCountries() {
+        countries.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT Country FROM countries")) {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String countryName = rs.getString("Country");
+
+                Country newCountry = new Country(countryName);
+                countries.add(newCountry);
+            }
+            rs.close();
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
+        }
+        return countries;
+    }
+
+    @Override
+    public String toString() {
+        return (countryName);
+    }
 
 }

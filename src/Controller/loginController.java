@@ -48,8 +48,6 @@ public class loginController {
         PrintWriter printWriter = new PrintWriter(file);
 
         printWriter.println("Login Attempt at " + LocalDateTime.now() + " " + ZoneId.systemDefault());
-        printWriter.println("Username entered: " + enteredUsername);
-        printWriter.println("Password entered: " + enteredPassword);
 
         boolean usernameResults = DBConnection.readUsername(enteredUsername);
         boolean passwordResults = DBConnection.readUsername(enteredPassword);
@@ -98,9 +96,7 @@ public class loginController {
             }
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
+            //Program runs as usual with English
         }
-
-        //errorLabel.setText("working");
     }
 }

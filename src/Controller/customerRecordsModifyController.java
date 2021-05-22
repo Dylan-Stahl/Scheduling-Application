@@ -1,16 +1,15 @@
 package Controller;
 
+import Model.Country;
 import Model.Customers;
+import Model.Division;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Optional;
 
 public class customerRecordsModifyController {
 
@@ -28,19 +27,24 @@ public class customerRecordsModifyController {
     @FXML
     private TextField addCustomerPhoneField;
     @FXML
-    private ComboBox<?> addCustomerCountryCombo;
+    private ComboBox<Country> addCustomerCountryCombo;
     @FXML
-    private ComboBox<?> addCustomerDivCombo;
+    private ComboBox<Division> addCustomerDivCombo;
 
     public void sendCustomer(Customers customerToModify) {
+        //Sets fields for the selected customer
         addCustomerIDField.setText(String.valueOf(customerToModify.getCustomer_ID()));
         addCustomerNameField.setText(String.valueOf(customerToModify.getCustomer_Name()));
         addCustomerAddressField.setText(String.valueOf(customerToModify.getAddress()));
         addPostalCodeField.setText(String.valueOf(customerToModify.getPostal_Code()));
         addCustomerPhoneField.setText(String.valueOf(customerToModify.getPhone()));
-        //FIXME work on combo boxes, watch webinar
-        //addCustomerCountryCombo.set
-        //addCustomerDivCombo
+
+        //Sets combo box fields
+        addCustomerCountryCombo.setItems(Country.initializeAllCountries());
+        addCustomerCountryCombo.getSelectionModel().select(customerToModify.getCountryObj());
+        addCustomerDivCombo.setItems(Division.initializeAllDivisions());//Divisons);
+        addCustomerDivCombo.getSelectionModel().select(customerToModify.getDivisionObj());
+
     }
 
     @FXML
