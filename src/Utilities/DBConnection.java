@@ -74,4 +74,6 @@ public final class DBConnection {
 
         return isCorrect;
     }
+
+    public final static String returnUsername() {return loginUsername;}
 }

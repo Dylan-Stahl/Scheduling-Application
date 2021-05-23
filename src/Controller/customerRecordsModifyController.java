@@ -3,6 +3,7 @@ package Controller;
 import Model.Country;
 import Model.Customers;
 import Model.Division;
+import Utilities.DBConnection;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -10,6 +11,12 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class customerRecordsModifyController {
 
@@ -48,8 +55,44 @@ public class customerRecordsModifyController {
     }
 
     @FXML
-    void onActionAddCustomer(ActionEvent event) {
+    void onActionAddCustomer(ActionEvent event) throws IOException{
+        int newCustomerID = Integer.parseInt(addCustomerIDField.getText());
+        String newCustomerName = addCustomerNameField.getText();
+        String newCustomerAddress = addCustomerAddressField.getText();
+        String newCustomerPostal = addPostalCodeField.getText();
+        String newCustomerPhone = addCustomerPhoneField.getText();
+        String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
+        String newCustomerDivision = addCustomerDivCombo.getValue().toString();
 
+        //call division, search table with division name, and get id
+        int divisionID = Division.getDivisionID(newCustomerDivision);
+
+        //Determine user updating data
+        String user = DBConnection.returnUsername();
+
+
+        //Perform update
+        Connection conn = DBConnection.getConnection();
+        String sqlUpdate = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, " +
+                "Division_ID = ?, Last_Update = ?, Last_Updated_By = ? WHERE Customer_ID = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
+            ps.setString(1, newCustomerName);
+            ps.setString(2,newCustomerAddress);
+            ps.setString(3, newCustomerPostal);
+            ps.setString(4, newCustomerPhone);
+            ps.setInt(5, divisionID);
+            ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setString(7, user);
+            ps.setInt(8, newCustomerID);
+
+            ps.executeUpdate();
+            System.out.println("Updated Count: " + ps.getUpdateCount());
+            mainMenuController.returnToMain(event);
+        }
+        catch(SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
+        }
     }
 
     @FXML
