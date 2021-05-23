@@ -60,7 +60,6 @@ public class customerRecordsAddController {
 
         //Determine user updating data
         String user = DBConnection.returnUsername();
-        System.out.println("hello?");
         Connection conn = DBConnection.getConnection();
         //Insert information
         String sqlInsert = "INSERT INTO customers(Customer_Name, Address, Postal_Code, Phone, Create_Date, " +
