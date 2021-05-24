@@ -18,16 +18,36 @@
     <children>
         <VBox prefHeight="600.0" prefWidth="500.0">
             <children>
-                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="500.0">
                     <children>
-                        <Label text="Add Appointment">
-                            <HBox.margin>
-                                <Insets left="40.0" />
-                            </HBox.margin>
-                            <font>
-                                <Font name="System Bold" size="15.0" />
-                            </font>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="500.0">
+                     <children>
+                              <Label text="Add Appointment">
+                                  <font>
+                                      <Font name="System Bold" size="15.0" />
+                                  </font>
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                              </Label>
+                        <Label text="Business Hours: 8:00 AM to 10:00 PM EST">
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
                         </Label>
+                        <Label text="Monday - Friday">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="20.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
                     </children>
                 </HBox>
                 <GridPane maxWidth="-Infinity" minHeight="-Infinity" prefHeight="350.0" prefWidth="450.0">
@@ -124,7 +144,7 @@
                         <Insets left="25.0" />
                     </VBox.margin>
                 </GridPane>
-                <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0">
                     <children>
                         <Button mnemonicParsing="false" onAction="#onActionSaveAppt" text="Add">
                             <HBox.margin>
@@ -138,6 +158,31 @@
                         </Button>
                     </children>
                 </HBox>
+            <Label fx:id="exceptionLabelTitle">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelDesc">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelLoc">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelType">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelCustID">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
             </children>
         </VBox>
     </children>
