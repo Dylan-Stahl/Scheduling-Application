@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 public class Division {
     private static ObservableList<Division> divisions = FXCollections.observableArrayList();
+    private static ObservableList<Division> divisionsSortedByCountry = FXCollections.observableArrayList();
     private String divisionName;
 
     public Division(String divisionName) {
@@ -37,6 +38,33 @@ public class Division {
             System.out.println(e.getSQLState());
         }
         return divisions;
+    }
+
+    public static ObservableList<Division> initializeDivisionWithSetCountry(int countryID) {
+        divisionsSortedByCountry.clear();
+
+        Connection conn = DBConnection.getConnection();
+        String sqlSelect = "SELECT * FROM first_level_divisions WHERE COUNTRY_ID = ?";
+        try(PreparedStatement ps = conn.prepareStatement(sqlSelect)) {
+            ps.setInt(1, countryID);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                String firstLevelDivisionToAdd = rs.getString("Division");
+
+                Division newDivision= new Division(firstLevelDivisionToAdd);
+                divisionsSortedByCountry.add(newDivision);
+            }
+            rs.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return  divisionsSortedByCountry;
+    }
+
+    public static void removeDivisionsSortedByCountry() {
+        divisionsSortedByCountry.clear();
     }
 
     public static int getDivisionID(String divisionName) {

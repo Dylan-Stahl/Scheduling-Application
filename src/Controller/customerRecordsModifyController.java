@@ -4,6 +4,8 @@ import Model.Country;
 import Model.Customers;
 import Model.Division;
 import Utilities.DBConnection;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -49,9 +51,30 @@ public class customerRecordsModifyController {
         //Sets combo box fields
         addCustomerCountryCombo.setItems(Country.initializeAllCountries());
         addCustomerCountryCombo.getSelectionModel().select(customerToModify.getCountryObj());
-        addCustomerDivCombo.setItems(Division.initializeAllDivisions());//Divisons);
+        //addCustomerDivCombo.setItems(Division.initializeAllDivisions());//Divisons);
         addCustomerDivCombo.getSelectionModel().select(customerToModify.getDivisionObj());
+        Division.removeDivisionsSortedByCountry();
+        try {
+            String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
+            int newCustomerCountryID = Country.returnCountryID(newCustomerCountry);
+            ObservableList<Division> divisonToSet = FXCollections.observableArrayList(Division.initializeDivisionWithSetCountry(newCustomerCountryID));
 
+            addCustomerDivCombo.setItems(divisonToSet);
+        }
+        catch (NullPointerException e) {}
+    }
+
+    @FXML
+    void onActionSortFirstLevelDivision(ActionEvent event) {
+        Division.removeDivisionsSortedByCountry();
+        try {
+            String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
+            int newCustomerCountryID = Country.returnCountryID(newCustomerCountry);
+            ObservableList<Division> divisonToSet = FXCollections.observableArrayList(Division.initializeDivisionWithSetCountry(newCustomerCountryID));
+
+            addCustomerDivCombo.setItems(divisonToSet);
+        }
+        catch (NullPointerException e) {}
     }
 
     @FXML
@@ -97,6 +120,7 @@ public class customerRecordsModifyController {
 
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException {
+        Division.removeDivisionsSortedByCountry();
         mainMenuController.returnToMain(event);
     }
 }

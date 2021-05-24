@@ -64,6 +64,29 @@ public class Country {
         return  countryResultsID.get(0);
     }
 
+    public static int returnCountryID(String countryName) {
+        ArrayList<Integer> countryResultsID = new ArrayList<>();
+
+        Connection conn = DBConnection.getConnection();
+        try (PreparedStatement ps = conn.prepareStatement("SELECT Country_ID FROM countries WHERE Country =" +
+                " ?;")) {
+            ps.setString(1, countryName);
+
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                int countryID = rs.getInt("Country_ID");
+                countryResultsID.add(countryID);
+            }
+            rs.close();
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return  countryResultsID.get(0);
+    }
+
     public static String returnCountryString(int country_ID) {
         ArrayList<String> countryStr = new ArrayList<>();
 

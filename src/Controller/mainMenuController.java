@@ -129,6 +129,10 @@ public class mainMenuController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
                     Customers.deleteCustomer(customerToDelete);
+                    Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
+                    customerDeleted.setTitle("Customer Deleted!");
+                    customerDeleted.setContentText("The selected customer has been deleted!");
+                    customerDeleted.showAndWait();
                 }
             }
 
@@ -159,6 +163,11 @@ public class mainMenuController {
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
                     Appointments.delecteAppt(apptToDelete);
+                    Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
+                    customerDeleted.setTitle("Appointment Deleted!");
+                    customerDeleted.setContentText("Appointment with ID: \"" + apptToDelete.getAppointment_ID() + "\" " +
+                            "and type: \"" + apptToDelete.getType() + "\" has been deleted!");
+                    customerDeleted.showAndWait();
                 }
             }
 
@@ -225,9 +234,6 @@ public class mainMenuController {
             alert.setContentText("Select a customer!");
             alert.showAndWait();
         }
-
-
-
     }
 
     @FXML
