@@ -182,6 +182,16 @@
                   <Insets left="45.0" />
                </VBox.margin>
             </Label>
+            <Label fx:id="exceptionLabelCustIDSQL">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelNullInput">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
             </children>
         </VBox>
     </children>
