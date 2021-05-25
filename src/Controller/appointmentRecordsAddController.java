@@ -253,7 +253,7 @@ public class appointmentRecordsAddController {
                 System.out.println("Appointment hours are good");
                 Connection conn = DBConnection.getConnection();
                 String sqlInsert = "INSERT INTO appointments(Title,Description,Location,Type," +
-                        "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?)";
+                        "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By, User_ID) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
                 try(PreparedStatement ps = conn.prepareStatement(sqlInsert)) {
                     ps.setString(1, newApptTitle);
                     ps.setString(2, newApptDesc);
@@ -265,6 +265,9 @@ public class appointmentRecordsAddController {
                     ps.setInt(8, contactID);
                     ps.setString(9, newApptLastUpdateBy);
                     ps.setString(10, newApptCreatedBy);
+                    //User id is set to 1 because a real user id is not currently being used besides "test", which is
+                    //not an int
+                    ps.setInt(11, 1);
 
                     ps.executeUpdate();
                     mainMenuController.returnToMain(event);

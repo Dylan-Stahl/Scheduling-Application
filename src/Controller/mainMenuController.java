@@ -179,10 +179,7 @@ public class mainMenuController {
         }
     }
 
-    @FXML
-    void onActionDisplayMonthlyAppts(ActionEvent event) {
 
-    }
 
     @FXML
     void onActionDisplayWeekly(ActionEvent event) {
@@ -237,8 +234,11 @@ public class mainMenuController {
     }
 
     @FXML
-    void onActionReportNumberOfAppts(ActionEvent event) {
-
+    void onActionReportNumberOfAppts(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(mainMenuController.class.getResource("/view/appointmentsView.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML

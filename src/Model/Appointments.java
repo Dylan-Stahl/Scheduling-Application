@@ -10,6 +10,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 public class Appointments {
     private static ObservableList<Appointments> allAppts = FXCollections.observableArrayList();
@@ -73,6 +74,156 @@ public class Appointments {
                 int Customer_ID = rs.getInt("Customer_ID");
                 int User_ID = rs.getInt("User_ID");
                 int Contact_ID = rs.getInt("Contact_ID");
+
+
+                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type,
+                        Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID,
+                        User_ID, Contact_ID);
+                allAppts.add(newAppointment);
+            }
+            rs.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
+        }
+        return allAppts;
+    }
+
+    public static ObservableList<Appointments> initializeWeeklyAppts() throws SQLException{
+        allAppts.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("SELECT * FROM appointments WHERE start;"))) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int Appointment_ID = rs.getInt("Appointment_ID");
+                String Title = rs.getString("Title");
+                String Description = rs.getString("Description");
+                String Location = rs.getString("Location");
+                String Type = rs.getString("Type");
+                LocalDateTime Start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime End = rs.getTimestamp("End").toLocalDateTime();
+                Date Create_Date = rs.getDate("Create_Date");
+                String Created_By = rs.getString("Created_By");
+                Timestamp Last_Update = rs.getTimestamp("Last_Update");
+                String Last_Updated_By = rs.getString("Last_Updated_By");
+                int Customer_ID = rs.getInt("Customer_ID");
+                int User_ID = rs.getInt("User_ID");
+                int Contact_ID = rs.getInt("Contact_ID");
+
+                //Ensures only appointments within 7 days will be added to the table
+                long timeDifDaysStart = ChronoUnit.DAYS.between(Start, LocalDateTime.now());
+                long timeDifDaysEnd = ChronoUnit.DAYS.between(End, LocalDateTime.now());
+                long intervalStart= timeDifDaysStart;
+                long intervalEnd = timeDifDaysEnd;
+
+                System.out.println(Appointment_ID + " time difference days " + timeDifDaysStart);
+                if(intervalStart < -7 || intervalStart > 0) {
+                    continue;
+                }
+
+                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type,
+                        Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID,
+                        User_ID, Contact_ID);
+                allAppts.add(newAppointment);
+            }
+            rs.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
+        }
+        return allAppts;
+    }
+
+    public static ObservableList<Appointments> initializeMonthlyAppts() throws SQLException{
+        allAppts.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("SELECT * FROM appointments WHERE start;"))) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int Appointment_ID = rs.getInt("Appointment_ID");
+                String Title = rs.getString("Title");
+                String Description = rs.getString("Description");
+                String Location = rs.getString("Location");
+                String Type = rs.getString("Type");
+                LocalDateTime Start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime End = rs.getTimestamp("End").toLocalDateTime();
+                Date Create_Date = rs.getDate("Create_Date");
+                String Created_By = rs.getString("Created_By");
+                Timestamp Last_Update = rs.getTimestamp("Last_Update");
+                String Last_Updated_By = rs.getString("Last_Updated_By");
+                int Customer_ID = rs.getInt("Customer_ID");
+                int User_ID = rs.getInt("User_ID");
+                int Contact_ID = rs.getInt("Contact_ID");
+
+                //Ensures only appointments within 7 days will be added to the table
+                long timeDifMonthStart = ChronoUnit.MONTHS.between(Start, LocalDateTime.now());
+                long timeDifMonthEnd = ChronoUnit.MONTHS.between(End, LocalDateTime.now());
+                long timeDifDaysStart = ChronoUnit.DAYS.between(Start, LocalDateTime.now());
+                long timeDifDaysEnd = ChronoUnit.DAYS.between(End, LocalDateTime.now());
+
+                long intervalStart= timeDifMonthStart;
+                long intervalEnd = timeDifMonthEnd;
+
+                //timeDifMonthStart must be 0 to add
+                //timedifDatsStart must be <= -31 and <= 0
+                if(timeDifMonthStart !=0 || timeDifDaysStart < -31 || timeDifDaysStart > 0) {
+                    continue;
+                }
+
+
+                Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type,
+                        Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID,
+                        User_ID, Contact_ID);
+                allAppts.add(newAppointment);
+            }
+            rs.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getSQLState());
+        }
+        return allAppts;
+    }
+
+    public static ObservableList<Appointments> initializePastAppts() throws SQLException{
+        allAppts.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("SELECT * FROM appointments WHERE start;"))) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int Appointment_ID = rs.getInt("Appointment_ID");
+                String Title = rs.getString("Title");
+                String Description = rs.getString("Description");
+                String Location = rs.getString("Location");
+                String Type = rs.getString("Type");
+                LocalDateTime Start = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime End = rs.getTimestamp("End").toLocalDateTime();
+                Date Create_Date = rs.getDate("Create_Date");
+                String Created_By = rs.getString("Created_By");
+                Timestamp Last_Update = rs.getTimestamp("Last_Update");
+                String Last_Updated_By = rs.getString("Last_Updated_By");
+                int Customer_ID = rs.getInt("Customer_ID");
+                int User_ID = rs.getInt("User_ID");
+                int Contact_ID = rs.getInt("Contact_ID");
+
+                //Ensures only appointments within 7 days will be added to the table
+                long timeDifSecStart = ChronoUnit.SECONDS.between(Start, LocalDateTime.now());
+                long timeDifSecEnd = ChronoUnit.SECONDS.between(End, LocalDateTime.now());
+
+                long intervalStart= timeDifSecStart;
+                long intervalEnd = timeDifSecEnd;
+
+                if(intervalEnd < 0) {
+                    continue;
+                }
 
 
                 Appointments newAppointment = new Appointments(Appointment_ID, Title, Description, Location, Type,

@@ -308,7 +308,7 @@ public class appointmentRecordsModifyController {
                 Connection conn = DBConnection.getConnection();
                 String sqlUpdate = "UPDATE appointments " +
                         "SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, " +
-                        "Contact_ID = ?, Last_Update = ?, Last_Updated_By = ? " +
+                        "Contact_ID = ?, Last_Update = ?, Last_Updated_By = ?, User_ID = ? " +
                         "WHERE Appointment_ID = ?;";
                 try(PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
                     ps.setString(1, newApptTitle);
@@ -321,7 +321,10 @@ public class appointmentRecordsModifyController {
                     ps.setInt(8, contactID);
                     ps.setTimestamp(9, Timestamp.valueOf(newApptLastUpdated));
                     ps.setString(10, newApptLastUpdatedBy);
-                    ps.setInt(11, newApptID);
+                    //User id is set to 1 because a real user id is not currently being used besides "test", which is
+                    //not an int
+                    ps.setInt(11, 1);
+                    ps.setInt(12, newApptID);
 
 
                     ps.executeUpdate();
