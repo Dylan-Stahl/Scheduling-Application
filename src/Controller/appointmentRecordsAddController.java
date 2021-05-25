@@ -250,7 +250,6 @@ public class appointmentRecordsAddController {
             if((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion))
                     && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison))
                     && exception == false) {
-                System.out.println("Appointment hours are good");
                 Connection conn = DBConnection.getConnection();
                 String sqlInsert = "INSERT INTO appointments(Title,Description,Location,Type," +
                         "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By, User_ID) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";

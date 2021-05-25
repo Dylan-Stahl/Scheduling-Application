@@ -20,13 +20,13 @@
          <children>
             <VBox prefHeight="600.0" prefWidth="650.0">
                <children>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="300.0">
+                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="75.0" prefWidth="650.0">
                      <children>
                         <VBox prefWidth="300.0">
                            <children>
-                              <Label alignment="CENTER" prefWidth="300.0" text="Scheduling Application">
+                              <Label alignment="CENTER" minHeight="-Infinity" prefHeight="30.0" prefWidth="300.0" text="Scheduling Application">
                                  <font>
-                                    <Font size="24.0" />
+                                    <Font name="System Bold" size="23.0" />
                                  </font>
                                  <VBox.margin>
                                     <Insets top="20.0" />
@@ -158,9 +158,9 @@
                <children>
                   <Pane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="230.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
                      <children>
-                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="250.0">
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="450.0" prefWidth="230.0">
                            <children>
-                              <Label text="Reports">
+                              <Label text="Additional Data">
                                  <VBox.margin>
                                     <Insets left="20.0" top="5.0" />
                                  </VBox.margin>
@@ -178,19 +178,19 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Button mnemonicParsing="false" onAction="#onActionReportNumberOfAppts" prefWidth="225.0" text="Number of Customer Appointments">
+                                    <Button mnemonicParsing="false" onAction="#onActionReportNumberOfAppts" prefWidth="130.0" text="Appointments Filters">
                                        <GridPane.margin>
-                                          <Insets left="2.0" />
+                                          <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#onActionViewSchedules" prefWidth="80.0" text="Schedules" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="85.0" />
+                                          <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Button>
                                     <Button mnemonicParsing="false" text="Report of my Choice FIX" GridPane.rowIndex="2">
                                        <GridPane.margin>
-                                          <Insets left="35.0" />
+                                          <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Button>
                                  </children>

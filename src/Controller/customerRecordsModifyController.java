@@ -39,6 +39,18 @@ public class customerRecordsModifyController {
     private ComboBox<Country> addCustomerCountryCombo;
     @FXML
     private ComboBox<Division> addCustomerDivCombo;
+    @FXML
+    private Label exceptionLabelName;
+    @FXML
+    private Label exceptionLabelAddress;
+    @FXML
+    private Label exceptionLabelPostal;
+    @FXML
+    private Label exceptionLabelPhone;
+    @FXML
+    private Label exceptionLabelCountry;
+    @FXML
+    private Label exceptionLabelFLD;
 
     public void sendCustomer(Customers customerToModify) {
         //Sets fields for the selected customer
@@ -67,6 +79,11 @@ public class customerRecordsModifyController {
     @FXML
     void onActionSortFirstLevelDivision(ActionEvent event) {
         Division.removeDivisionsSortedByCountry();
+        //if a different country is selected when modifying a customer, it sets the division combo box as null,
+        //that way a user cant, for example, set the customer to be in the UK for country and Alabama for first level
+        //division
+        addCustomerDivCombo.valueProperty().set(null);
+
         try {
             String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
             int newCustomerCountryID = Country.returnCountryID(newCustomerCountry);
@@ -79,42 +96,83 @@ public class customerRecordsModifyController {
 
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException{
+        exceptionLabelName.setText("");
+        exceptionLabelAddress.setText("");
+        exceptionLabelPostal.setText("");
+        exceptionLabelPhone.setText("");
+        exceptionLabelCountry.setText("");
+        exceptionLabelFLD.setText("");
+        boolean exception = false;
+
         int newCustomerID = Integer.parseInt(addCustomerIDField.getText());
         String newCustomerName = addCustomerNameField.getText();
         String newCustomerAddress = addCustomerAddressField.getText();
         String newCustomerPostal = addPostalCodeField.getText();
         String newCustomerPhone = addCustomerPhoneField.getText();
-        String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
-        String newCustomerDivision = addCustomerDivCombo.getValue().toString();
+        //Initialize, assign value if selected item in combo is not null
+        String newCustomerDivision = null;
+        String newCustomerCountry = null;
 
-        //call division, search table with division name, and get id
-        int divisionID = Division.getDivisionID(newCustomerDivision);
-
-        //Determine user updating data
-        String user = DBConnection.returnUsername();
-
-
-        //Perform update
-        Connection conn = DBConnection.getConnection();
-        String sqlUpdate = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, " +
-                "Division_ID = ?, Last_Update = ?, Last_Updated_By = ? WHERE Customer_ID = ?";
-        try(PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-            ps.setString(1, newCustomerName);
-            ps.setString(2,newCustomerAddress);
-            ps.setString(3, newCustomerPostal);
-            ps.setString(4, newCustomerPhone);
-            ps.setInt(5, divisionID);
-            ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
-            ps.setString(7, user);
-            ps.setInt(8, newCustomerID);
-
-            ps.executeUpdate();
-            System.out.println("Updated Count: " + ps.getUpdateCount());
-            mainMenuController.returnToMain(event);
+        //Exceptions
+        if(addCustomerNameField.getText().equals("")) {
+            exceptionLabelName.setText("Customer name can't be empty");
+            exception = true;
         }
-        catch(SQLException e) {
-            System.out.println(e.getMessage());
-            System.out.println(e.getSQLState());
+        if(addCustomerAddressField.getText().equals("")) {
+            exceptionLabelAddress.setText("Customer address can't be empty");
+            exception = true;
+        }
+        if(addPostalCodeField.getText().equals("")) {
+            exceptionLabelPostal.setText("Customer postal code can't be empty");
+            exception = true;
+        }
+        if(addCustomerPhoneField.getText().equals("")) {
+            exceptionLabelPhone.setText("Customer phone can't be empty");
+            exception = true;
+        }
+        if(addCustomerDivCombo.getSelectionModel().getSelectedItem() == null) {
+            exceptionLabelFLD.setText("Customer first level division can't be empty");
+            exception = true;
+        } else{
+            newCustomerDivision = addCustomerDivCombo.getValue().toString();
+        }
+        if(addCustomerCountryCombo.getSelectionModel().getSelectedItem() == null) {
+            exceptionLabelCountry.setText("Customer country selection can't be empty");
+            exception = true;
+        } else {
+            newCustomerCountry = addCustomerCountryCombo.getValue().toString();
+        }
+
+        if(exception == false) {
+
+            //call division, search table with division name, and get id
+            int divisionID = Division.getDivisionID(newCustomerDivision);
+
+            //Determine user updating data
+            String user = DBConnection.returnUsername();
+
+
+            //Perform update
+            Connection conn = DBConnection.getConnection();
+            String sqlUpdate = "UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, " +
+                    "Division_ID = ?, Last_Update = ?, Last_Updated_By = ? WHERE Customer_ID = ?";
+            try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
+                ps.setString(1, newCustomerName);
+                ps.setString(2, newCustomerAddress);
+                ps.setString(3, newCustomerPostal);
+                ps.setString(4, newCustomerPhone);
+                ps.setInt(5, divisionID);
+                ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));
+                ps.setString(7, user);
+                ps.setInt(8, newCustomerID);
+
+                ps.executeUpdate();
+                System.out.println("Updated Count: " + ps.getUpdateCount());
+                mainMenuController.returnToMain(event);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+                System.out.println(e.getSQLState());
+            }
         }
     }
 

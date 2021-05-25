@@ -370,5 +370,4 @@ public class Appointments {
     public void setContact_ID(int contact_ID) {
         Contact_ID = contact_ID;
     }
-
 }

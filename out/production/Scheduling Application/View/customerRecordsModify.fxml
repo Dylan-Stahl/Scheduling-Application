@@ -84,7 +84,7 @@
                   <Insets left="45.0" />
                </VBox.margin>
             </GridPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#onActionAddCustomer" text="Add">
                      <HBox.margin>
@@ -98,6 +98,36 @@
                   </Button>
                </children>
             </HBox>
+            <Label fx:id="exceptionLabelName">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelAddress">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelPostal">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelPhone">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelCountry">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="exceptionLabelFLD">
+               <VBox.margin>
+                  <Insets left="45.0" />
+               </VBox.margin>
+            </Label>
          </children>
       </VBox>
    </children>
