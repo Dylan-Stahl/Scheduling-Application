@@ -71,11 +71,20 @@
                   </VBox>
                </children>
             </Pane>
-            <Button mnemonicParsing="false" onAction="#onActionReturnToMain" text="Back">
-               <VBox.margin>
-                  <Insets left="650.0" />
-               </VBox.margin>
-            </Button>
+            <HBox alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#onActionViewNumberOfAppts" text="Number of Appointments">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#onActionReturnToMain" text="Main Menu">
+                     <HBox.margin>
+                        <Insets right="25.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>

@@ -3,11 +3,10 @@ package Controller;
 import Model.Appointments;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -73,6 +72,14 @@ public class appointmentViewController {
     void onActionReturnToMain(ActionEvent event) throws IOException {
         mainMenuController.returnToMain(event);
     }
+    @FXML
+    void onActionViewNumberOfAppts(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(mainMenuController.class.getResource("/view/numberOfAppointments.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
 
     @FXML
     void initialize() throws SQLException {

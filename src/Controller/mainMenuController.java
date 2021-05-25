@@ -242,9 +242,13 @@ public class mainMenuController {
     }
 
     @FXML
-    void onActionViewSchedules(ActionEvent event) {
-
+    void onActionViewNumOfAppts(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(mainMenuController.class.getResource("/view/numberOfAppointments.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
+
 
     @FXML
     void initialize() throws SQLException {
