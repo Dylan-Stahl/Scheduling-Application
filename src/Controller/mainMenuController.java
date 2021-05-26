@@ -47,7 +47,7 @@ public class mainMenuController {
     @FXML
     private TableColumn<Appointments, LocalDateTime> apptStartsCol;
     @FXML
-    private TableColumn<Appointments, LocalDate> apptEndsCol;
+    private TableColumn<Appointments, LocalDateTime> apptEndsCol;
     @FXML
     private TableColumn<Appointments, Integer> apptCustIDCol;
 

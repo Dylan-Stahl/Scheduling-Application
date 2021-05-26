@@ -188,7 +188,7 @@
                                           <Insets left="20.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" text="Report of my Choice FIX" GridPane.rowIndex="2">
+                                    <Button mnemonicParsing="false" onAction="#onActionViewContactSchedules" text="Contact Schedules" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets left="20.0" />
                                        </GridPane.margin>
