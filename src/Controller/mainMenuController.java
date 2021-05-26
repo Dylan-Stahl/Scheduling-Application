@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 
 public class mainMenuController {
     Stage stage;
@@ -27,6 +29,7 @@ public class mainMenuController {
     Customers customerToModify;
     Appointments appointmentToModify;
 
+    //Appointments tableview FXML
     @FXML
     private TableView<Appointments> apptTableView;
     @FXML
@@ -48,6 +51,7 @@ public class mainMenuController {
     @FXML
     private TableColumn<Appointments, Integer> apptCustIDCol;
 
+    //Customer table view FXML
     @FXML
     private TableView<Customers> customerTableView;
     @FXML
@@ -63,6 +67,12 @@ public class mainMenuController {
     @FXML
     private TableColumn<Customers, String> customerFLDCol;
 
+    //Appointment within 15 minutes tableview FXML
+    @FXML
+    private TableView<Appointments> apptWithin15TableView;
+    @FXML
+    private TableColumn<Appointments, Integer> apptWithin15Col;
+
     @FXML
     void onActionExit(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to exit?");
@@ -76,17 +86,16 @@ public class mainMenuController {
     }
 
 
-    public static void returnToMain(ActionEvent event) throws IOException {
+    public static void returnToMain(ActionEvent event) throws IOException, SQLException {
         Stage stage;
         Parent scene;
-/*
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "The information inputted will not be saved, are you "
-                + "sure you would like to return to the main menu?");
-        Optional<ButtonType> result = alert.showAndWait();
+        //Everytime the main menu is loaded, i want to check if an appointment is within 15 minutes of the local date time
+        //To do this, i will use the predicate interface
+        //Predicate will rely on another function to determine if an appointment is within 15 minutes, if it is
+        //it will return true, if it does return true, further functions will be needed to display that appointment
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
 
- */
+
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(mainMenuController.class.getResource("/view/mainMenu.fxml"));
         stage.setScene(new Scene(scene));
@@ -273,6 +282,14 @@ public class mainMenuController {
         apptStartsCol.setCellValueFactory(new PropertyValueFactory<>("Start"));
         apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("End"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
+
+        BooleanSupplier apptWithinFifteen = () -> Appointments.appointmentWithinFifteenMin();
+        if(apptWithinFifteen.getAsBoolean() == true) {
+            System.out.println("Display alert");
+
+            apptWithin15TableView.setItems(Appointments.initializeApptAlertTable());
+            apptWithin15Col.setCellValueFactory(new PropertyValueFactory<>("appointmentIDForAlert"));
+        }
 
     }
 }

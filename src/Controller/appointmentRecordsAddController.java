@@ -70,7 +70,7 @@ public class appointmentRecordsAddController {
     private javafx.scene.control.ComboBox endsAMPMCombo;
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 

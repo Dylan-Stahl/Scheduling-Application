@@ -95,7 +95,7 @@ public class customerRecordsModifyController {
     }
 
     @FXML
-    void onActionAddCustomer(ActionEvent event) throws IOException{
+    void onActionAddCustomer(ActionEvent event) throws IOException, SQLException{
         exceptionLabelName.setText("");
         exceptionLabelAddress.setText("");
         exceptionLabelPostal.setText("");
@@ -177,7 +177,7 @@ public class customerRecordsModifyController {
     }
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         Division.removeDivisionsSortedByCountry();
         mainMenuController.returnToMain(event);
     }

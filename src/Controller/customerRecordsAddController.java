@@ -54,7 +54,7 @@ public class customerRecordsAddController {
     private Label exceptionLabelFLD;
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         Division.removeDivisionsSortedByCountry();
         mainMenuController.returnToMain(event);
 
@@ -74,7 +74,7 @@ public class customerRecordsAddController {
     }
 
     @FXML
-    void onActionCreateCustomer(ActionEvent event) throws IOException {
+    void onActionCreateCustomer(ActionEvent event) throws IOException, SQLException {
         exceptionLabelName.setText("");
         exceptionLabelAddress.setText("");
         exceptionLabelPostal.setText("");

@@ -1,20 +1,18 @@
 package Model;
 
 import Utilities.DBConnection;
-import Utilities.DBQuery;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.converter.DateTimeStringConverter;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 
 public class Appointments {
     private static ObservableList<Appointments> allAppts = FXCollections.observableArrayList();
+    private static ObservableList<Appointments> appointmentAlerts = FXCollections.observableArrayList();
 
+    private int appointmentIDForAlert;
     private int Appointment_ID;
     private String Title;
     private String Description;
@@ -31,7 +29,6 @@ public class Appointments {
     private int Contact_ID;
     private String startDateTime;
     private String endDateTime;
-
 
     public Appointments(int appointment_ID, String title, String description, String location, String type,
                         LocalDateTime start, LocalDateTime end, Date create_Date, String created_By, Timestamp last_Update,
@@ -51,6 +48,40 @@ public class Appointments {
         User_ID = user_ID;
         Contact_ID = contact_ID;
     }
+
+    public Appointments(int appointmentIDForAlert) {
+        this.appointmentIDForAlert = appointmentIDForAlert;
+    }
+
+    public static ObservableList<Appointments> initializeApptAlertTable() {
+        appointmentAlerts.clear();
+
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments;")) {
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                LocalDateTime startLDT = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime currentLDT = LocalDateTime.now();
+                int appointmentID = rs.getInt("Appointment_ID");
+
+                long timeDifMonthStart = ChronoUnit.MONTHS.between(currentLDT, startLDT);
+                long timeDifDayStart = ChronoUnit.DAYS.between(currentLDT, startLDT);
+                long timeDifMinStart = ChronoUnit.MINUTES.between(currentLDT, startLDT);
+
+                if (timeDifMonthStart == 0 && timeDifDayStart == 0 && (timeDifMinStart >= 0 && timeDifMinStart <= 15)) {
+                    Appointments appointmentAlert = new Appointments(appointmentID);
+                    appointmentAlerts.add(appointmentAlert);
+                    appointmentAlerts.stream().forEach(System.out::println);
+                }
+            }
+        }
+        catch (Exception e ) {
+            System.out.println(e.getMessage());
+        }
+        return appointmentAlerts;
+    }
+
 
     public static ObservableList<Appointments> initalizeAppts() throws SQLException {
         allAppts.clear();
@@ -247,12 +278,38 @@ public class Appointments {
 
             ps.executeUpdate();
 
-
             System.out.println("Deleted: " + ps.getUpdateCount() + " rows.");
             allAppts.remove(apptToDelete);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public static boolean appointmentWithinFifteenMin() {
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = (conn.prepareStatement("SELECT Start FROM appointments"))) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                LocalDateTime startLDT = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime currentLDT = LocalDateTime.now();
+
+                //use chronounit to determine time between the LCD
+                long timeDifMonthStart = ChronoUnit.MONTHS.between(currentLDT, startLDT);
+                long timeDifDayStart = ChronoUnit.DAYS.between(currentLDT, startLDT);
+                long timeDifMinStart = ChronoUnit.MINUTES.between(currentLDT, startLDT);
+
+                if (timeDifMonthStart == 0 && timeDifDayStart == 0 && (timeDifMinStart >= 0 && timeDifMinStart <= 15)) {
+                    return true;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        //If after iterating through all appointment start times and there are no times within 15 minutes, the method
+        //returns false, meaning there are no appointments to display on the main menu.
+        return false;
     }
 
     public static ObservableList<Appointments> returnAllAppts() {
@@ -369,5 +426,13 @@ public class Appointments {
 
     public void setContact_ID(int contact_ID) {
         Contact_ID = contact_ID;
+    }
+
+    public int getAppointmentIDForAlert() {
+        return appointmentIDForAlert;
+    }
+
+    public void setAppointmentIDForAlert(int appointmentIDForAlert) {
+        this.appointmentIDForAlert = appointmentIDForAlert;
     }
 }

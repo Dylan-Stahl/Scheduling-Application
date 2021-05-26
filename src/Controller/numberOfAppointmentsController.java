@@ -41,7 +41,7 @@ public class numberOfAppointmentsController {
     private Label setTotalNumberOfAppointments1;
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 

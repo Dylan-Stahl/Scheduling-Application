@@ -36,7 +36,7 @@ public class loginController {
 
 
     @FXML
-    void onActionLogin(ActionEvent event) throws IOException {
+    void onActionLogin(ActionEvent event) throws IOException, SQLException {
         //Login validation
         String incorrectInformation = "Incorrect username or password!";
         String enteredUsername = userIdField.getText();

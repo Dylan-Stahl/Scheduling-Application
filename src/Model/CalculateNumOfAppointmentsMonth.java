@@ -42,7 +42,7 @@ public class CalculateNumOfAppointmentsMonth {
                 if(monthCounter > 0) {
                     continue;
                 }
-                CalculateNumOfAppointmentsMonth newMonth = new CalculateNumOfAppointmentsMonth( apptMonth, 1);
+                CalculateNumOfAppointmentsMonth newMonth = new CalculateNumOfAppointmentsMonth(apptMonth, 1);
                 monthAndNum.add(newMonth);
             }
         }

@@ -69,7 +69,7 @@ public class appointmentViewController {
     }
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
     @FXML

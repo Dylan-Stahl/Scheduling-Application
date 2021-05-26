@@ -138,7 +138,7 @@ public class appointmentRecordsModifyController {
 
 
     @FXML
-    void onActionModifyAppt(ActionEvent event) throws IOException {
+    void onActionModifyAppt(ActionEvent event) throws IOException, SQLException {
         //Set exception labels as empty when add appointment is clicked
         //That way the correct exceptions will be shown after each attempt at adding an appointment with incorrect data.
         exceptionLabelTitle.setText("");
@@ -374,7 +374,7 @@ public class appointmentRecordsModifyController {
     }
 
     @FXML
-    void onActionReturnToMain(ActionEvent event) throws IOException {
+    void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
