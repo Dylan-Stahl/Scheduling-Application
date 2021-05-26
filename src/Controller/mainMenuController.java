@@ -191,8 +191,11 @@ public class mainMenuController {
 
 
     @FXML
-    void onActionDisplayWeekly(ActionEvent event) {
-
+    void onActionViewContactSchedules(ActionEvent event) throws IOException {
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(mainMenuController.class.getResource("/View/contactSchedules.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
     }
 
     @FXML
@@ -285,8 +288,6 @@ public class mainMenuController {
 
         BooleanSupplier apptWithinFifteen = () -> Appointments.appointmentWithinFifteenMin();
         if(apptWithinFifteen.getAsBoolean() == true) {
-            System.out.println("Display alert");
-
             apptWithin15TableView.setItems(Appointments.initializeApptAlertTable());
             apptWithin15Col.setCellValueFactory(new PropertyValueFactory<>("appointmentIDForAlert"));
         }

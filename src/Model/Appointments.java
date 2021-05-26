@@ -5,7 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 
 public class Appointments {
@@ -72,7 +74,6 @@ public class Appointments {
                 if (timeDifMonthStart == 0 && timeDifDayStart == 0 && (timeDifMinStart >= 0 && timeDifMinStart <= 15)) {
                     Appointments appointmentAlert = new Appointments(appointmentID);
                     appointmentAlerts.add(appointmentAlert);
-                    appointmentAlerts.stream().forEach(System.out::println);
                 }
             }
         }
@@ -309,6 +310,73 @@ public class Appointments {
         }
         //If after iterating through all appointment start times and there are no times within 15 minutes, the method
         //returns false, meaning there are no appointments to display on the main menu.
+        return false;
+    }
+
+    //Create boolean method to determine if the customer has an appointment at that selected time.
+
+    public static boolean appointmentOverlap(LocalDateTime appointmentStart, LocalDateTime appointmentEnd, int customer_ID, int appointment_ID) {
+        //Sql statment to select all appointments with that customers id, iterate through, determine if the time works
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments WHERE Customer_ID = ? AND Appointment_ID <> ?")) {
+            ps.setInt(1, customer_ID);
+            ps.setInt(2, appointment_ID);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                LocalDateTime setApptStart = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime setApptEnd = rs.getTimestamp("End").toLocalDateTime();
+
+                if(appointmentStart.isEqual(setApptStart) || (appointmentStart.isAfter(setApptStart) && appointmentStart.isBefore(setApptEnd))) {
+                    System.out.println("Appointment is in between another appointment for the selected customer");
+                    return true;
+                }
+                else if(appointmentEnd.equals(setApptEnd) || (((appointmentEnd.isAfter(setApptStart) ||
+                        appointmentEnd.equals(setApptEnd)) && (appointmentEnd.isBefore(setApptEnd) ||
+                        appointmentEnd.equals(setApptEnd))))) {
+                    System.out.println("Appointment end in between another appointment.");
+                    return true;
+                }
+                else if((setApptStart.isAfter(appointmentStart) || setApptStart.isEqual(appointmentStart)) && (setApptEnd.isBefore(appointmentEnd) || setApptEnd.isEqual(appointmentEnd))) {
+                    return true;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public static boolean appointmentOverlap(LocalDateTime appointmentStart, LocalDateTime appointmentEnd, int customer_ID) {
+        //Sql statment to select all appointments with that customers id, iterate through, determine if the time works
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments WHERE Customer_ID = ?")) {
+            ps.setInt(1, customer_ID);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                LocalDateTime setApptStart = rs.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime setApptEnd = rs.getTimestamp("End").toLocalDateTime();
+
+                if(appointmentStart.isEqual(setApptStart) || (appointmentStart.isAfter(setApptStart) && appointmentStart.isBefore(setApptEnd))) {
+                    System.out.println("Appointment is in between another appointment for the selected customer");
+                    return true;
+                }
+                else if(appointmentEnd.equals(setApptEnd) || (((appointmentEnd.isAfter(setApptStart) ||
+                        appointmentEnd.equals(setApptEnd)) && (appointmentEnd.isBefore(setApptEnd) ||
+                        appointmentEnd.equals(setApptEnd))))) {
+                    System.out.println("Appointment end in between another appointment.");
+                    return true;
+                }
+                else if((setApptStart.isAfter(appointmentStart) || setApptStart.isEqual(appointmentStart)) && (setApptEnd.isBefore(appointmentEnd) || setApptEnd.isEqual(appointmentEnd))) {
+                    return true;
+                }
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         return false;
     }
 

@@ -19,6 +19,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.TimeZone;
+import java.util.function.Predicate;
 
 
 public class appointmentRecordsModifyController {
@@ -118,6 +119,10 @@ public class appointmentRecordsModifyController {
             startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour() - 12 - 1);
             System.out.println(appointmentToModify.getStart().getHour() - 12);
         }
+        else if(appointmentToModify.getStart().toLocalTime().getHour() == 12) {
+            startsAMPMCombo.getSelectionModel().select("PM");
+            startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour() - 1);
+        }
         else {
             startsAMPMCombo.getSelectionModel().select("AM");
             //startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().toLocalTime().getHour());
@@ -128,6 +133,10 @@ public class appointmentRecordsModifyController {
         if(appointmentToModify.getEnd().toLocalTime().getHour() > 12) {
             endsAMPMCombo.getSelectionModel().select("PM");
             endsHourCombo.getSelectionModel().select(appointmentToModify.getEnd().toLocalTime().getHour() - 12 - 1);
+        }
+        else if(appointmentToModify.getEnd().toLocalTime().getHour() == 12) {
+            endsAMPMCombo.getSelectionModel().select("PM");
+            endsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour());
         }
         else {
             endsAMPMCombo.getSelectionModel().select("AM");
@@ -200,161 +209,190 @@ public class appointmentRecordsModifyController {
             exceptionLabelType.setText("Appointment type can't be empty");
             exception = true;
         }
-        //FIXME add datepicker null exception
 
-        try {
-            //Retrieve data from combo boxes
-            int startHourCombo;
-            String startHourString;
-            String minInComboStart = startsMinuteCombo.getValue().toString();
+        if(exception == false) {
+            try {
+                //Retrieve data from combo boxes
+                int startHourCombo;
+                String startHourString;
+                String minInComboStart = startsMinuteCombo.getValue().toString();
 
-            int endHourCombo;
-            String endsHourComboString;
-            String minInComboEnd = endsMinuteCombo.getValue().toString();
+                int endHourCombo;
+                String endsHourComboString;
+                String minInComboEnd = endsMinuteCombo.getValue().toString();
 
-            if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
-                startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;
-                startHourString = String.valueOf(startHourCombo);
-            }
-            else{
-                startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString());
-                if(startHourCombo < 10) {
-                    startHourString = "0" + String.valueOf(startHourCombo);
-                }
-                else {
+                if (startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && !(startsHourCombo.getValue().toString().equals("12"))) {
+                    startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;
                     startHourString = String.valueOf(startHourCombo);
                 }
-            }
+                else if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "AM" && startsHourCombo.getValue().toString().equals("12")) {
+                    startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString() + 12);
+                    startHourString = String.valueOf(startHourCombo);
 
-            if(endsAMPMCombo.getSelectionModel().getSelectedItem() == "PM") {
-                endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString()) + 12;
-                endsHourComboString = String.valueOf(endHourCombo);
-
-            }
-            else{
-                endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString());
-                if(endHourCombo < 10) {
-                    endsHourComboString = "0" + String.valueOf(endHourCombo);
+                    exception = true;
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialogue");
+                    alert.setContentText("Appointment is set to start before business hours!");
+                    alert.showAndWait();
                 }
-                else{
+                else if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && startsHourCombo.getValue().toString().equals("12")) {
+                    startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString());
+                    startHourString = String.valueOf(startHourCombo);
+                }
+                else {
+                    startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString());
+                    if (startHourCombo < 10) {
+                        startHourString = "0" + String.valueOf(startHourCombo);
+                    } else {
+                        startHourString = String.valueOf(startHourCombo);
+                    }
+                }
+
+                if (endsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && !(endsHourCombo.getValue().toString().equals("12"))) {
+                    endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString()) + 12;
+                    endsHourComboString = String.valueOf(endHourCombo);
+
+                }
+                else if(endsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && endsHourCombo.getValue().toString().equals("12")) {
+                    endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString());
                     endsHourComboString = String.valueOf(endHourCombo);
                 }
-            }
+                else if(endsAMPMCombo.getSelectionModel().getSelectedItem() == "AM" && endsHourCombo.getValue().toString().equals("12")) {
+                    endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString() + 12);
+                    endsHourComboString = String.valueOf(endHourCombo);
 
-
-
-
-
-            //Following code works with date and times to add the appointment within the correct time period of business hours
-
-            String startsDateTimeStr = newApptStartDate + " " + startHourString + "" + minInComboStart;
-            String endsDateTimeStr = newApptEndDate + " " + endsHourComboString + "" + minInComboEnd;
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-            //DateTimes that will be converted into UTC time before being entered into database
-            LocalDateTime startsDateTime = LocalDateTime.parse(startsDateTimeStr, formatter);
-            LocalDateTime endsDateTime = LocalDateTime.parse(endsDateTimeStr, formatter);
-
-            //Zone ids
-            ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
-            ZoneId utcZoneID = ZoneId.of(TimeZone.getTimeZone("UTC").getID());
-            ZoneId estZoneID = ZoneId.of(TimeZone.getTimeZone("America/New_York").getID());
-
-            //Appt times in local zoneid
-            ZonedDateTime localStartZDT = ZonedDateTime.of(startsDateTime,localZoneId);
-            ZonedDateTime localEndZDT = ZonedDateTime.of(endsDateTime,localZoneId);
-
-            //Appointment times in EST!!
-            ZonedDateTime localDateTimeStartEST = localStartZDT.withZoneSameInstant(estZoneID);
-            ZonedDateTime localDateTimeEndEST = localEndZDT.withZoneSameInstant(estZoneID);
-            System.out.println(localDateTimeStartEST);
-            System.out.println(localDateTimeEndEST);
-
-            //Business hours in est
-            LocalDate businessOpensDate = LocalDate.now();
-            LocalDate businessClosesDate = LocalDate.now();
-            LocalTime businessOpensEST = LocalTime.of(8,00);
-            LocalTime businessClosesEST = LocalTime.of(22,00);
-            ZonedDateTime businessOpensESTZDT = ZonedDateTime.of(businessOpensDate, businessOpensEST, estZoneID);
-            ZonedDateTime businessClosesESTZDT = ZonedDateTime.of(businessClosesDate, businessClosesEST, estZoneID);
-            ZonedDateTime businessOpensUTCZDT = businessOpensESTZDT.withZoneSameInstant(utcZoneID);
-            ZonedDateTime businessClosesUTCZDT = businessClosesESTZDT.withZoneSameInstant(utcZoneID);
-            System.out.println(businessOpensUTCZDT);
-            System.out.println(businessClosesUTCZDT);
-
-
-            //Comparisons must be in localTime
-            LocalTime opensComparison = LocalTime.of(localDateTimeStartEST.getHour(), localDateTimeStartEST.getMinute());
-            LocalTime closesComparison = LocalTime.of(localDateTimeEndEST.getHour(), localDateTimeEndEST.getMinute());
-            LocalTime businessOpensComparion = LocalTime.of(businessOpensESTZDT.getHour(), businessOpensESTZDT.getMinute());
-            LocalTime businessClosesComparison = LocalTime.of(businessClosesESTZDT.getHour(), businessClosesESTZDT.getMinute());
-
-            //Makes sure that appointments aren't scheduled on weekdays
-            if((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
-                    || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setContentText("Appointments can't be scheduled on the weekend!");
-                alert.showAndWait();
-            }
-
-            //Maintains correct times
-            if((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion))
-                    && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison))
-                    && exception == false) {
-                System.out.println("Appointment hours are good");
-                Connection conn = DBConnection.getConnection();
-                String sqlUpdate = "UPDATE appointments " +
-                        "SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, " +
-                        "Contact_ID = ?, Last_Update = ?, Last_Updated_By = ?, User_ID = ? " +
-                        "WHERE Appointment_ID = ?;";
-                try(PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-                    ps.setString(1, newApptTitle);
-                    ps.setString(2, newApptDesc);
-                    ps.setString(3, newApptLoc);
-                    ps.setString(4, newApptType);
-                    ps.setTimestamp(5, Timestamp.valueOf(startsDateTime));
-                    ps.setTimestamp(6, Timestamp.valueOf(endsDateTime));
-                    ps.setInt(7, newApptCustID);
-                    ps.setInt(8, contactID);
-                    ps.setTimestamp(9, Timestamp.valueOf(newApptLastUpdated));
-                    ps.setString(10, newApptLastUpdatedBy);
-                    //User id is set to 1 because a real user id is not currently being used besides "test", which is
-                    //not an int
-                    ps.setInt(11, 1);
-                    ps.setInt(12, newApptID);
-
-
-                    ps.executeUpdate();
-                    System.out.println("Updated Count: " + ps.getUpdateCount());
-                    mainMenuController.returnToMain(event);
+                    exception = true;
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialogue");
+                    alert.setContentText("Appointment is set to end after business hours!");
+                    alert.showAndWait();
                 }
-                catch(SQLException e) {
-                    exceptionLabelCustIDSQL.setText("Invalid Customer ID!");
-                    System.out.println(e.getMessage());
-                    System.out.println(e.getSQLState());
+                else {
+                    endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString());
+                    if (endHourCombo < 10) {
+                        endsHourComboString = "0" + String.valueOf(endHourCombo);
+                    } else {
+                        endsHourComboString = String.valueOf(endHourCombo);
+                    }
                 }
-            }
-            else if(opensComparison.isBefore(businessOpensComparion) && closesComparison.isAfter(businessClosesComparison)
-                    && exception == false){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
-                alert.showAndWait();
-            }
-            else if(opensComparison.isBefore(businessOpensComparion) && exception == false) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setContentText("Appointment is set to start before business hours!");
-                alert.showAndWait();
-            }
-            else if(closesComparison.isAfter(businessClosesComparison) && exception == false) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialogue");
-                alert.setContentText("Appointment is set to end after business hours!");
-                alert.showAndWait();
-            }
+
+
+                //Following code works with date and times to add the appointment within the correct time period of business hours
+
+                String startsDateTimeStr = newApptStartDate + " " + startHourString + "" + minInComboStart;
+                String endsDateTimeStr = newApptEndDate + " " + endsHourComboString + "" + minInComboEnd;
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                //DateTimes that will be converted into UTC time before being entered into database
+                LocalDateTime startsDateTime = LocalDateTime.parse(startsDateTimeStr, formatter);
+                LocalDateTime endsDateTime = LocalDateTime.parse(endsDateTimeStr, formatter);
+
+                //Confirm that the appointment times do not correlate with the customer's other appointments
+                Boolean overlap = Appointments.appointmentOverlap(startsDateTime, endsDateTime, newApptCustID, newApptID);
+                if (overlap == true) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialogue");
+                    alert.setContentText("This customer has another appointment scheduled during this time!");
+                    alert.showAndWait();
+                }
+
+                if (overlap == false && exception == false) {
+                    //Zone ids
+                    ZoneId localZoneId = ZoneId.of(TimeZone.getDefault().getID());
+                    ZoneId utcZoneID = ZoneId.of(TimeZone.getTimeZone("UTC").getID());
+                    ZoneId estZoneID = ZoneId.of(TimeZone.getTimeZone("America/New_York").getID());
+
+                    //Appt times in local zoneid
+                    ZonedDateTime localStartZDT = ZonedDateTime.of(startsDateTime, localZoneId);
+                    ZonedDateTime localEndZDT = ZonedDateTime.of(endsDateTime, localZoneId);
+
+                    //Appointment times in EST!!
+                    ZonedDateTime localDateTimeStartEST = localStartZDT.withZoneSameInstant(estZoneID);
+                    ZonedDateTime localDateTimeEndEST = localEndZDT.withZoneSameInstant(estZoneID);
+                    System.out.println(localDateTimeStartEST);
+                    System.out.println(localDateTimeEndEST);
+
+                    //Business hours in est
+                    LocalDate businessOpensDate = LocalDate.now();
+                    LocalDate businessClosesDate = LocalDate.now();
+                    LocalTime businessOpensEST = LocalTime.of(8, 00);
+                    LocalTime businessClosesEST = LocalTime.of(22, 00);
+                    ZonedDateTime businessOpensESTZDT = ZonedDateTime.of(businessOpensDate, businessOpensEST, estZoneID);
+                    ZonedDateTime businessClosesESTZDT = ZonedDateTime.of(businessClosesDate, businessClosesEST, estZoneID);
+                    ZonedDateTime businessOpensUTCZDT = businessOpensESTZDT.withZoneSameInstant(utcZoneID);
+                    ZonedDateTime businessClosesUTCZDT = businessClosesESTZDT.withZoneSameInstant(utcZoneID);
+                    System.out.println(businessOpensUTCZDT);
+                    System.out.println(businessClosesUTCZDT);
+
+
+                    //Comparisons must be in localTime
+                    LocalTime opensComparison = LocalTime.of(localDateTimeStartEST.getHour(), localDateTimeStartEST.getMinute());
+                    LocalTime closesComparison = LocalTime.of(localDateTimeEndEST.getHour(), localDateTimeEndEST.getMinute());
+                    LocalTime businessOpensComparion = LocalTime.of(businessOpensESTZDT.getHour(), businessOpensESTZDT.getMinute());
+                    LocalTime businessClosesComparison = LocalTime.of(businessClosesESTZDT.getHour(), businessClosesESTZDT.getMinute());
+
+                    //Makes sure that appointments aren't scheduled on weekdays
+                    if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
+                            || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Appointments can't be scheduled on the weekend!");
+                        alert.showAndWait();
+                    }
+
+                    //Maintains correct times
+                    if ((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion))
+                            && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison))
+                            && exception == false) {
+                        System.out.println("Appointment hours are good");
+                        Connection conn = DBConnection.getConnection();
+                        String sqlUpdate = "UPDATE appointments " +
+                                "SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, " +
+                                "Contact_ID = ?, Last_Update = ?, Last_Updated_By = ?, User_ID = ? " +
+                                "WHERE Appointment_ID = ?;";
+                        try (PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
+                            ps.setString(1, newApptTitle);
+                            ps.setString(2, newApptDesc);
+                            ps.setString(3, newApptLoc);
+                            ps.setString(4, newApptType);
+                            ps.setTimestamp(5, Timestamp.valueOf(startsDateTime));
+                            ps.setTimestamp(6, Timestamp.valueOf(endsDateTime));
+                            ps.setInt(7, newApptCustID);
+                            ps.setInt(8, contactID);
+                            ps.setTimestamp(9, Timestamp.valueOf(newApptLastUpdated));
+                            ps.setString(10, newApptLastUpdatedBy);
+                            //User id is set to 1 because a real user id is not currently being used besides "test", which is
+                            //not an int
+                            ps.setInt(11, 1);
+                            ps.setInt(12, newApptID);
+
+
+                            ps.executeUpdate();
+                            System.out.println("Updated Count: " + ps.getUpdateCount());
+                            mainMenuController.returnToMain(event);
+                        } catch (SQLException e) {
+                            exceptionLabelCustIDSQL.setText("Invalid Customer ID!");
+                            System.out.println(e.getMessage());
+                            System.out.println(e.getSQLState());
+                        }
+                    } else if (opensComparison.isBefore(businessOpensComparion) && closesComparison.isAfter(businessClosesComparison)
+                            && exception == false) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
+                        alert.showAndWait();
+                    } else if (opensComparison.isBefore(businessOpensComparion) && exception == false) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Appointment is set to start before business hours!");
+                        alert.showAndWait();
+                    } else if (closesComparison.isAfter(businessClosesComparison) && exception == false) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Appointment is set to end after business hours!");
+                        alert.showAndWait();
+                    }
         /*
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -363,13 +401,13 @@ public class appointmentRecordsModifyController {
             alert.showAndWait();
         }
         */
-        }
-        catch(NullPointerException e) {
-            exceptionLabelNullInput.setText("Null input detected!");
-            System.out.println(e.getMessage());
-        }
-        catch (DateTimeParseException e) {
-            exceptionLabelNullInput.setText("Incorrect date input");
+                }
+            } catch (NullPointerException e) {
+                exceptionLabelNullInput.setText("Null input detected!");
+                System.out.println(e.getMessage());
+            } catch (DateTimeParseException e) {
+                exceptionLabelNullInput.setText("Incorrect date input");
+            }
         }
     }
 
