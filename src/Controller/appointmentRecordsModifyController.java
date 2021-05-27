@@ -19,7 +19,6 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.TimeZone;
-import java.util.function.Predicate;
 
 
 public class appointmentRecordsModifyController {
@@ -102,10 +101,10 @@ public class appointmentRecordsModifyController {
         if(appointmentToModify.getEnd().toLocalTime().getMinute() == 0) {
             endsMinuteCombo.getSelectionModel().select( Model.ComboBox.getAppointmentMinutes().get(0) );
         }
-        else if (appointmentToModify.getStart().toLocalTime().getMinute() == 15) {
+        else if (appointmentToModify.getEnd().toLocalTime().getMinute() == 15) {
             endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(1));
         }
-        else if( appointmentToModify.getStart().toLocalTime().getMinute() == 30) {
+        else if( appointmentToModify.getEnd().toLocalTime().getMinute() == 30) {
             endsMinuteCombo.getSelectionModel().select(Model.ComboBox.getAppointmentMinutes().get(2));
         }
         else {
@@ -418,10 +417,10 @@ public class appointmentRecordsModifyController {
 
     @FXML
     void initialize() {
-        startsHourCombo.setItems(Model.ComboBox.getAppointmentTimes());
+        startsHourCombo.setItems(Model.ComboBox.getAppointmentHours());
         startsMinuteCombo.setItems(Model.ComboBox.getAppointmentMinutes());
         startsAMPMCombo.setItems(Model.ComboBox.getAppointmentAMPM());
-        endsHourCombo.setItems(Model.ComboBox.getAppointmentTimes());
+        endsHourCombo.setItems(Model.ComboBox.getAppointmentHours());
         endsMinuteCombo.setItems(Model.ComboBox.getAppointmentMinutes());
         endsAMPMCombo.setItems(Model.ComboBox.getAppointmentAMPM());
 

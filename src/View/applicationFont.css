@@ -13,3 +13,16 @@
 .label {
     -fx-font-family: sans-serif
 }
+
+.text-field {
+    -fx-font-family: sans-serif
+}
+
+.combo-box {
+    -fx-font-family: sans-serif
+}
+
+.radio-button {
+ -fx-font-family: sans-serif
+}
+

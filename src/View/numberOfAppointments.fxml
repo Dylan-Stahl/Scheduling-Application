@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="300.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.numberOfAppointmentsController">
+<AnchorPane prefHeight="300.0" prefWidth="800.0" stylesheets="@applicationFont.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.numberOfAppointmentsController">
    <children>
       <HBox prefHeight="300.0" prefWidth="800.0">
          <children>

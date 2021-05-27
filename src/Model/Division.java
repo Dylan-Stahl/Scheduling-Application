@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ *Holds Division Data used for combo boxes.
+ */
 public class Division {
     private static ObservableList<Division> divisions = FXCollections.observableArrayList();
     private static ObservableList<Division> divisionsSortedByCountry = FXCollections.observableArrayList();
@@ -18,6 +21,10 @@ public class Division {
         this.divisionName = divisionName;
     }
 
+    /**
+     * Accesses the database and collects the names of the divisions and stores them in an ObservableList.
+     * @return returns an ObservableList with all the first level divisions in the database.
+     */
     public static ObservableList<Division> initializeAllDivisions() {
         divisions.clear();
 
@@ -40,6 +47,11 @@ public class Division {
         return divisions;
     }
 
+    /**
+     * Only selects divisions within a specified country as the argument.
+     * @param countryID needed to search database.
+     * @return ObservableList with first level divisions within that country.
+     */
     public static ObservableList<Division> initializeDivisionWithSetCountry(int countryID) {
         divisionsSortedByCountry.clear();
 
@@ -63,10 +75,19 @@ public class Division {
         return  divisionsSortedByCountry;
     }
 
+    /**
+     * Clears the ObservableList divisionsSortedByCountry so that the ObservableList can be used again with a differet
+     * argument.
+     */
     public static void removeDivisionsSortedByCountry() {
         divisionsSortedByCountry.clear();
     }
 
+    /**
+     * Returns division ID given a division name.
+     * @param divisionName
+     * @return
+     */
     public static int getDivisionID(String divisionName) {
         Connection conn = DBConnection.getConnection();
         try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM first_level_divisions WHERE " +
@@ -89,6 +110,10 @@ public class Division {
         return 0;
     }
 
+    /**
+     * Formats the combo box to display divisionName.
+     * @return
+     */
     @Override
     public String toString() {
         return (divisionName);

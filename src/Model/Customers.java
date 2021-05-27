@@ -8,6 +8,9 @@ import javafx.scene.control.Alert;
 
 import java.sql.*;
 
+/**
+ * Holds customer data that is extracted from the database.
+ */
 public class Customers {
     private static ObservableList<Customers> allCustomers = FXCollections.observableArrayList();
 
@@ -26,7 +29,23 @@ public class Customers {
     private Country countryObj;
     private Division divisionObj;
 
-
+    /**
+     * Creates a customer object with data obtained from the initializeCustomers() method.
+     * @param customer_ID
+     * @param customer_Name
+     * @param address
+     * @param postal_Code
+     * @param phone
+     * @param create_Date
+     * @param created_By
+     * @param last_Update
+     * @param last_Updated_By
+     * @param division_ID
+     * @param division_IDStr
+     * @param country
+     * @param countryObj
+     * @param divisionObj
+     */
     public Customers(int customer_ID, String customer_Name, String address, String postal_Code, String phone,
                      Date create_Date, String created_By, Timestamp last_Update, String last_Updated_By,
                      int division_ID, String division_IDStr, String country, Country countryObj, Division divisionObj){
@@ -49,10 +68,12 @@ public class Customers {
     }
 
 
-
-    public static ObservableList<Customers> initializeCustomers() throws SQLException {
+    /**
+     * Returns an ObservableList with all the customers from the database stored as Customers objects.
+     * @return ObservableList
+     */
+    public static ObservableList<Customers> initializeCustomers() {
         allCustomers.clear();
-
 
         Connection conn = DBConnection.getConnection();
         try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM customers;")) {
@@ -93,10 +114,18 @@ public class Customers {
         return allCustomers;
     }
 
+    /**
+     * Returns the allCustomers observableList.
+     * @return
+     */
     public static ObservableList<Customers> getAllCustomers() {
         return allCustomers;
     }
 
+    /**
+     * Performs SQL operation on the MySQL database to delete a selected customer.
+     * @param customerToDelete selected in the tableview and used as argument.
+     */
     public static void deleteCustomer(Customers customerToDelete) {
         try{
             int customerToDeleteSQL = customerToDelete.getCustomer_ID();
@@ -119,6 +148,7 @@ public class Customers {
 
     }
 
+    //Setters and getters
     public Model.Country getCountryObj() {
         return countryObj;
     }

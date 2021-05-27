@@ -32,8 +32,11 @@ public class Main extends Application {
         //Connect to database
         DBConnection.startConnection();
 
+
+
         //Lauch javaFX application
         launch(args);
+
 
         //executed when all windows are closed in application
         DBConnection.closeConnection();

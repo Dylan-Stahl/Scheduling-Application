@@ -10,6 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * The contact class stores data regarding to contact's name and ID as well as their schedules
+ */
 public class Contacts {
     private static ObservableList<Contacts> contacts = FXCollections.observableArrayList();
     private static ObservableList<Contacts> contactSchedule = FXCollections.observableArrayList();
@@ -27,11 +30,26 @@ public class Contacts {
     private LocalDateTime appointmentEnd;
     private int customerID;
 
+    /**
+     * Constructor used in the initializeContacts() method. Used to display contacts in combo boxes.
+     * @param contactName
+     * @param contactID
+     */
     public Contacts(String contactName, int contactID) {
         this.contactID = contactID;
         this.contactName = contactName;
     }
 
+    /**
+     * Constructor used to create contact schedules, in the initializeContactSchedule() method.
+     * @param appointmentID Contact schedule table view has Appointment ID as a column.
+     * @param appointmentTitle Contact schedule table view has Title as a column.
+     * @param appointmentType Contact schedule table view has Type ID as a column.
+     * @param appointmentDescription Contact schedule table view has Description as a column.
+     * @param appointmentStart Contact schedule table view has Start as a column.
+     * @param appointmentEnd Contact schedule table view has End as a column.
+     * @param customerID Contact schedule table view has Customer ID as a column.
+     */
     public Contacts(int appointmentID, String appointmentTitle, String appointmentType, String appointmentDescription,
                     LocalDateTime appointmentStart, LocalDateTime appointmentEnd, int customerID) {
         this.appointmentID = appointmentID;
@@ -43,6 +61,11 @@ public class Contacts {
         this.customerID = customerID;
     }
 
+    /**
+     * Sets the ObservableList contactSchedule needed to initialize the Contact Schedule Table
+     * @param contactID based on the contact ID, the appointments are filtered in the SQL database.
+     * @return returns the contactSchedule ObservableList to set the Contact Schedule table view.
+     */
     public static ObservableList<Contacts> initializeContactSchedule(int contactID) {
         contactSchedule.clear();
 
@@ -71,7 +94,10 @@ public class Contacts {
         return contactSchedule;
     }
 
-
+    /**
+     * Sets the objects in the contact combo boxes located in the Appointment Add and Modify views.
+     * @return returns the ObservableList with the contacts.
+     */
     public static ObservableList<Contacts> initializeContacts() {
         contacts.clear();
 
@@ -95,6 +121,11 @@ public class Contacts {
         return contacts;
     }
 
+    /**
+     * Returns contact id.
+     * @param contact takes in Contact object.
+     * @return outputs contactID.
+     */
     public static int returnContactID(Contacts contact) {
         return contact.contactID;
     }
@@ -108,12 +139,16 @@ public class Contacts {
         return null;
     }
 
+    /**
+     * Overrides the toString() method so that the combo boxes display the contact names.
+     * @return
+     */
     @Override
     public String toString() {
         return (contactName);
     }
 
-
+//Getters and setters
     public int getAppointmentID() {
         return appointmentID;
     }

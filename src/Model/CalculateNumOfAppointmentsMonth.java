@@ -10,16 +10,29 @@ import java.sql.ResultSet;
 import java.time.LocalDateTime;
 import java.time.Month;
 
+/**
+ * The CalculateNumOfAppointmentsMonth class is used to store objects in the monthAndNum ObservableList. The
+ * monthAndNum ObservableList is used in the monthAndNum table view.
+ */
 public class CalculateNumOfAppointmentsMonth {
     private static ObservableList<CalculateNumOfAppointmentsMonth> monthAndNum = FXCollections.observableArrayList();
     private Month month;
     private int numPerMonth;
 
+    /**
+     * Constructor
+     * @param month
+     * @param numPerMonth number of appointments in that month.
+     */
     public CalculateNumOfAppointmentsMonth(Month month, int numPerMonth) {
         this.month = month;
         this.numPerMonth = numPerMonth;
     }
 
+    /**
+     * Initializes the Number of Appointments (Month) table in the Number of Appointments menu in the main menu.
+     * @return returns the ObservableList with the CalculateNumOfAppointmentsMonth objects to be displayed.
+     */
     public static ObservableList<CalculateNumOfAppointmentsMonth> initializeMonthAndNum() {
         monthAndNum.clear();
         Connection conn = DBConnection.getConnection();
@@ -45,6 +58,7 @@ public class CalculateNumOfAppointmentsMonth {
                 CalculateNumOfAppointmentsMonth newMonth = new CalculateNumOfAppointmentsMonth(apptMonth, 1);
                 monthAndNum.add(newMonth);
             }
+            rs.close();
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
@@ -52,7 +66,7 @@ public class CalculateNumOfAppointmentsMonth {
         return monthAndNum;
     }
 
-    //Month setters and getters
+    //Setters and getters
     public Month getMonth() {
         return month;
     }

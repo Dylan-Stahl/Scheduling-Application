@@ -16,9 +16,7 @@ import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
 import java.util.TimeZone;
-
 
 public class appointmentRecordsAddController {
 
@@ -338,10 +336,10 @@ public class appointmentRecordsAddController {
 
     @FXML
     void initialize() {
-        startsHourCombo.setItems(ComboBox.getAppointmentTimes());
+        startsHourCombo.setItems(ComboBox.getAppointmentHours());
         startsMinuteCombo.setItems(ComboBox.getAppointmentMinutes());
         startsAMPMCombo.setItems(ComboBox.getAppointmentAMPM());
-        endsHourCombo.setItems(ComboBox.getAppointmentTimes());
+        endsHourCombo.setItems(ComboBox.getAppointmentHours());
         endsMinuteCombo.setItems(ComboBox.getAppointmentMinutes());
         endsAMPMCombo.setItems(ComboBox.getAppointmentAMPM());
         contactCombo.setItems(Contacts.initializeContacts());

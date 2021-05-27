@@ -10,15 +10,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * The country class stores country names and has methods that find data regarding countries in the database.
+ */
 public class Country {
     private static ObservableList<Country> countries = FXCollections.observableArrayList();
     private String countryName;
 
+    /**
+     * Country constructor
+     * @param countryName saves the country name in the country object
+     */
     public Country(String countryName) {
         this.countryName = countryName;
     }
 
-    //FIXME add to division
+    /**
+     * Method returns division name based on the division id
+     * @param division_ID used in the SQL statement.
+     * @return returns division name.
+     */
     public static String returnDivision(int division_ID) {
         String Division_IDStr;
 
@@ -43,6 +54,11 @@ public class Country {
         return divisionResultsString.get(0);
     }
 
+    /**
+     * Method finds country id based on a division id.
+     * @param division_ID
+     * @return countryID is returned
+     */
     public static int returnCountryID(int division_ID) {
         ArrayList<Integer> countryResultsID = new ArrayList();
 
@@ -61,9 +77,16 @@ public class Country {
             System.out.println(e.getMessage());
             System.out.println(e.getSQLState());
         }
+        //Selects element 0 in the array list because only one first level division will be in the SQL result.
         return  countryResultsID.get(0);
     }
 
+    /**
+     * Method finds country ID based on the countryName. The method searches the databases table countries and the
+     * column Country_ID. It then returns the Country_ID from the result.
+     * @param countryName
+     * @return countryID is returned.
+     */
     public static int returnCountryID(String countryName) {
         ArrayList<Integer> countryResultsID = new ArrayList<>();
 
@@ -84,9 +107,15 @@ public class Country {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        //Selects element 0 in the array list because only one Country ID will be in the SQL result.
         return  countryResultsID.get(0);
     }
 
+    /**
+     * Returns country name based on a country ID.
+     * @param country_ID
+     * @return
+     */
     public static String returnCountryString(int country_ID) {
         ArrayList<String> countryStr = new ArrayList<>();
 
@@ -111,6 +140,11 @@ public class Country {
         return countryStr.get(0);
     }
 
+    /**
+     * Used by the customer add and modify menu combo boxes to set the items within them. The method returns an
+     * ObservableList with Country objects that contain the countries names.
+     * @return
+     */
     public static ObservableList<Country> initializeAllCountries() {
         countries.clear();
 
@@ -133,9 +167,12 @@ public class Country {
         return countries;
     }
 
+    /**
+     * Used to format the combo box for country selection.
+     * @return Combo boxes will display the countryName.
+     */
     @Override
     public String toString() {
         return (countryName);
     }
-
 }
