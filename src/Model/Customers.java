@@ -140,12 +140,33 @@ public class Customers {
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Dialogue");
-            alert.setContentText("Customers associated with appointments can not be deleted!");
-            alert.showAndWait();
         }
 
+    }
+    //Create boolean function that lets user know if there are appointments associated with customer
+
+    public static boolean customerAssociatedWithAppt(Customers customer) {
+        Connection conn = DBConnection.getConnection();
+        try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments WHERE Customer_ID = ?")) {
+            ps.setInt(1, customer.getCustomer_ID());
+
+            ResultSet rs = ps.executeQuery();
+            int counter = 0;
+            while(rs.next()) {
+                counter += 1;
+            }
+            if(counter > 0) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
     //Setters and getters

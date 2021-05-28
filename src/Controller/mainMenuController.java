@@ -161,14 +161,21 @@ public class mainMenuController {
                     //The deleteCustomer method will check to see if that customer has any appointments associated with
                     //it. If the customer has appointments than a warning will tell the user that they can't delete that
                     //customer.
-                    Customers.deleteCustomer(customerToDelete);
-
-                    //If the customer didn't have any appointments associated with it, than a warning will tell the user
-                    //that a customer was deleted.
-                    Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
-                    customerDeleted.setTitle("Customer Deleted!");
-                    customerDeleted.setContentText("The selected customer has been deleted!");
-                    customerDeleted.showAndWait();
+                    if(Customers.customerAssociatedWithAppt(customerToDelete) == false) {
+                        Customers.deleteCustomer(customerToDelete);
+                        //If the customer didn't have any appointments associated with it, than a warning will tell the user
+                        //that a customer was deleted.
+                        Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
+                        customerDeleted.setTitle("Customer Deleted!");
+                        customerDeleted.setContentText("The selected customer has been deleted!");
+                        customerDeleted.showAndWait();
+                    }
+                    else {
+                        Alert alert1 = new Alert(Alert.AlertType.ERROR);
+                        alert1.setTitle("Error Dialogue");
+                        alert1.setContentText("Customers associated with appointments can not be deleted!");
+                        alert1.showAndWait();
+                    }
                 }
             }
         }catch(NullPointerException e) {

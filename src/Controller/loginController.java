@@ -101,6 +101,9 @@ public class loginController {
         //Locale.setDefault(france);
 
         try {
+            //If the locale language is not french, the location label will display the correct information in English.
+            locationZoneID.setText("Location: " + ZoneId.systemDefault());
+
             ResourceBundle rb = ResourceBundle.getBundle("ResourceBundle/Nat" , Locale.getDefault());
             if(Locale.getDefault().getLanguage().equals("fr")) {
                 userIDLocale.setText(rb.getString("Username"));
@@ -109,7 +112,7 @@ public class loginController {
 
                 //If the locale is french, then location will always be translated to french
                 locationZoneID.setText(rb.getString("Location") + ZoneId.systemDefault());
-
+                System.out.println(ZoneId.systemDefault());
                 //This attempts to translate the zone id to french if is it located in the Nat_fr.properties
                 //If the zone id is not located in that file, than the zone id will be in english and the word location
                 //will still be in french because of the statement above.
