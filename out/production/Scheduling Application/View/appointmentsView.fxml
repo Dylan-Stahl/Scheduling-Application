@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@applicationFont.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.appointmentViewController">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" stylesheets="@applicationFont.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.appointmentViewController">
    <children>
-      <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="800.0">
+      <VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="900.0">
          <children>
             <Label prefHeight="30.0" text="Appointments">
                <font>
@@ -25,12 +25,12 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </Label>
-            <Pane prefHeight="450.0" prefWidth="700.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
+            <Pane prefHeight="450.0" prefWidth="800.0" style="-fx-border-radius: 10; -fx-border-color: black; -fx-border-width: 1.5;">
                <VBox.margin>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                </VBox.margin>
                <children>
-                  <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="750.0">
+                  <VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="850.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                            <children>
@@ -39,29 +39,29 @@
                                     <ToggleGroup fx:id="appointmentsViewToggle" />
                                  </toggleGroup>
                               </RadioButton>
-                              <RadioButton fx:id="apptsWeeklyRBtn" mnemonicParsing="false" onAction="#onActionDisplayWeeklyAppts" text="Appointments within the next week" toggleGroup="$appointmentsViewToggle">
+                              <RadioButton fx:id="apptsWeeklyRBtn" mnemonicParsing="false" onAction="#onActionDisplayWeeklyAppts" text="Within the next week" toggleGroup="$appointmentsViewToggle">
                                  <HBox.margin>
                                     <Insets left="20.0" right="20.0" />
                                  </HBox.margin>
                               </RadioButton>
-                              <RadioButton fx:id="apptsMonthlyRBtn" mnemonicParsing="false" onAction="#onActionDisplayMonthlyAppts" text="Appointments within the next month" toggleGroup="$appointmentsViewToggle">
+                              <RadioButton fx:id="apptsMonthlyRBtn" mnemonicParsing="false" onAction="#onActionDisplayMonthlyAppts" text="Within the next month" toggleGroup="$appointmentsViewToggle">
                                  <HBox.margin>
                                     <Insets right="20.0" />
                                  </HBox.margin></RadioButton>
                               <RadioButton mnemonicParsing="false" onAction="#onActionDisplayPastAppointments" text="Past Appointments" toggleGroup="$appointmentsViewToggle" />
                            </children>
                         </HBox>
-                        <TableView fx:id="apptTableView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="375.0" prefWidth="730.0">
+                        <TableView fx:id="apptTableView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="375.0" prefWidth="830.0">
                           <columns>
                             <TableColumn fx:id="apptIDCol" prefWidth="30.0" text="ID" />
                             <TableColumn fx:id="apptTitleCol" prefWidth="105.0" text="Title" />
-                              <TableColumn fx:id="apptDescCol" prefWidth="75.0" text="Description" />
-                              <TableColumn fx:id="apptLocCol" prefWidth="109.5" text="Location" />
+                              <TableColumn fx:id="apptDescCol" prefWidth="100.61262512207031" text="Description" />
+                              <TableColumn fx:id="apptLocCol" prefWidth="83.88735961914062" text="Location" />
                               <TableColumn fx:id="apptContactCol" prefWidth="61.0" text="Contact" />
-                              <TableColumn fx:id="apptTypeCol" prefWidth="50.0" text="Type" />
-                              <TableColumn fx:id="apptStartsCol" prefWidth="110.0" text="Starts" />
-                              <TableColumn fx:id="apptEndsCol" prefWidth="110.0" text="Ends" />
-                              <TableColumn fx:id="apptCustIDCol" prefWidth="78.5" text="Customer ID" />
+                              <TableColumn fx:id="apptTypeCol" prefWidth="100.0" text="Type" />
+                              <TableColumn fx:id="apptStartsCol" prefWidth="120.0" text="Starts" />
+                              <TableColumn fx:id="apptEndsCol" prefWidth="120.0" text="Ends" />
+                              <TableColumn fx:id="apptCustIDCol" prefWidth="108.0" text="Customer ID" />
                           </columns>
                            <VBox.margin>
                               <Insets left="10.0" right="10.0" />

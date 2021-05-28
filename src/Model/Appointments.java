@@ -127,7 +127,7 @@ public class Appointments {
      * the ObservableList with all the appointments in the database.
      * @return returns the ObservableList with the appointments in the database.
      */
-    public static ObservableList<Appointments> initalizeAppts() {
+    public static ObservableList<Appointments> initializeAppts() {
         //Every time the method is called, the ObservableList is recreated to show accurate data.
         //Without clearing the ObservableList, the data in the ObservableList would have incorrect results.
         allAppts.clear();

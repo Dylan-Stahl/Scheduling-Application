@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.time.Month;
 
 public class numberOfAppointmentsController {
+    //Used to set a new stage.
     Stage stage;
     Parent scene;
 
@@ -40,11 +41,22 @@ public class numberOfAppointmentsController {
     @FXML
     private Label setTotalNumberOfAppointments1;
 
+    /**
+     * Opens the main menu.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
+    /**
+     * Opens the appointmentsView view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionViewAppointmentFiltering(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -53,6 +65,11 @@ public class numberOfAppointmentsController {
         stage.show();
     }
 
+    /**
+     * Loads the tables with the data from the database and also sets the text in two labels to tell the user how
+     * many appointments there are.
+     * @throws SQLException
+     */
     @FXML
     void initialize() throws SQLException {
         numberOfApptsTableView.setItems(CalculateNumOfAppointmentsType.initializeTypeAndNum());
@@ -63,8 +80,8 @@ public class numberOfAppointmentsController {
         appointmentMonthCol.setCellValueFactory(new PropertyValueFactory<>("month"));
         numberOfApptMonthCol.setCellValueFactory(new PropertyValueFactory<>("numPerMonth"));
 
-        setTotalNumberOfAppointments.setText(String.valueOf(Appointments.initalizeAppts().size()));
-        setTotalNumberOfAppointments1.setText(String.valueOf(Appointments.initalizeAppts().size()));
+        setTotalNumberOfAppointments.setText(String.valueOf(Appointments.initializeAppts().size()));
+        setTotalNumberOfAppointments1.setText(String.valueOf(Appointments.initializeAppts().size()));
     }
 
 }

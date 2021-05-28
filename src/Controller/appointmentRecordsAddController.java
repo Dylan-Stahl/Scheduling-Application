@@ -18,8 +18,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.TimeZone;
 
+/**
+ * Controller for the appointmentRecordsAdd view
+ */
 public class appointmentRecordsAddController {
-
+    //Used to set a new scene.
     Stage stage;
     Parent scene;
 
@@ -68,11 +71,23 @@ public class appointmentRecordsAddController {
     @FXML
     private javafx.scene.control.ComboBox endsAMPMCombo;
 
+    /**
+     * Returns the user to the main menu.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
+    /**
+     * Saves inputted data as an appointment in the database. Uses labels and alerts to let the user know if incorrect
+     * input is detected.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionSaveAppt(ActionEvent event) throws IOException {
         //Set exception labels as empty when add appointment is clicked
@@ -98,6 +113,8 @@ public class appointmentRecordsAddController {
         // Following ids are initialized to 0, however 0 will never be added into the database.
         int newApptCustID = 0;
         int contactID = 0;
+
+        // Exception = false, means there is nothing wrong with the input.
         boolean exception = false;
 
         if(addCustomerIDField.getText().equals("")) {
@@ -140,24 +157,30 @@ public class appointmentRecordsAddController {
         }
 
         //Values will be passed into sql statement for date time.
+        //Only continues if there are no exceptions up until this point.
         if(exception == false) {
             try {
+                //Collects data from the start time hour combo box.
                 int startHourCombo;
                 String startHourString;
                 String minInComboStart = startsMinuteCombo.getValue().toString();
 
+                //Collects data from the end time hour combo box.
                 int endHourCombo;
                 String endsHourComboString;
                 String minInComboEnd = endsMinuteCombo.getValue().toString();
 
+                //Following if, else if branches gathers values from the start time combo boxes.
                 if (startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && !(startsHourCombo.getValue().toString().equals("12"))) {
                     startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString()) + 12;
                     startHourString = String.valueOf(startHourCombo);
                 }
+                //Does not add 12 to 12 pm because 12 pm is not 24:00 but rather just 12 pm.
                 else if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && startsHourCombo.getValue().toString().equals("12")) {
                     startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString());
                     startHourString = String.valueOf(startHourCombo);
                 }
+                //Does not allow user to enter 12 am into database.
                 else if(startsAMPMCombo.getSelectionModel().getSelectedItem() == "AM" && startsHourCombo.getValue().toString().equals("12")) {
                     startHourCombo = Integer.parseInt(startsHourCombo.getValue().toString() + 12);
                     startHourString = String.valueOf(startHourCombo);
@@ -177,6 +200,7 @@ public class appointmentRecordsAddController {
                     }
                 }
 
+                //Following if, else if branches gathers values from the end time combo boxes.
                 if (endsAMPMCombo.getSelectionModel().getSelectedItem() == "PM" && !(endsHourCombo.getValue().toString().equals("12"))) {
                     endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString()) + 12;
                     endsHourComboString = String.valueOf(endHourCombo);
@@ -186,6 +210,7 @@ public class appointmentRecordsAddController {
                     endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString());
                     endsHourComboString = String.valueOf(endHourCombo);
                 }
+                //Does not allow user to enter 12 am into database.
                 else if(endsAMPMCombo.getSelectionModel().getSelectedItem() == "AM" && endsHourCombo.getValue().toString().equals("12")) {
                     endHourCombo = Integer.parseInt(endsHourCombo.getValue().toString() + 12);
                     endsHourComboString = String.valueOf(endHourCombo);
@@ -212,7 +237,7 @@ public class appointmentRecordsAddController {
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-                //DateTimes that will be converted into UTC time before being entered into database
+                //Convert strings into LocalDateTime variables
                 LocalDateTime startsDateTime = LocalDateTime.parse(startsDateTimeStr, formatter);
                 LocalDateTime endsDateTime = LocalDateTime.parse(endsDateTimeStr, formatter);
 
@@ -251,9 +276,6 @@ public class appointmentRecordsAddController {
                     ZonedDateTime businessClosesESTZDT = ZonedDateTime.of(businessClosesDate, businessClosesEST, estZoneID);
                     ZonedDateTime businessOpensUTCZDT = businessOpensESTZDT.withZoneSameInstant(utcZoneID);
                     ZonedDateTime businessClosesUTCZDT = businessClosesESTZDT.withZoneSameInstant(utcZoneID);
-                    System.out.println(businessOpensUTCZDT);
-                    System.out.println(businessClosesUTCZDT);
-
 
                     //Comparisons must be in localTime
                     LocalTime opensComparison = LocalTime.of(localDateTimeStartEST.getHour(), localDateTimeStartEST.getMinute());
@@ -261,15 +283,11 @@ public class appointmentRecordsAddController {
                     LocalTime businessOpensComparion = LocalTime.of(businessOpensESTZDT.getHour(), businessOpensESTZDT.getMinute());
                     LocalTime businessClosesComparison = LocalTime.of(businessClosesESTZDT.getHour(), businessClosesESTZDT.getMinute());
 
-        /*
-        long timeDifMin = ChronoUnit.MINUTES.between(businessOpensComparion, opensComparison);
-        System.out.println(timeDifMin);
-
-        long interval = timeDifMin;
-*/
                     //Makes sure that appointments aren't scheduled on weekdays
-                    if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
-                            || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                    if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY
+                            || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
+                            || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY
+                            || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointments can't be scheduled on the weekend!");
@@ -277,12 +295,14 @@ public class appointmentRecordsAddController {
                     }
 
                     //Maintains correct times
-                    if ((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion))
-                            && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison))
-                            && exception == false) {
+                    if ((opensComparison.isAfter(businessOpensComparion) ||
+                            opensComparison.equals(businessOpensComparion))
+                            && (closesComparison.isBefore(businessClosesComparison) ||
+                            closesComparison.equals(businessClosesComparison)) && exception == false) {
                         Connection conn = DBConnection.getConnection();
                         String sqlInsert = "INSERT INTO appointments(Title,Description,Location,Type," +
-                                "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By, User_ID) VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
+                                "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By, User_ID) " +
+                                "VALUES (?, ?, ?, ?, ?, ?, ? , ?, ?, ?, ?)";
                         try (PreparedStatement ps = conn.prepareStatement(sqlInsert)) {
                             ps.setString(1, newApptTitle);
                             ps.setString(2, newApptDesc);
@@ -305,6 +325,7 @@ public class appointmentRecordsAddController {
                             System.out.println(e.getMessage());
                             System.out.println(e.getSQLState());
                         }
+                        //The last three else if statements show alerts if times entered are not during business hours.
                     } else if (opensComparison.isBefore(businessOpensComparion) && closesComparison.isAfter(businessClosesComparison)
                             && exception == false) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -334,6 +355,9 @@ public class appointmentRecordsAddController {
         }
     }
 
+    /**
+     * Initializes the combo boxes in the view and also sets how the DatePicker will write the selected date.
+     */
     @FXML
     void initialize() {
         startsHourCombo.setItems(ComboBox.getAppointmentHours());
@@ -344,6 +368,7 @@ public class appointmentRecordsAddController {
         endsAMPMCombo.setItems(ComboBox.getAppointmentAMPM());
         contactCombo.setItems(Contacts.initializeContacts());
 
+        //How the date needs to be formatted to enter the database
         String pattern = "yyyy-MM-dd";
         addApptStartsDatepicker.setPromptText(pattern.toLowerCase());
 

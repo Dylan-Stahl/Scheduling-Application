@@ -14,14 +14,15 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
+/**
+ * Controller for the mainMenu view.
+ */
 public class mainMenuController {
+    //Used to set new scene.
     Stage stage;
     Parent scene;
 
@@ -73,6 +74,10 @@ public class mainMenuController {
     @FXML
     private TableColumn<Appointments, Integer> apptWithin15Col;
 
+    /**
+     * Safely exits application.
+     * @param event
+     */
     @FXML
     void onActionExit(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to exit?");
@@ -85,15 +90,15 @@ public class mainMenuController {
         }
     }
 
-
+    /**
+     * Used by other controllers to return the user to the main menu.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     public static void returnToMain(ActionEvent event) throws IOException, SQLException {
         Stage stage;
         Parent scene;
-        //Everytime the main menu is loaded, i want to check if an appointment is within 15 minutes of the local date time
-        //To do this, i will use the predicate interface
-        //Predicate will rely on another function to determine if an appointment is within 15 minutes, if it is
-        //it will return true, if it does return true, further functions will be needed to display that appointment
-
 
 
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -102,7 +107,11 @@ public class mainMenuController {
         stage.show();
     }
 
-
+    /**
+     * Opens the customerRecordsAdd view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -111,6 +120,11 @@ public class mainMenuController {
         stage.show();
     }
 
+    /**
+     * Opens the appointmentRecordsAdd view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionAddAppt(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -119,6 +133,12 @@ public class mainMenuController {
         stage.show();
     }
 
+    /**
+     * When the user selects the delete button under the customers table view this method will either tell the user
+     * to select a customer or that there are no customers in the table. If a customer is selected, the method
+     * will perform a SQL operation on the database to delete that customer.
+     * @param event
+     */
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
 
@@ -133,18 +153,24 @@ public class mainMenuController {
                 Customers customerToDelete = customerTableView.getSelectionModel().getSelectedItem();;
                 //Tells user they are unable to delete a product with a part associated to that product.
 
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete the customer selected?");
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete the " +
+                        "customer selected?");
                 alert.setTitle("Deleting Customer!");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
+                    //The deleteCustomer method will check to see if that customer has any appointments associated with
+                    //it. If the customer has appointments than a warning will tell the user that they can't delete that
+                    //customer.
                     Customers.deleteCustomer(customerToDelete);
+
+                    //If the customer didn't have any appointments associated with it, than a warning will tell the user
+                    //that a customer was deleted.
                     Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
                     customerDeleted.setTitle("Customer Deleted!");
                     customerDeleted.setContentText("The selected customer has been deleted!");
                     customerDeleted.showAndWait();
                 }
             }
-
         }catch(NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialogue");
@@ -153,7 +179,12 @@ public class mainMenuController {
         }
     }
 
-
+    /**
+     * When the user selects the delete button under the appointments table view this method will either tell the user
+     * to select an appointment or that there are no appointments in the table. If an appointment is selected, the
+     * method will perform a SQL operation on the database to delete that appointment.
+     * @param event
+     */
     @FXML
     void onActionDeleteAppt(ActionEvent event) {
         try {
@@ -166,12 +197,14 @@ public class mainMenuController {
             else {
                 Appointments apptToDelete = apptTableView.getSelectionModel().getSelectedItem();;
 
-
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to delete the appointment selected?");
                 alert.setTitle("Deleting Appointment!");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
                     Appointments.delecteAppt(apptToDelete);
+
+                    //After the appointment was deleted, a warning will be displayed to the user letting them know
+                    //details about the appointment deleted.
                     Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
                     customerDeleted.setTitle("Appointment Deleted!");
                     customerDeleted.setContentText("Appointment with ID: \"" + apptToDelete.getAppointment_ID() + "\" " +
@@ -179,7 +212,6 @@ public class mainMenuController {
                     customerDeleted.showAndWait();
                 }
             }
-
         }catch(NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialogue");
@@ -189,7 +221,11 @@ public class mainMenuController {
     }
 
 
-
+    /**
+     * Opens the contactSchedules view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionViewContactSchedules(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -198,9 +234,16 @@ public class mainMenuController {
         stage.show();
     }
 
+    /**
+     * Opens the appointmentRecordsModify view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws IOException {
         appointmentToModify = apptTableView.getSelectionModel().getSelectedItem();
+
+        //The stage will be opened with data about the appointment shown using the sendAppt() method.
         if(appointmentToModify != null) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/View/appointmentRecordsModify.fxml"));
@@ -213,6 +256,7 @@ public class mainMenuController {
             stage.setScene(new Scene(scene));
             stage.show();
         }
+        //No appointment was selected.
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialogue");
@@ -221,9 +265,16 @@ public class mainMenuController {
         }
     }
 
+    /**
+     * Opens the customerRecordsModify view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionModifyCustomer(ActionEvent event) throws IOException {
         customerToModify = customerTableView.getSelectionModel().getSelectedItem();
+
+        //The stage will be opened with data about the customer shown using the sendCustomer() method.
         if(customerToModify != null) {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/View/customerRecordsModify.fxml"));
@@ -235,8 +286,8 @@ public class mainMenuController {
             Parent scene = loader.getRoot();
             stage.setScene(new Scene(scene));
             stage.show();
-
         }
+        //No customer was selected
         else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialogue");
@@ -245,6 +296,11 @@ public class mainMenuController {
         }
     }
 
+    /**
+     * Opens the appointmentsView view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionReportNumberOfAppts(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -253,6 +309,11 @@ public class mainMenuController {
         stage.show();
     }
 
+    /**
+     * Opens the numberOfAppointments view.
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void onActionViewNumOfAppts(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -261,7 +322,12 @@ public class mainMenuController {
         stage.show();
     }
 
-
+    /**
+     * Initializes the tableviews in the main menu. The BooleanSupplier lambda expression will determine if an
+     * appointment is within fifteen minutes. If the appointment is within 15 minutes, the if statement contents will
+     * execute and show the appointments within 15 minutes in the table.
+     * @throws SQLException
+     */
     @FXML
     void initialize() throws SQLException {
         customerTableView.setItems(Customers.initializeCustomers());
@@ -274,7 +340,7 @@ public class mainMenuController {
         customerFLDCol.setCellValueFactory(new PropertyValueFactory<>("Division_IDStr"));
 
 
-        apptTableView.setItems(Appointments.initalizeAppts());
+        apptTableView.setItems(Appointments.initializeAppts());
 
         apptIDCol.setCellValueFactory(new PropertyValueFactory<>("Appointment_ID"));
         apptTitleCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -286,11 +352,14 @@ public class mainMenuController {
         apptEndsCol.setCellValueFactory(new PropertyValueFactory<>("End"));
         apptCustIDCol.setCellValueFactory(new PropertyValueFactory<>("Customer_ID"));
 
+        //Everytime the main menu is loaded, i want to check if an appointment is within 15 minutes of the local date
+        //time. To do this, I used the BooleanSupplier interface.
+        //BooleanSupplier will rely on another function to determine if an appointment is within 15 minutes, if it is
+        //it will return true, if it does return true, initializeApptAlertTable() will show the correct appointments.
         BooleanSupplier apptWithinFifteen = () -> Appointments.appointmentWithinFifteenMin();
         if(apptWithinFifteen.getAsBoolean() == true) {
             apptWithin15TableView.setItems(Appointments.initializeApptAlertTable());
             apptWithin15Col.setCellValueFactory(new PropertyValueFactory<>("appointmentIDForAlert"));
         }
-
     }
 }

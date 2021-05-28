@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class customerRecordsModifyController {
-
+    //Used to set a new scene.
     Stage stage;
     Parent scene;
 
@@ -52,6 +52,12 @@ public class customerRecordsModifyController {
     @FXML
     private Label exceptionLabelFLD;
 
+    /**
+     * When a customer is selected in the main menu controller and modify is clicked, that user is used as an argument
+     * in this method. This method takes all the data of that customer and fills in the fields to show what is currently
+     * saved in the database.
+     * @param customerToModify selected in the main menu.
+     */
     public void sendCustomer(Customers customerToModify) {
         //Sets fields for the selected customer
         addCustomerIDField.setText(String.valueOf(customerToModify.getCustomer_ID()));
@@ -76,14 +82,18 @@ public class customerRecordsModifyController {
         catch (NullPointerException e) {}
     }
 
+    /**
+     * When a country is selected, only first level divisions in that country will be displays in the State/province
+     * combo box.
+     * @param event
+     */
     @FXML
     void onActionSortFirstLevelDivision(ActionEvent event) {
         Division.removeDivisionsSortedByCountry();
         //if a different country is selected when modifying a customer, it sets the division combo box as null,
         //that way a user cant, for example, set the customer to be in the UK for country and Alabama for first level
-        //division
+        //division.
         addCustomerDivCombo.valueProperty().set(null);
-
         try {
             String newCustomerCountry = addCustomerCountryCombo.getValue().toString();
             int newCustomerCountryID = Country.returnCountryID(newCustomerCountry);
@@ -94,8 +104,17 @@ public class customerRecordsModifyController {
         catch (NullPointerException e) {}
     }
 
+    /**
+     * When the modify button is clicked, this method will attempt to update the customer in the database. If incorrect
+     * or null data is input, then the appropriate error message will display.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException, SQLException{
+        //Resets the exception labels each time a user trys to add a customer to ensure accurate error messages
+        //are displayed.
         exceptionLabelName.setText("");
         exceptionLabelAddress.setText("");
         exceptionLabelPostal.setText("");
@@ -109,6 +128,7 @@ public class customerRecordsModifyController {
         String newCustomerAddress = addCustomerAddressField.getText();
         String newCustomerPostal = addPostalCodeField.getText();
         String newCustomerPhone = addCustomerPhoneField.getText();
+
         //Initialize, assign value if selected item in combo is not null
         String newCustomerDivision = null;
         String newCustomerCountry = null;
@@ -143,14 +163,13 @@ public class customerRecordsModifyController {
             newCustomerCountry = addCustomerCountryCombo.getValue().toString();
         }
 
+        //Only continues with SQL statement if there are no exceptions up until this point.
         if(exception == false) {
-
             //call division, search table with division name, and get id
             int divisionID = Division.getDivisionID(newCustomerDivision);
 
-            //Determine user updating data
+            //Save user updating data for insertion into database
             String user = DBConnection.returnUsername();
-
 
             //Perform update
             Connection conn = DBConnection.getConnection();
@@ -167,7 +186,7 @@ public class customerRecordsModifyController {
                 ps.setInt(8, newCustomerID);
 
                 ps.executeUpdate();
-                System.out.println("Updated Count: " + ps.getUpdateCount());
+                //After a customer is modified in the database, the user is sent back to the main menu.
                 mainMenuController.returnToMain(event);
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
@@ -176,6 +195,12 @@ public class customerRecordsModifyController {
         }
     }
 
+    /**
+     * Returns user to main menu.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         Division.removeDivisionsSortedByCountry();

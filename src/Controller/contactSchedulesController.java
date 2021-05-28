@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+/**
+ * Controller for contactSchedule view.
+ */
 public class contactSchedulesController {
 
     @FXML
@@ -33,15 +36,27 @@ public class contactSchedulesController {
     @FXML
     private TableColumn<Contacts, String> apptCustIDCol;
 
+    /**
+     * Uses mainMenuControlller's method returnToMain to return the user to the main menu when the Main Menu button
+     * is clicked.
+     * @param event
+     * @throws SQLException
+     * @throws IOException
+     */
     @FXML
     void onActionReturnToMain(ActionEvent event) throws SQLException, IOException {
         mainMenuController.returnToMain(event);
     }
 
+    /**
+     * When a contact is selected in the combo box, this method will display all the appointments for that contact.
+     * @param event
+     */
     @FXML
     void onActionUpdateTable(ActionEvent event) {
         try {
             String contactToDisplay = contactComboBox.getSelectionModel().getSelectedItem().toString();
+
             int contactID = Contacts.returnContactID(contactComboBox.getSelectionModel().getSelectedItem());
             apptTableView.setItems(Contacts.initializeContactSchedule(contactID));
             apptIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
@@ -58,6 +73,10 @@ public class contactSchedulesController {
 
     }
 
+    /**
+     * Displays all contacts in database in the contactComboBox.
+     * @throws SQLException
+     */
     @FXML
     void initialize() throws SQLException {
         contactComboBox.setItems(Contacts.initializeContacts());
