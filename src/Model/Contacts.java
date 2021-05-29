@@ -11,10 +11,17 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
- * The contact class stores data regarding to contact's name and ID as well as their schedules
+ * The contact class stores data regarding to contact's name and ID as well as their schedules.
  */
 public class Contacts {
+    /**
+     * ObservableList that holds all the data regarding the contact table in the database.
+     */
     private static ObservableList<Contacts> contacts = FXCollections.observableArrayList();
+
+    /**
+     * ObservableList that stores contact schedules used for the contactSchedulesView.
+     */
     private static ObservableList<Contacts> contactSchedule = FXCollections.observableArrayList();
 
 
@@ -32,8 +39,8 @@ public class Contacts {
 
     /**
      * Constructor used in the initializeContacts() method. Used to display contacts in combo boxes.
-     * @param contactName
-     * @param contactID
+     * @param contactName saves contact name
+     * @param contactID saves contact ID
      */
     public Contacts(String contactName, int contactID) {
         this.contactID = contactID;
@@ -64,7 +71,7 @@ public class Contacts {
     /**
      * Sets the ObservableList contactSchedule needed to initialize the Contact Schedule Table
      * @param contactID based on the contact ID, the appointments are filtered in the SQL database.
-     * @return returns the contactSchedule ObservableList to set the Contact Schedule table view.
+     * @return the contactSchedule ObservableList to set the Contact Schedule table view.
      */
     public static ObservableList<Contacts> initializeContactSchedule(int contactID) {
         contactSchedule.clear();
@@ -96,7 +103,7 @@ public class Contacts {
 
     /**
      * Sets the objects in the contact combo boxes located in the Appointment Add and Modify views.
-     * @return returns the ObservableList with the contacts.
+     * @return the ObservableList with the contacts.
      */
     public static ObservableList<Contacts> initializeContacts() {
         contacts.clear();
@@ -141,7 +148,7 @@ public class Contacts {
 
     /**
      * Overrides the toString() method so that the combo boxes display the contact names.
-     * @return
+     * @return the contact name of the contact
      */
     @Override
     public String toString() {

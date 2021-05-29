@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.time.Month;
 
 /**
- * Controller for numberOfAppointments view.
+ * Controller for numberOfAppointments view. Comments are used to describe the FXML ActionEvents.
  */
 public class numberOfAppointmentsController {
     //Used to set a new stage.
@@ -44,22 +44,14 @@ public class numberOfAppointmentsController {
     @FXML
     private Label setTotalNumberOfAppointments1;
 
-    /**
-     * Opens the main menu.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //Opens the main menu.
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * Opens the appointmentsView view.
-     * @param event
-     * @throws IOException
-     */
+    //Opens the appointmentsView view.
     @FXML
     void onActionViewAppointmentFiltering(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -68,11 +60,9 @@ public class numberOfAppointmentsController {
         stage.show();
     }
 
-    /**
-     * Loads the tables with the data from the database and also sets the text in two labels to tell the user how
-     * many appointments there are.
-     * @throws SQLException
-     */
+
+    //Loads the tables with the data from the database and also sets the text in two labels to tell the user how
+    //many appointments there are.
     @FXML
     void initialize() throws SQLException {
         numberOfApptsTableView.setItems(CalculateNumOfAppointmentsType.initializeTypeAndNum());

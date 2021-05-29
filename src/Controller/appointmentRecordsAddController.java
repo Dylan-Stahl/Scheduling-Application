@@ -21,7 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
- * Controller for the appointmentRecordsAdd view
+ * Controller for the appointmentRecordsAdd view. Comments are used to describe the FXML ActionEvents.
  */
 public class appointmentRecordsAddController {
     //Used to set a new scene.
@@ -73,23 +73,16 @@ public class appointmentRecordsAddController {
     @FXML
     private javafx.scene.control.ComboBox endsAMPMCombo;
 
-    /**
-     * Returns the user to the main menu.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //Returns the user to the main menu.
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * Saves inputted data as an appointment in the database. Uses labels and alerts to let the user know if incorrect
-     * input is detected.
-     * @param event
-     * @throws IOException
-     */
+
+    //Saves inputted data as an appointment in the database. Uses labels and alerts to let the user know if incorrect
+    //input is detected.
     @FXML
     void onActionSaveAppt(ActionEvent event) throws IOException {
         //Set exception labels as empty when add appointment is clicked
@@ -358,9 +351,8 @@ public class appointmentRecordsAddController {
         }
     }
 
-    /**
-     * Initializes the combo boxes in the view and also sets how the DatePicker will write the selected date.
-     */
+
+    //Initializes the combo boxes in the view and also sets how the DatePicker will write the selected date.
     @FXML
     void initialize() {
         startsHourCombo.setItems(ComboBox.getAppointmentHours());

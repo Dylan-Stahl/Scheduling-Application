@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * Controller for appointmentView view.
+ * Controller for appointmentView view. Comments are used to describe the FXML ActionEvents.
  */
 public class appointmentViewController {
     //Used to set a new scene.
@@ -79,11 +79,8 @@ public class appointmentViewController {
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * Loads the numberOfAppointments view.
-     * @param event
-     * @throws IOException
-     */
+
+    //Loads the numberOfAppointments view.
     @FXML
     void onActionViewNumberOfAppts(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -92,11 +89,9 @@ public class appointmentViewController {
         stage.show();
     }
 
-    /**
-     * The appointmentView initialize method loads all the appointments into the table using the Appointments' class
-     * method initializeAppts().
-     * @throws SQLException
-     */
+
+     //The appointmentView initialize method loads all the appointments into the table using the Appointments' class
+     //method initializeAppts().
     @FXML
     void initialize() throws SQLException {
         apptTableView.setItems(Appointments.initializeAppts());

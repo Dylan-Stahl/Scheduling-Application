@@ -15,10 +15,21 @@ import java.time.temporal.ChronoUnit;
  * in the JavaFX Application.
  */
 public class Appointments {
+    /**
+     * ObservableList that holds all the appointments located in the database.
+     */
     private static ObservableList<Appointments> allAppts = FXCollections.observableArrayList();
+
+    /**
+     * ObservableList that will hold appointments within fifteen minutes. This list will be used to set the items
+     * of the Appointments within 15 minutes table located in the main menu.
+     */
     private static ObservableList<Appointments> appointmentAlerts = FXCollections.observableArrayList();
 
+    //Field used for the second constructor
     private int appointmentIDForAlert;
+
+    //Fields used for the first constructor
     private int Appointment_ID;
     private String Title;
     private String Description;
@@ -39,20 +50,20 @@ public class Appointments {
     /**
      * The primary constructor for the Appointments class. The parameters are data that is provided from the
      * MySQL database.
-     * @param appointment_ID
-     * @param title
-     * @param description
-     * @param location
-     * @param type
-     * @param start
-     * @param end
-     * @param create_Date
-     * @param created_By
-     * @param last_Update
-     * @param last_Updated_By
-     * @param customer_ID
-     * @param user_ID
-     * @param contact_ID
+     * @param appointment_ID holds the appointment ID of the appointment object
+     * @param title holds the title of the appointment
+     * @param description holds the description of the appointment
+     * @param location holds the location of the appointment
+     * @param type holds the type of the appointment
+     * @param start holds the LocalDateTime of the appointment starting time
+     * @param end holds the LocalDateTime of the appointment ending time
+     * @param create_Date holds the Date of when the appointment was created
+     * @param created_By holds the data regarding who created the appointment
+     * @param last_Update holds the Timestamp of when the appointment was last updated/modified
+     * @param last_Updated_By holds the user who updated the appointment last
+     * @param customer_ID saves the customer ID of whom the appointment is with
+     * @param user_ID holds the user id of the appointment
+     * @param contact_ID saves the contact ID of whom the appointment is with
      */
     public Appointments(int appointment_ID, String title, String description, String location, String type,
                         LocalDateTime start, LocalDateTime end, Date create_Date, String created_By,
@@ -85,7 +96,7 @@ public class Appointments {
     /**
      * When the main menu is opened, this method provided the appointments that are within 15 minuted of the
      * users LocalDateTime.
-     * @return returns the appointmentAlerts ObservableList that holds the appointments within 15 minutes of the
+     * @return the appointmentAlerts ObservableList that holds the appointments within 15 minutes of the
      *         users LocalDateTime.
      */
     public static ObservableList<Appointments> initializeApptAlertTable() {
@@ -125,7 +136,7 @@ public class Appointments {
     /**
      * When an appointments table view is shown in the program, the table set it's items by calling this method to return
      * the ObservableList with all the appointments in the database.
-     * @return returns the ObservableList with the appointments in the database.
+     * @return the ObservableList with the appointments in the database.
      */
     public static ObservableList<Appointments> initializeAppts() {
         //Every time the method is called, the ObservableList is recreated to show accurate data.
@@ -171,7 +182,7 @@ public class Appointments {
     /**
      * The appointmentsView menu displays an option to show appointments within the next week. The table view
      * calls this method to show that data.
-     * @return  returns the ObservableList with appointments within the next week of the users current LocalDateTime.
+     * @return the ObservableList with appointments within the next week of the users current LocalDateTime.
      */
     public static ObservableList<Appointments> initializeWeeklyAppts() {
         allAppts.clear();
@@ -224,7 +235,7 @@ public class Appointments {
     /**
      * The appointmentsView menu displays an option to show appointments within the next month. The table view
      * calls this method to show that data.
-     * @return  returns the ObservableList with appointments within the next month of the users current LocalDateTime.
+     * @return the ObservableList with appointments within the next month of the users current LocalDateTime.
      */
     public static ObservableList<Appointments> initializeMonthlyAppts() {
         allAppts.clear();
@@ -282,7 +293,7 @@ public class Appointments {
     /**
      * The appointmentsView menu displays an option to show past appointments. The table view
      * calls this method to show that data.
-     * @return  returns the ObservableList with appointments that have already taken place..
+     * @return the ObservableList with appointments that have already taken place..
      */
     public static ObservableList<Appointments> initializePastAppts() {
         allAppts.clear();
@@ -338,7 +349,7 @@ public class Appointments {
      * @param apptToDelete the selected appointment in the Appointments table view
      *                     that will be deleted.
      */
-    public static void delecteAppt(Appointments apptToDelete) {
+    public static void deleteAppt(Appointments apptToDelete) {
         Connection conn = DBConnection.getConnection();
         try(PreparedStatement ps = (conn.prepareStatement("DELETE FROM appointments WHERE Appointment_ID = ?"))) {
             ps.setString(1, String.valueOf(apptToDelete.getAppointment_ID()));
@@ -353,7 +364,7 @@ public class Appointments {
 
     /**
      * Used by the lambda expression in the initialize() method in the mainMenuController.
-     * @return Returns true if an appointment is within 15 minutes of the users current LocalDataTime
+     * @return true if an appointment is within 15 minutes of the users current LocalDataTime
      *                 and returns false if there are no appointments within 15 minutes.
      */
     public static boolean appointmentWithinFifteenMin() {
@@ -391,7 +402,7 @@ public class Appointments {
      * @param customer_ID   used in the SQL statement to find all appointments with that specified customer.
      * @param appointment_ID    provided that all appointments with the selected customer should be searched
      *                          except the appointment_ID of the current appointment being modified
-     * @return returns true if the appointment being modified can't be added due to another appointment with the same
+     * @return true if the appointment being modified can't be added due to another appointment with the same
      *         customer that take place sometime in between. Returns false is there is no overlap in appointments
      */
     public static boolean appointmentOverlap(LocalDateTime appointmentStart, LocalDateTime appointmentEnd,
@@ -434,10 +445,10 @@ public class Appointments {
     /**
      * Used by the appointmentRecordsAddController to determine if the current appointment being added
      * will overlap any other appointments that the customer has besides the current appointment being added.
-     * @param appointmentStart  used to compare with appointments in the database.
-     * @param appointmentEnd    used to compare with appointments in the database.
-     * @param customer_ID   used in the SQL statement to find all appointments with that specified customer.
-     * @return returns true if the appointment being added can't be added due to another appointment with the same
+     * @param appointmentStart used to compare with appointments in the database.
+     * @param appointmentEnd used to compare with appointments in the database.
+     * @param customer_ID used in the SQL statement to find all appointments with that specified customer.
+     * @return true if the appointment being added can't be added due to another appointment with the same
      *         customer that take place sometime in between. Returns false is there is no overlap in appointments.
      */
     public static boolean appointmentOverlap(LocalDateTime appointmentStart, LocalDateTime appointmentEnd, int customer_ID) {
@@ -475,126 +486,252 @@ public class Appointments {
     }
 
     //Getters and Setters for fields.
+
+    /**
+     * Getter for the allAppts ObservableList.
+     * @return ObservableList allAppts
+     */
     public static ObservableList<Appointments> returnAllAppts() {
         return allAppts;
     }
 
+    /**
+     * Getter for Appointment_ID.
+     * @return appointment's appointment ID
+     */
     public int getAppointment_ID() {
         return Appointment_ID;
     }
 
+    /**
+     * Setter for Appointment_ID, not used. Database automatically creates appointment IDs.
+     * @param appointment_ID sets the appointment ID to whatever this is.
+     */
     public void setAppointment_ID(int appointment_ID) {
         Appointment_ID = appointment_ID;
     }
 
+    /**
+     * Getter for appointment title.
+     * @return appointment's title
+     */
     public String getTitle() {
         return Title;
     }
 
+    /**
+     * Setter for appointment title.
+     * @param title sets the appointment's title as this argument
+     */
     public void setTitle(String title) {
         Title = title;
     }
 
+    /**
+     * Getter for appointment description.
+     * @return appointment's description
+     */
     public String getDescription() {
         return Description;
     }
 
+    /**
+     * Setter for appointment description.
+     * @param description sets the appointment's description as this argument
+     */
     public void setDescription(String description) {
         Description = description;
     }
 
+    /**
+     * Getter for appointment location.
+     * @return appointment's location
+     */
     public String getLocation() {
         return Location;
     }
 
+    /**
+     * Setter for the appointment location.
+     * @param location sets appointment's location
+     */
     public void setLocation(String location) {
         Location = location;
     }
 
+    /**
+     * Getter for the appointment type.
+     * @return appointment's type
+     */
     public String getType() {
         return Type;
     }
 
+    /**
+     * Setter for the appointment type.
+     * @param type sets appointments type
+     */
     public void setType(String type) {
         Type = type;
     }
 
+    /**
+     * Getter for the appointment start LocalDateTime.
+     * @return appointment's start LocalDateTime
+     */
     public LocalDateTime getStart() {
         return Start;
     }
 
+    /**
+     * Setter for the appointment start LocalDateTime.
+     * @param start sets appointment's start as this
+     */
     public void setStart(LocalDateTime start) {
         Start = start;
     }
 
+    /**
+     * Getter for the appointment end LocalDateTime.
+     * @return appointments end time
+     */
     public LocalDateTime getEnd() {
         return End;
     }
 
+    /**
+     * Setter for the appointment end LocalDateTime.
+     * @param end sets appointments end time
+     */
     public void setEnd(LocalDateTime end) {
         End = end;
     }
 
+    /**
+     * Getter for the appointment create date.
+     * @return appointment's create date
+     */
     public Date getCreate_Date() {
         return Create_Date;
     }
 
+    /**
+     * Setter for the appointment create date.
+     * @param create_Date sets appointments create date
+     */
     public void setCreate_Date(Date create_Date) {
         Create_Date = create_Date;
     }
 
+    /**
+     * Getter for returning who created the appointment.
+     * @return who created the appointment
+     */
     public String getCreated_By() {
         return Created_By;
     }
 
+    /**
+     * Setter for setting who created the appointment.
+     * @param created_By sets who created the appointment
+     */
     public void setCreated_By(String created_By) {
         Created_By = created_By;
     }
 
+    /**
+     * Getter for returning the timestamp of the last update.
+     * @return appointments Timestamp of last update
+     */
     public Timestamp getLast_Update() {
         return Last_Update;
     }
 
+    /**
+     * Setter for the last update.
+     * @param last_Update sets appointments last update
+     */
     public void setLast_Update(Timestamp last_Update) {
         Last_Update = last_Update;
     }
 
+    /**
+     * Getter for returning who last updated an appointment.
+     * @return who updated the appointment last
+     */
     public String getLast_Updated_By() {
         return Last_Updated_By;
     }
 
+    /**
+     * Setter for who last updated an appointment.
+     * @param last_Updated_By sets the field to who updated the appointment last
+     */
     public void setLast_Updated_By(String last_Updated_By) {
         Last_Updated_By = last_Updated_By;
     }
 
+    /**
+     * Getter for the customer ID.
+     * @return appointment's customer ID
+     */
     public int getCustomer_ID() {
         return Customer_ID;
     }
 
+    /**
+     * Setter for the customer ID.
+     * @param customer_ID sets appointments customer ID
+     */
     public void setCustomer_ID(int customer_ID) {
         Customer_ID = customer_ID;
     }
 
+    /**
+     * Getter for the user ID.
+     * @return appointments user ID
+     */
     public int getUser_ID() {
         return User_ID;
     }
 
+    /**
+     * Setter for the user ID.
+     * @param user_ID sets appointment's user ID
+     */
     public void setUser_ID(int user_ID) {
         User_ID = user_ID;
     }
 
+
+    /**
+     * Getter for the appointment contact ID
+     * @return appointment's contact ID
+     */
     public int getContact_ID() {
         return Contact_ID;
     }
 
+    /**
+     * Setter for the appointment contact ID.
+     * @param contact_ID sets appointments contact ID
+     */
     public void setContact_ID(int contact_ID) {
         Contact_ID = contact_ID;
     }
 
+    /**
+     * Getter for the appointmentIDForAlert.
+     * @return the appointment ID in which is in less than 15 minutes
+     */
     public int getAppointmentIDForAlert() {
         return appointmentIDForAlert;
     }
 
+    /**
+     * Setter for the appointmentIDForAlert.
+     * @param appointmentIDForAlert sets the appointment id for which is in less than 15 minutes
+     */
     public void setAppointmentIDForAlert(int appointmentIDForAlert) {
         this.appointmentIDForAlert = appointmentIDForAlert;
     }

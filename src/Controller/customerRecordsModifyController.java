@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Controller for the customerRecordsModify view.
+ * Controller for the customerRecordsModify view. Comments are used to describe the FXML ActionEvents.
  */
 public class customerRecordsModifyController {
     //Used to set a new scene.
@@ -55,12 +55,9 @@ public class customerRecordsModifyController {
     @FXML
     private Label exceptionLabelFLD;
 
-    /**
-     * When a customer is selected in the main menu controller and modify is clicked, that user is used as an argument
-     * in this method. This method takes all the data of that customer and fills in the fields to show what is currently
-     * saved in the database.
-     * @param customerToModify selected in the main menu.
-     */
+    //When a customer is selected in the main menu controller and modify is clicked, that user is used as an argument
+    //in this method. This method takes all the data of that customer and fills in the fields to show what is currently
+    //saved in the database.
     public void sendCustomer(Customers customerToModify) {
         //Sets fields for the selected customer
         addCustomerIDField.setText(String.valueOf(customerToModify.getCustomer_ID()));
@@ -85,11 +82,9 @@ public class customerRecordsModifyController {
         catch (NullPointerException e) {}
     }
 
-    /**
-     * When a country is selected, only first level divisions in that country will be displays in the State/province
-     * combo box.
-     * @param event
-     */
+
+    //When a country is selected, only first level divisions in that country will be displays in the State/province
+    //combo box.
     @FXML
     void onActionSortFirstLevelDivision(ActionEvent event) {
         Division.removeDivisionsSortedByCountry();
@@ -107,13 +102,9 @@ public class customerRecordsModifyController {
         catch (NullPointerException e) {}
     }
 
-    /**
-     * When the modify button is clicked, this method will attempt to update the customer in the database. If incorrect
-     * or null data is input, then the appropriate error message will display.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //When the modify button is clicked, this method will attempt to update the customer in the database. If incorrect
+    //or null data is input, then the appropriate error message will display.
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException, SQLException{
         //Resets the exception labels each time a user trys to add a customer to ensure accurate error messages
@@ -198,12 +189,8 @@ public class customerRecordsModifyController {
         }
     }
 
-    /**
-     * Returns user to main menu.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //Returns user to main menu.
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         Division.removeDivisionsSortedByCountry();

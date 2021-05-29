@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 
 /**
- * Controller for contactSchedule view.
+ * Controller for contactSchedule view. Comments are used to describe the FXML ActionEvents.
  */
 public class contactSchedulesController {
 
@@ -36,22 +36,16 @@ public class contactSchedulesController {
     @FXML
     private TableColumn<Contacts, String> apptCustIDCol;
 
-    /**
-     * Uses mainMenuControlller's method returnToMain to return the user to the main menu when the Main Menu button
-     * is clicked.
-     * @param event
-     * @throws SQLException
-     * @throws IOException
-     */
+
+    //Uses mainMenuControlller's method returnToMain to return the user to the main menu when the Main Menu button
+    //is clicked.
     @FXML
     void onActionReturnToMain(ActionEvent event) throws SQLException, IOException {
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * When a contact is selected in the combo box, this method will display all the appointments for that contact.
-     * @param event
-     */
+
+    //When a contact is selected in the combo box, this method will display all the appointments for that contact.
     @FXML
     void onActionUpdateTable(ActionEvent event) {
         try {
@@ -73,10 +67,8 @@ public class contactSchedulesController {
 
     }
 
-    /**
-     * Displays all contacts in database in the contactComboBox.
-     * @throws SQLException
-     */
+
+    //Displays all contacts in database in the contactComboBox.
     @FXML
     void initialize() throws SQLException {
         contactComboBox.setItems(Contacts.initializeContacts());

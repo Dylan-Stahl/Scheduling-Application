@@ -18,6 +18,10 @@ import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Main Method. Connects to the database when application is run and starts up the JavaFX application. When all the
+ * windows are close, the database connection is closed.
+ */
 public class Main extends Application {
 
     @Override
@@ -32,11 +36,8 @@ public class Main extends Application {
         //Connect to database
         DBConnection.startConnection();
 
-
-
-        //Lauch javaFX application
+        //Launch javaFX application
         launch(args);
-
 
         //executed when all windows are closed in application
         DBConnection.closeConnection();

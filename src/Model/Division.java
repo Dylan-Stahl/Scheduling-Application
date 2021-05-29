@@ -23,7 +23,7 @@ public class Division {
 
     /**
      * Accesses the database and collects the names of the divisions and stores them in an ObservableList.
-     * @return returns an ObservableList with all the first level divisions in the database.
+     * @return an ObservableList with all the first level divisions in the database.
      */
     public static ObservableList<Division> initializeAllDivisions() {
         divisions.clear();
@@ -85,8 +85,8 @@ public class Division {
 
     /**
      * Returns division ID given a division name.
-     * @param divisionName
-     * @return
+     * @param divisionName uses a division name to search the database for a division with this name
+     * @return division ID
      */
     public static int getDivisionID(String divisionName) {
         Connection conn = DBConnection.getConnection();
@@ -95,7 +95,6 @@ public class Division {
             ps.setString(1, divisionName);
 
             ResultSet rs = ps.executeQuery();
-
             while(rs.next()) {
                 int divisionID = rs.getInt("Division_ID");
                 return divisionID;
@@ -112,7 +111,7 @@ public class Division {
 
     /**
      * Formats the combo box to display divisionName.
-     * @return
+     * @return the division name
      */
     @Override
     public String toString() {

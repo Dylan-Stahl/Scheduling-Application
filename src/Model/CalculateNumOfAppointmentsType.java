@@ -15,14 +15,18 @@ import java.time.Month;
  * ObservableList is used to set the items in the Number of Appointments (Type) table view
  */
 public class CalculateNumOfAppointmentsType {
+    /**
+     * ObservableList to hold the objects that hold the type of appointment and the number of appointments of that type.
+     */
     private static ObservableList<CalculateNumOfAppointmentsType> typeAndNum = FXCollections.observableArrayList();
+
     private String type;
     private int numOfType;
 
     /**
      * Constructor, stores CalculateNumOfAppointmentsType objects in the ObservableList typeAndNum.
-     * @param type
-     * @param numOfType
+     * @param type type of appointment in the database
+     * @param numOfType number of appointments for that type
      */
     public CalculateNumOfAppointmentsType(String type, int numOfType) {
         this.type = type;
@@ -31,7 +35,7 @@ public class CalculateNumOfAppointmentsType {
 
     /**
      * Initializes the Number of Appointments (Type) table in the Number of Appointments menu in the main menu.
-     * @return returns the ObservableList with the CalculateNumOfAppointmentsType objects to be displayed.
+     * @return the ObservableList with the CalculateNumOfAppointmentsType objects to be displayed.
      */
     public static ObservableList<CalculateNumOfAppointmentsType> initializeTypeAndNum() {
         typeAndNum.clear();
@@ -72,18 +76,34 @@ public class CalculateNumOfAppointmentsType {
     }
 
     //Getters and setters
+    /**
+     * Getter for the type field.
+     * @return type of appointment
+     */
     public String getType() {
         return type;
     }
 
+    /**
+     * Setter for the type field.
+     * @param type sets the type of appointment
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Getter for the numOfType field.
+     * @return the number of appointments for that type
+     */
     public int getNumOfType() {
         return numOfType;
     }
 
+    /**
+     * Setter for the numOfType field.
+     * @param numOfType sets the number of appointments for that type of appointment
+     */
     public void setNumOfType(int numOfType) {
         this.numOfType = numOfType;
     }

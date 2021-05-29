@@ -25,5 +25,9 @@ That report will show all appointments that have ended before the current LocalD
 
 MySQL Connector driver version - mysql-connector-java-8.0.22
 
+Lambda Expressions - Two lambda expressions using the Predicate Interface can be found in the Utilities package,
+DBConnection class under the login method. A third lambda expression (a BooleanSupplier) is used in
+the mainMenuController initialize() method.
+
 
  

@@ -31,20 +31,22 @@ public class Customers {
 
     /**
      * Creates a customer object with data obtained from the initializeCustomers() method.
-     * @param customer_ID
-     * @param customer_Name
-     * @param address
-     * @param postal_Code
-     * @param phone
-     * @param create_Date
-     * @param created_By
-     * @param last_Update
-     * @param last_Updated_By
-     * @param division_ID
-     * @param division_IDStr
-     * @param country
-     * @param countryObj
-     * @param divisionObj
+     * @param customer_ID holds customer ID
+     * @param customer_Name holds customer name
+     * @param address holds customer address
+     * @param postal_Code holds customer postal code
+     * @param phone holds customer phone number
+     * @param create_Date holds the create date of the customer in the database
+     * @param created_By holds the user who created the customer
+     * @param last_Update holds the Timestamp of the last update made to the customer
+     * @param last_Updated_By holds the user who last updated the customer in the database
+     * @param division_ID holds the first level division ID of the customer
+     * @param division_IDStr holds the first level division name of the customer
+     * @param country holds the country of the customer
+     * @param countryObj used to retrieve the country name where the customer is and display it in the modify customer
+     *                   menu
+     * @param divisionObj used to retrieve the division name where the customer is and display it in the modify customer
+     *                    menu
      */
     public Customers(int customer_ID, String customer_Name, String address, String postal_Code, String phone,
                      Date create_Date, String created_By, Timestamp last_Update, String last_Updated_By,
@@ -70,7 +72,7 @@ public class Customers {
 
     /**
      * Returns an ObservableList with all the customers from the database stored as Customers objects.
-     * @return ObservableList
+     * @return ObservableList with all customers
      */
     public static ObservableList<Customers> initializeCustomers() {
         allCustomers.clear();
@@ -116,7 +118,7 @@ public class Customers {
 
     /**
      * Returns the allCustomers observableList.
-     * @return
+     * @return ObservableList
      */
     public static ObservableList<Customers> getAllCustomers() {
         return allCustomers;
@@ -143,8 +145,13 @@ public class Customers {
         }
 
     }
-    //Create boolean function that lets user know if there are appointments associated with customer
 
+    /**
+     * Used to determine if a customer can be deleted from the database. If the customer has any appointment associated
+     * with it, then the customer won't be allowed to be deleted.
+     * @param customer uses a specified customer to search the appointments table with this customer's ID
+     * @return true if the customer has any appointments associated with it. Returns falls otherwise
+     */
     public static boolean customerAssociatedWithAppt(Customers customer) {
         Connection conn = DBConnection.getConnection();
         try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM appointments WHERE Customer_ID = ?")) {
@@ -161,7 +168,6 @@ public class Customers {
             else {
                 return false;
             }
-
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

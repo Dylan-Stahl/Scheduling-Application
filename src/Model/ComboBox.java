@@ -21,7 +21,7 @@ public final class ComboBox {
 
     /**
      * Used to initialize the appointmentRecordsAdd and appointmentRecordsModify AM and PM box combos.
-     * @return
+     * @return the ObservableList that holds AM and PM
      */
     public final static ObservableList<String> getAppointmentAMPM() {
         return appointmentAMPM;
@@ -29,7 +29,7 @@ public final class ComboBox {
 
     /**
      * Used to initialize the appointmentRecordsAdd and appointmentRecordsModify minute box combos.
-     * @return
+     * @return the ObservableList that holds the different times within an hour that an appointment can be schedules at
      */
     public final static ObservableList<String> getAppointmentMinutes() {
         return appointmentMinutes;
@@ -37,11 +37,9 @@ public final class ComboBox {
 
     /**
      * Used to initialize the appointmentRecordsAdd and appointmentRecordsModify hour box combos.
-     * @return
+     * @return the ObservableList with all hours in the day
      */
     public final static ObservableList<String> getAppointmentHours() {
         return appointmentHours;
     }
-
-
 }

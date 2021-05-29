@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 /**
- * Controller for customerRecordsAdd view.
+ * Controller for customerRecordsAdd view. Comments are used to describe the FXML ActionEvents.
  */
 public class customerRecordsAddController {
     //Used to set a new scene.
@@ -54,23 +54,17 @@ public class customerRecordsAddController {
     @FXML
     private Label exceptionLabelFLD;
 
-    /**
-     * Returns user to main menu.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //Returns user to main menu.
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         Division.removeDivisionsSortedByCountry();
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * When a country is selected, only first level divisions in that country will be displays in the State/province
-     * combo box.
-     * @param event
-     */
+
+    //When a country is selected, only first level divisions in that country will be displays in the State/province
+    //combo box.
     @FXML
     void onActionSortFirstLevelDivision(ActionEvent event) {
         Division.removeDivisionsSortedByCountry();
@@ -84,13 +78,9 @@ public class customerRecordsAddController {
         catch (NullPointerException e) {}
     }
 
-    /**
-     * When the add button is clicked, this method will attempt to add a new customer to the database. If incorrect
-     * or null data is input, then the appropriate error message will display.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //When the add button is clicked, this method will attempt to add a new customer to the database. If incorrect
+    //or null data is input, then the appropriate error message will display.
     @FXML
     void onActionCreateCustomer(ActionEvent event) throws IOException, SQLException {
         //Resets the exception labels each time a user trys to add a customer to ensure accurate error messages
@@ -175,9 +165,8 @@ public class customerRecordsAddController {
         }
     }
 
-    /**
-     * Sets items within combo boxes.
-     */
+
+    //Sets items within combo boxes.
     @FXML
     void initialize() {
         addCustomerCountryCombo.setItems(Country.initializeAllCountries());

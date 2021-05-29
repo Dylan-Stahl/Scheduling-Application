@@ -21,7 +21,7 @@ import java.time.format.DateTimeParseException;
 import java.util.TimeZone;
 
 /**
- * Controller for the appointmentRecordsModify view
+ * Controller for the appointmentRecordsModify view. Comments are used to describe the FXML ActionEvents.
  */
 public class appointmentRecordsModifyController {
     //Used to set a new scene.
@@ -73,11 +73,10 @@ public class appointmentRecordsModifyController {
     @FXML
     private javafx.scene.control.ComboBox endsAMPMCombo;
 
-    /**
-     * Used by the mainMenuController to initialize the fields in the view. The main menu controller has an appointment
-     * selected which is then use as an argument in this method.
-     * @param appointmentToModify
-     */
+
+     //Used by the mainMenuController to initialize the fields in the view. The main menu controller has an appointment
+     //selected which is then use as an argument in this method.
+
     public void sendAppt(Appointments appointmentToModify) {
         //Shows the current values for the appointment being modified.
         addApptIDField.setText(String.valueOf(appointmentToModify.getAppointment_ID()));
@@ -149,13 +148,9 @@ public class appointmentRecordsModifyController {
 
     }
 
-    /**
-     * When the modify button is clicked, this method is will attempt to update the appointment being modified with
-     * the new data in the fields. Exception labels are shown when incorrect or null data is entered.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //When the modify button is clicked, this method is will attempt to update the appointment being modified with
+    //the new data in the fields. Exception labels are shown when incorrect or null data is entered.
     @FXML
     void onActionModifyAppt(ActionEvent event) throws IOException, SQLException {
         //Set exception labels as empty when add appointment is clicked
@@ -424,14 +419,15 @@ public class appointmentRecordsModifyController {
         }
     }
 
+    //Returns user to main menu
     @FXML
     void onActionReturnToMain(ActionEvent event) throws IOException, SQLException {
         mainMenuController.returnToMain(event);
     }
 
-    /**
-     * Initializes the combo boxes in the view and also sets how the DatePicker will write the selected date.
-     */
+
+    //Initializes the combo boxes in the view and also sets how the DatePicker will write the selected date.
+
     @FXML
     void initialize() {
         startsHourCombo.setItems(Model.ComboBox.getAppointmentHours());

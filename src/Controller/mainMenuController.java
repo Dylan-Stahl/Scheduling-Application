@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.function.BooleanSupplier;
 
 /**
- * Controller for the mainMenu view.
+ * Controller for the mainMenu view. Comments are used to describe the FXML ActionEvents.
  */
 public class mainMenuController {
     //Used to set new scene.
@@ -77,10 +77,8 @@ public class mainMenuController {
     @FXML
     private TableColumn<Appointments, Integer> apptWithin15Col;
 
-    /**
-     * Safely exits application.
-     * @param event
-     */
+
+    //Safely exits application.
     @FXML
     void onActionExit(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION,"Are you sure you want to exit?");
@@ -93,12 +91,8 @@ public class mainMenuController {
         }
     }
 
-    /**
-     * Used by other controllers to return the user to the main menu.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
+
+    //Used by other controllers to return the user to the main menu.
     public static void returnToMain(ActionEvent event) throws IOException, SQLException {
         Stage stage;
         Parent scene;
@@ -110,11 +104,8 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * Opens the customerRecordsAdd view.
-     * @param event
-     * @throws IOException
-     */
+
+    //Opens the customerRecordsAdd view.
     @FXML
     void onActionAddCustomer(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -123,11 +114,8 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * Opens the appointmentRecordsAdd view.
-     * @param event
-     * @throws IOException
-     */
+
+    //Opens the appointmentRecordsAdd view.
     @FXML
     void onActionAddAppt(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -136,12 +124,9 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * When the user selects the delete button under the customers table view this method will either tell the user
-     * to select a customer or that there are no customers in the table. If a customer is selected, the method
-     * will perform a SQL operation on the database to delete that customer.
-     * @param event
-     */
+    //When the user selects the delete button under the customers table view this method will either tell the user
+    //to select a customer or that there are no customers in the table. If a customer is selected, the method
+    //will perform a SQL operation on the database to delete that customer.
     @FXML
     void onActionDeleteCustomer(ActionEvent event) {
 
@@ -191,12 +176,10 @@ public class mainMenuController {
         }
     }
 
-    /**
-     * When the user selects the delete button under the appointments table view this method will either tell the user
-     * to select an appointment or that there are no appointments in the table. If an appointment is selected, the
-     * method will perform a SQL operation on the database to delete that appointment.
-     * @param event
-     */
+
+    //When the user selects the delete button under the appointments table view this method will either tell the user
+    //to select an appointment or that there are no appointments in the table. If an appointment is selected, the
+    //method will perform a SQL operation on the database to delete that appointment.
     @FXML
     void onActionDeleteAppt(ActionEvent event) {
         try {
@@ -213,7 +196,7 @@ public class mainMenuController {
                 alert.setTitle("Deleting Appointment!");
                 Optional<ButtonType> result = alert.showAndWait();
                 if(result.isPresent() && result.get() == ButtonType.OK) {
-                    Appointments.delecteAppt(apptToDelete);
+                    Appointments.deleteAppt(apptToDelete);
 
                     //After the appointment was deleted, a warning will be displayed to the user letting them know
                     //details about the appointment deleted.
@@ -232,12 +215,7 @@ public class mainMenuController {
         }
     }
 
-
-    /**
-     * Opens the contactSchedules view.
-     * @param event
-     * @throws IOException
-     */
+    //Opens the contactSchedules view.
     @FXML
     void onActionViewContactSchedules(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -246,11 +224,7 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * Opens the appointmentRecordsModify view.
-     * @param event
-     * @throws IOException
-     */
+    //Opens the appointmentRecordsModify view.
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws IOException {
         appointmentToModify = apptTableView.getSelectionModel().getSelectedItem();
@@ -277,11 +251,7 @@ public class mainMenuController {
         }
     }
 
-    /**
-     * Opens the customerRecordsModify view.
-     * @param event
-     * @throws IOException
-     */
+    //Opens the customerRecordsModify view.
     @FXML
     void onActionModifyCustomer(ActionEvent event) throws IOException {
         customerToModify = customerTableView.getSelectionModel().getSelectedItem();
@@ -308,11 +278,7 @@ public class mainMenuController {
         }
     }
 
-    /**
-     * Opens the appointmentsView view.
-     * @param event
-     * @throws IOException
-     */
+    //Opens the appointmentsView view.
     @FXML
     void onActionReportNumberOfAppts(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -321,11 +287,8 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * Opens the numberOfAppointments view.
-     * @param event
-     * @throws IOException
-     */
+
+    //Opens the numberOfAppointments view.
     @FXML
     void onActionViewNumOfAppts(ActionEvent event) throws IOException {
         stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -334,12 +297,10 @@ public class mainMenuController {
         stage.show();
     }
 
-    /**
-     * Initializes the tableviews in the main menu. The BooleanSupplier lambda expression will determine if an
-     * appointment is within fifteen minutes. If the appointment is within 15 minutes, the if statement contents will
-     * execute and show the appointments within 15 minutes in the table.
-     * @throws SQLException
-     */
+
+    //Initializes the tableviews in the main menu. The BooleanSupplier lambda expression will determine if an
+    //appointment is within fifteen minutes. If the appointment is within 15 minutes, the if statement contents will
+    //execute and show the appointments within 15 minutes in the table.
     @FXML
     void initialize() throws SQLException {
         customerTableView.setItems(Customers.initializeCustomers());

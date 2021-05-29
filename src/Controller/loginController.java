@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 /**
- * Controller for the loginController view.
+ * Controller for the loginController view. Comments are used to describe the FXML ActionEvents.
  */
 public class loginController {
     @FXML
@@ -38,54 +38,21 @@ public class loginController {
     @FXML
     private Label locationZoneID;
 
-    /**
-     * When a user attempts to login, this function is called and either logs the user in, or, tells the user "Incorrect
-     * username or password entered". It also writes to login_activity.txt in the root folder of this application. The
-     * text files will show the time the login attempt was at, where the attempt was, and whether it was successful or
-     * not. To determine if the username and password are correct, a lambda expression using the predicate interface is
-     * used to return a boolean value. Two predicates are used, for the username and password, when they both return
-     * true, the credentials entered are correct and the user is logged in.
-     * @param event
-     * @throws IOException
-     * @throws SQLException
-     */
-    /*
-    public boolean login(String username, String password) {
-
-    }
-*/
     @FXML
     void onActionLogin(ActionEvent event) throws IOException, SQLException {
         //Login validation
-        String incorrectInformation = "Incorrect username or password!";
         String enteredUsername = userIdField.getText();
         String enteredPassword = passwordField.getText();
+        String incorrectInformation = "Incorrect username or password!";
+        Boolean correctCredentials = DBConnection.login(enteredUsername, enteredPassword);
 
-        //Tracking user activity
-        File fileReport = new File("login_activity.txt");
-        FileWriter file = new FileWriter(fileReport, true);
-        PrintWriter printWriter = new PrintWriter(file);
-
-        printWriter.println("Login Attempt at " + LocalDateTime.now() + " " + ZoneId.systemDefault());
-
-        //Uses predicate interface to interact with the readUsername and readPassword methods.
-        Predicate<String> userNameResults = (s) -> DBConnection.readUsername(s);
-        Predicate<String> passwordResults = (s) -> DBConnection.readPassword(s);
-
-        //User entered correct information
-        //Predicate interface uses the test abstract method to return a boolean result, if both return true, the
-        //credentials are correct and the user is successfully logged in
-        if(userNameResults.test(enteredUsername) && passwordResults.test(enteredPassword)) {
+        if(correctCredentials == true) {
             mainMenuController.returnToMain(event);
-            printWriter.println("Login successful!");
-            printWriter.println("");
         }
         //User entered incorrect information
-        else {
+        else if (correctCredentials == false){
             try{
                 errorLabel.setText(incorrectInformation);
-                printWriter.println("Incorrect username or password entered!");
-                printWriter.println("");
 
                 ResourceBundle rb = ResourceBundle.getBundle("ResourceBundle/Nat" , Locale.getDefault());
                 if(Locale.getDefault().getLanguage().equals("fr")) {
@@ -93,15 +60,12 @@ public class loginController {
                 }
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                //Locale language is not french
             }
         }
-        printWriter.close();
     }
 
-    /**
-     * All fields in the loginMenu view will be shown in French if the user's Locale is France.
-     */
+    //All fields in the loginMenu view will be shown in French if the user's Locale is France.
     @FXML
     void initialize() {
         //Changing the locale to french for testing purposes

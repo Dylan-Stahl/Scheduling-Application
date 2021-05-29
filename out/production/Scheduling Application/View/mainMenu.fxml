@@ -213,7 +213,7 @@
                               </TableView>
                               <Label fx:id="showNumberOfApptsWithin15">
                                  <VBox.margin>
-                                    <Insets left="10.0" />
+                                    <Insets left="10.0" top="5.0" />
                                  </VBox.margin>
                               </Label>
                            </children>

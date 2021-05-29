@@ -28,7 +28,7 @@ public class Country {
     /**
      * Method returns division name based on the division id
      * @param division_ID used in the SQL statement.
-     * @return returns division name.
+     * @return division name.
      */
     public static String returnDivision(int division_ID) {
         String Division_IDStr;
@@ -56,7 +56,7 @@ public class Country {
 
     /**
      * Method finds country id based on a division id.
-     * @param division_ID
+     * @param division_ID used to search database
      * @return countryID is returned
      */
     public static int returnCountryID(int division_ID) {
@@ -84,8 +84,8 @@ public class Country {
     /**
      * Method finds country ID based on the countryName. The method searches the databases table countries and the
      * column Country_ID. It then returns the Country_ID from the result.
-     * @param countryName
-     * @return countryID is returned.
+     * @param countryName used to find the country ID in the database of that country name
+     * @return countryID.
      */
     public static int returnCountryID(String countryName) {
         ArrayList<Integer> countryResultsID = new ArrayList<>();
@@ -113,8 +113,8 @@ public class Country {
 
     /**
      * Returns country name based on a country ID.
-     * @param country_ID
-     * @return
+     * @param country_ID used to find the country name of the country ID
+     * @return the country name
      */
     public static String returnCountryString(int country_ID) {
         ArrayList<String> countryStr = new ArrayList<>();
@@ -143,7 +143,7 @@ public class Country {
     /**
      * Used by the customer add and modify menu combo boxes to set the items within them. The method returns an
      * ObservableList with Country objects that contain the countries names.
-     * @return
+     * @return ObservableList with all the countries in the country table in the database
      */
     public static ObservableList<Country> initializeAllCountries() {
         countries.clear();
