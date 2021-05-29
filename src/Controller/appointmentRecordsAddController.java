@@ -16,6 +16,8 @@ import java.sql.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
@@ -261,27 +263,18 @@ public class appointmentRecordsAddController {
                     ZonedDateTime localStartZDT = ZonedDateTime.of(startsDateTime, localZoneId);
                     ZonedDateTime localEndZDT = ZonedDateTime.of(endsDateTime, localZoneId);
 
+                    //Business times in est
+                    String businessOpensStr = newApptStartDate + " " + "08" + "" + ":00";
+                    LocalDateTime businessOpens = LocalDateTime.parse(businessOpensStr, formatter);
+                    ZonedDateTime estOpen = ZonedDateTime.of(businessOpens, estZoneID);
+
+                    String businessClosesStr = newApptEndDate + " " + "22" + "" + ":00";
+                    LocalDateTime businessCloses = LocalDateTime.parse(businessClosesStr,formatter);
+                    ZonedDateTime estClose = ZonedDateTime.of(businessCloses, estZoneID);
+
                     //Appointment times in EST!!
                     ZonedDateTime localDateTimeStartEST = localStartZDT.withZoneSameInstant(estZoneID);
                     ZonedDateTime localDateTimeEndEST = localEndZDT.withZoneSameInstant(estZoneID);
-                    System.out.println(localDateTimeStartEST);
-                    System.out.println(localDateTimeEndEST);
-
-                    //Business hours in est
-                    LocalDate businessOpensDate = LocalDate.now();
-                    LocalDate businessClosesDate = LocalDate.now();
-                    LocalTime businessOpensEST = LocalTime.of(8, 00);
-                    LocalTime businessClosesEST = LocalTime.of(22, 00);
-                    ZonedDateTime businessOpensESTZDT = ZonedDateTime.of(businessOpensDate, businessOpensEST, estZoneID);
-                    ZonedDateTime businessClosesESTZDT = ZonedDateTime.of(businessClosesDate, businessClosesEST, estZoneID);
-                    ZonedDateTime businessOpensUTCZDT = businessOpensESTZDT.withZoneSameInstant(utcZoneID);
-                    ZonedDateTime businessClosesUTCZDT = businessClosesESTZDT.withZoneSameInstant(utcZoneID);
-
-                    //Comparisons must be in localTime
-                    LocalTime opensComparison = LocalTime.of(localDateTimeStartEST.getHour(), localDateTimeStartEST.getMinute());
-                    LocalTime closesComparison = LocalTime.of(localDateTimeEndEST.getHour(), localDateTimeEndEST.getMinute());
-                    LocalTime businessOpensComparion = LocalTime.of(businessOpensESTZDT.getHour(), businessOpensESTZDT.getMinute());
-                    LocalTime businessClosesComparison = LocalTime.of(businessClosesESTZDT.getHour(), businessClosesESTZDT.getMinute());
 
                     //Makes sure that appointments aren't scheduled on weekdays
                     if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY
@@ -294,11 +287,13 @@ public class appointmentRecordsAddController {
                         alert.showAndWait();
                     }
 
+                    //                    if ((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion)) && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison)) && exception == false) {
                     //Maintains correct times
-                    if ((opensComparison.isAfter(businessOpensComparion) ||
-                            opensComparison.equals(businessOpensComparion))
-                            && (closesComparison.isBefore(businessClosesComparison) ||
-                            closesComparison.equals(businessClosesComparison)) && exception == false) {
+                    if ((localDateTimeStartEST.isAfter(estOpen) || localDateTimeStartEST.equals(estOpen)) &&
+                            ((localDateTimeEndEST.isBefore(estClose) || localDateTimeEndEST.equals(estClose))) &&
+                            (localDateTimeStartEST.isBefore(localDateTimeEndEST) ||
+                                    localDateTimeStartEST.equals(localDateTimeEndEST)) &&
+                            exception == false) {
                         Connection conn = DBConnection.getConnection();
                         String sqlInsert = "INSERT INTO appointments(Title,Description,Location,Type," +
                                 "Start,End,Customer_ID,Contact_ID, Last_Updated_By, Created_By, User_ID) " +
@@ -326,21 +321,28 @@ public class appointmentRecordsAddController {
                             System.out.println(e.getSQLState());
                         }
                         //The last three else if statements show alerts if times entered are not during business hours.
-                    } else if (opensComparison.isBefore(businessOpensComparion) && closesComparison.isAfter(businessClosesComparison)
-                            && exception == false) {
+                    }
+                    else if(localDateTimeEndEST.isBefore(localDateTimeStartEST)) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
-                        alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
+                        alert.setContentText("Appointment is set to end before it starts!");
                         alert.showAndWait();
-                    } else if (opensComparison.isBefore(businessOpensComparion) && exception == false) {
+                    }
+                    else if (localDateTimeStartEST.isBefore(estOpen) && exception == false) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointment is set to start before business hours!");
                         alert.showAndWait();
-                    } else if (closesComparison.isAfter(businessClosesComparison) && exception == false) {
+                    } else if (localDateTimeEndEST.isAfter(estClose) && exception == false) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointment is set to end after business hours!");
+                        alert.showAndWait();
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
                         alert.showAndWait();
                     }
                 }
@@ -351,6 +353,7 @@ public class appointmentRecordsAddController {
             }
             catch (DateTimeParseException e) {
                 exceptionLabelNullInput.setText("Incorrect date input");
+                System.out.println(e.getMessage());
             }
         }
     }

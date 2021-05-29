@@ -20,6 +20,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Controller for the customerRecordsModify view.
+ */
 public class customerRecordsModifyController {
     //Used to set a new scene.
     Stage stage;

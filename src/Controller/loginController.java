@@ -19,6 +19,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
+/**
+ * Controller for the loginController view.
+ */
 public class loginController {
     @FXML
     private TextField userIdField;
@@ -46,6 +49,11 @@ public class loginController {
      * @throws IOException
      * @throws SQLException
      */
+    /*
+    public boolean login(String username, String password) {
+
+    }
+*/
     @FXML
     void onActionLogin(ActionEvent event) throws IOException, SQLException {
         //Login validation

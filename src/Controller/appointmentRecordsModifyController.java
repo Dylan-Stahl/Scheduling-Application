@@ -123,7 +123,6 @@ public class appointmentRecordsModifyController {
         if(appointmentToModify.getStart().toLocalTime().getHour() > 12) {
             startsAMPMCombo.getSelectionModel().select("PM");
             startsHourCombo.getSelectionModel().select(appointmentToModify.getStart().getHour() - 12 - 1);
-            System.out.println(appointmentToModify.getStart().getHour() - 12);
         }
         else if(appointmentToModify.getStart().toLocalTime().getHour() == 12) {
             startsAMPMCombo.getSelectionModel().select("PM");
@@ -329,34 +328,24 @@ public class appointmentRecordsModifyController {
                     ZonedDateTime localStartZDT = ZonedDateTime.of(startsDateTime, localZoneId);
                     ZonedDateTime localEndZDT = ZonedDateTime.of(endsDateTime, localZoneId);
 
+                    //Business times in est
+                    String businessOpensStr = newApptStartDate + " " + "08" + "" + ":00";
+                    LocalDateTime businessOpens = LocalDateTime.parse(businessOpensStr, formatter);
+                    ZonedDateTime estOpen = ZonedDateTime.of(businessOpens, estZoneID);
+
+                    String businessClosesStr = newApptEndDate + " " + "22" + "" + ":00";
+                    LocalDateTime businessCloses = LocalDateTime.parse(businessClosesStr,formatter);
+                    ZonedDateTime estClose = ZonedDateTime.of(businessCloses, estZoneID);
+
                     //Appointment times in EST!!
                     ZonedDateTime localDateTimeStartEST = localStartZDT.withZoneSameInstant(estZoneID);
                     ZonedDateTime localDateTimeEndEST = localEndZDT.withZoneSameInstant(estZoneID);
-                    System.out.println(localDateTimeStartEST);
-                    System.out.println(localDateTimeEndEST);
-
-                    //Business hours in est
-                    LocalDate businessOpensDate = LocalDate.now();
-                    LocalDate businessClosesDate = LocalDate.now();
-                    LocalTime businessOpensEST = LocalTime.of(8, 00);
-                    LocalTime businessClosesEST = LocalTime.of(22, 00);
-                    ZonedDateTime businessOpensESTZDT = ZonedDateTime.of(businessOpensDate, businessOpensEST, estZoneID);
-                    ZonedDateTime businessClosesESTZDT = ZonedDateTime.of(businessClosesDate, businessClosesEST, estZoneID);
-                    ZonedDateTime businessOpensUTCZDT = businessOpensESTZDT.withZoneSameInstant(utcZoneID);
-                    ZonedDateTime businessClosesUTCZDT = businessClosesESTZDT.withZoneSameInstant(utcZoneID);
-                    System.out.println(businessOpensUTCZDT);
-                    System.out.println(businessClosesUTCZDT);
-
-
-                    //Comparisons must be in localTime
-                    LocalTime opensComparison = LocalTime.of(localDateTimeStartEST.getHour(), localDateTimeStartEST.getMinute());
-                    LocalTime closesComparison = LocalTime.of(localDateTimeEndEST.getHour(), localDateTimeEndEST.getMinute());
-                    LocalTime businessOpensComparion = LocalTime.of(businessOpensESTZDT.getHour(), businessOpensESTZDT.getMinute());
-                    LocalTime businessClosesComparison = LocalTime.of(businessClosesESTZDT.getHour(), businessClosesESTZDT.getMinute());
 
                     //Makes sure that appointments aren't scheduled on weekdays
-                    if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
-                            || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+                    if ((localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SATURDAY
+                            || localDateTimeStartEST.getDayOfWeek() == DayOfWeek.SUNDAY)
+                            || (localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SATURDAY
+                            || localDateTimeEndEST.getDayOfWeek() == DayOfWeek.SUNDAY)) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointments can't be scheduled on the weekend!");
@@ -364,10 +353,11 @@ public class appointmentRecordsModifyController {
                     }
 
                     //Maintains correct times
-                    if ((opensComparison.isAfter(businessOpensComparion) || opensComparison.equals(businessOpensComparion))
-                            && (closesComparison.isBefore(businessClosesComparison) || closesComparison.equals(businessClosesComparison))
-                            && exception == false) {
-                        System.out.println("Appointment hours are good");
+                    if ((localDateTimeStartEST.isAfter(estOpen) || localDateTimeStartEST.equals(estOpen)) &&
+                            ((localDateTimeEndEST.isBefore(estClose) || localDateTimeEndEST.equals(estClose))) &&
+                            (localDateTimeStartEST.isBefore(localDateTimeEndEST) ||
+                            localDateTimeStartEST.equals(localDateTimeEndEST)) &&
+                            exception == false) {
                         Connection conn = DBConnection.getConnection();
                         String sqlUpdate = "UPDATE appointments " +
                                 "SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Customer_ID = ?, " +
@@ -399,21 +389,29 @@ public class appointmentRecordsModifyController {
                             System.out.println(e.getSQLState());
                         }
                         //The last three else if statements show alerts if times entered are not during business hours.
-                    } else if (opensComparison.isBefore(businessOpensComparion) && closesComparison.isAfter(businessClosesComparison)
-                            && exception == false) {
+                    }
+                    else if(localDateTimeEndEST.isBefore(localDateTimeStartEST)) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
-                        alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
+                        alert.setContentText("Appointment is set to end before it starts!");
                         alert.showAndWait();
-                    } else if (opensComparison.isBefore(businessOpensComparion) && exception == false) {
+                    }
+                    else if (localDateTimeStartEST.isBefore(estOpen) && exception == false) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointment is set to start before business hours!");
                         alert.showAndWait();
-                    } else if (closesComparison.isAfter(businessClosesComparison) && exception == false) {
+                    }
+                    else if (localDateTimeEndEST.isAfter(estClose) && exception == false) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Dialogue");
                         alert.setContentText("Appointment is set to end after business hours!");
+                        alert.showAndWait();
+                    }
+                    else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Dialogue");
+                        alert.setContentText("Business hours are between 8:00 AM and 10:00 PM EST!");
                         alert.showAndWait();
                     }
                 }

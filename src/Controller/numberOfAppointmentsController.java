@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Month;
 
+/**
+ * Controller for numberOfAppointments view.
+ */
 public class numberOfAppointmentsController {
     //Used to set a new stage.
     Stage stage;

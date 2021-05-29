@@ -30,6 +30,9 @@ public class mainMenuController {
     Customers customerToModify;
     Appointments appointmentToModify;
 
+    @FXML
+    private Label showNumberOfApptsWithin15;
+
     //Appointments tableview FXML
     @FXML
     private TableView<Appointments> apptTableView;
@@ -146,7 +149,7 @@ public class mainMenuController {
             if(customerTableView.getSelectionModel().getSelectedItem() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialogue");
-                alert.setContentText("No customer to delete!");
+                alert.setContentText("Select a customer to delete!");
                 alert.showAndWait();
             }
             else {
@@ -162,13 +165,15 @@ public class mainMenuController {
                     //it. If the customer has appointments than a warning will tell the user that they can't delete that
                     //customer.
                     if(Customers.customerAssociatedWithAppt(customerToDelete) == false) {
-                        Customers.deleteCustomer(customerToDelete);
                         //If the customer didn't have any appointments associated with it, than a warning will tell the user
                         //that a customer was deleted.
                         Alert customerDeleted = new Alert(Alert.AlertType.WARNING);
                         customerDeleted.setTitle("Customer Deleted!");
-                        customerDeleted.setContentText("The selected customer has been deleted!");
+                        customerDeleted.setContentText("The customer " + customerToDelete.getCustomer_Name() + " " +
+                                "has been deleted!");
                         customerDeleted.showAndWait();
+
+                        Customers.deleteCustomer(customerToDelete);
                     }
                     else {
                         Alert alert1 = new Alert(Alert.AlertType.ERROR);
@@ -198,7 +203,7 @@ public class mainMenuController {
             if(apptTableView.getSelectionModel().getSelectedItem() == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialogue");
-                alert.setContentText("No appointment to delete!");
+                alert.setContentText("No appointment selected!");
                 alert.showAndWait();
             }
             else {
@@ -365,8 +370,13 @@ public class mainMenuController {
         //it will return true, if it does return true, initializeApptAlertTable() will show the correct appointments.
         BooleanSupplier apptWithinFifteen = () -> Appointments.appointmentWithinFifteenMin();
         if(apptWithinFifteen.getAsBoolean() == true) {
+            showNumberOfApptsWithin15.setText("Number of appointments: " +
+                    Appointments.initializeApptAlertTable().size());
             apptWithin15TableView.setItems(Appointments.initializeApptAlertTable());
             apptWithin15Col.setCellValueFactory(new PropertyValueFactory<>("appointmentIDForAlert"));
+        }
+        else {
+            showNumberOfApptsWithin15.setText("Number of appointments: 0");
         }
     }
 }
