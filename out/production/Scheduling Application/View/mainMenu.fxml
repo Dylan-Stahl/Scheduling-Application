@@ -180,17 +180,17 @@
                                  <children>
                                     <Button mnemonicParsing="false" onAction="#onActionReportNumberOfAppts" prefWidth="150.0" text="Appointments Filters">
                                        <GridPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </GridPane.margin>
                                     </Button>
-                                    <Button mnemonicParsing="false" onAction="#onActionViewNumOfAppts" prefWidth="170.0" text="Number of Appointments" GridPane.rowIndex="1">
+                                    <Button mnemonicParsing="false" onAction="#onActionViewNumOfAppts" prefHeight="25.0" prefWidth="213.0" text="Appointments by Type and Month" GridPane.rowIndex="1">
                                        <GridPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </GridPane.margin>
                                     </Button>
                                     <Button mnemonicParsing="false" onAction="#onActionViewContactSchedules" text="Contact Schedules" GridPane.rowIndex="2">
                                        <GridPane.margin>
-                                          <Insets left="20.0" />
+                                          <Insets left="10.0" />
                                        </GridPane.margin>
                                     </Button>
                                  </children>

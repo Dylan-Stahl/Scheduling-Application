@@ -335,9 +335,22 @@ public class mainMenuController {
                     Appointments.initializeApptAlertTable().size());
             apptWithin15TableView.setItems(Appointments.initializeApptAlertTable());
             apptWithin15Col.setCellValueFactory(new PropertyValueFactory<>("appointmentIDForAlert"));
+
+            //Displays a warning message to the user notifying them that there is an alert within 15 minutes
+            Alert appointmentUpcomingWarning = new Alert(Alert.AlertType.WARNING);
+            appointmentUpcomingWarning.setTitle("Upcoming Appointment");
+            appointmentUpcomingWarning.setContentText("There is one or more appointment that is starting " +
+                    "in 15 minutes or less! View the Appointments Within 15 Minutes table to see the appointment ID.");
+            appointmentUpcomingWarning.showAndWait();
         }
         else {
             showNumberOfApptsWithin15.setText("Number of appointments: 0");
+
+            //Notify the user that there are no upcoming appointments
+            Alert appointmentUpcomingWarning = new Alert(Alert.AlertType.WARNING);
+            appointmentUpcomingWarning.setTitle("No Upcoming Appointments");
+            appointmentUpcomingWarning.setContentText("There are no upcoming appointments within fifteen minutes.");
+            appointmentUpcomingWarning.showAndWait();
         }
     }
 }
