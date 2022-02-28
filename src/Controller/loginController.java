@@ -75,8 +75,8 @@ public class loginController {
         try {
             //If the locale language is not french, the location label will display the correct information in English.
             locationZoneID.setText("Location: " + ZoneId.systemDefault());
-
             ResourceBundle rb = ResourceBundle.getBundle("ResourceBundle/Nat" , Locale.getDefault());
+
             if(Locale.getDefault().getLanguage().equals("fr")) {
                 userIDLocale.setText(rb.getString("Username"));
                 passwordLocale.setText(rb.getString("Password"));

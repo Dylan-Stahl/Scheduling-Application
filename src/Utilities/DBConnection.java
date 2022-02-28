@@ -20,23 +20,27 @@ public final class DBConnection {
     //Login information
     private static final String loginUsername = "test";
     private static final String loginPassword = "test";
+    private static ResourceBundle reader = null;
 
-    //JDBC URL Parts
-    private static final String protocol = "jdbc";
-    private static final String vendorName = ":mysql:";
-    private static final String ipAddress = "//wgudb.ucertify.com:3306/WJ08OVD";
-    private static final String disableSSLError = "?autoReconnect=true&useSSL=false";
-    //JDBC URL
-    private static final String jdbcURL = protocol + vendorName + ipAddress + disableSSLError;
+
+
+    /*
+    //Username
+    private static final String userName = "admin";
+    //Password
+    private static final String password = "TU72xQkfi2Y";
+
+    private static final String dbName = "scheduling_app";
+    private static final String hostname = "scheduling-app-java.ckr24xuthgrn.us-east-1.rds.amazonaws.com";
+    private static final String port = "3306";
+    */
+
+    //private static final String jdbcUrl = "jdbc:mysql://" + reader.getString(hostname) + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
+
 
     //Driver Interface Reference
-    private static final String MYSQLJDBCDriver = "com.mysql.jdbc.Driver";
+    private static final String MYSQLJDBCDriver = "com.mysql.cj.jdbc.Driver";
     private static Connection conn = null;
-
-    //Username
-    private static final String username = "U08OVD";
-    //Password
-    private  static final String password = "53689347344";
 
     /**
      * When this method is called, at the start of the main method, it establishes a connection with database
@@ -44,9 +48,12 @@ public final class DBConnection {
      * @return connection.
      */
     public final static Connection startConnection() {
+        reader = ResourceBundle.getBundle("ResourceBundle/dbconfig");
         try {
             Class.forName(MYSQLJDBCDriver);
-            conn = (Connection)DriverManager.getConnection(jdbcURL, username, password);
+            conn = (Connection)DriverManager.getConnection("jdbc:mysql://" + reader.getString("hostname") +
+                    ":" + reader.getString("port") + "/" + reader.getString("dbName") + "?user=" +
+                    reader.getString("userName") + "&password=" + reader.getString("password"));
             System.out.println("Connection Successful");
         }
         catch(ClassNotFoundException e){
