@@ -5,11 +5,11 @@ The company has provided a MySQL database that the application must create, read
 
 Author - Dylan Stahl
 
-Contact Information - dstahl8@wgu.edu
+Contact Information - dylangstahl@gmail.com
 
-Student Application Version - QAM1 TASK 1: JAVA APPLICATION DEVELOPMENT, Course started May 6th, 2021.
+IDE and Version - IntelliJ IDEA 2021.1.1
 
-IDE and Version- IntelliJ IDEA 2021.1.1
+Compatible Operating Systems - As of 3/1/22 the applications supports Windows operating systems. A bug exists with MacOS due to Java JDK and JavaFX versions. An updated JDK version is expected to support MacOS.
 
 JDK version - Java SE 11.0.11 and compatible with JavaFX-SDK-11.0.2
 
@@ -23,11 +23,12 @@ Save the run configurations and run the program.
 Additional Report - From the main menu click on appointment filters. There is a radio button option titled "Past Appointments".
 That report will show all appointments that have ended before the current LocalDateTime.
 
-MySQL Connector driver version - mysql-connector-java-8.0.22
+MySQL Connector driver version - mysql-connector-java-8.0.27
 
 Lambda Expressions - Two lambda expressions using the Predicate Interface can be found in the Utilities package,
 DBConnection class under the login method. A third lambda expression (a BooleanSupplier) is used in
 the mainMenuController initialize() method.
+
 
 
  
