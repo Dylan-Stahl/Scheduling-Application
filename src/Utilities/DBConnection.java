@@ -23,21 +23,6 @@ public final class DBConnection {
     private static ResourceBundle reader = null;
 
 
-
-    /*
-    //Username
-    private static final String userName = "admin";
-    //Password
-    private static final String password = "TU72xQkfi2Y";
-
-    private static final String dbName = "scheduling_app";
-    private static final String hostname = "scheduling-app-java.ckr24xuthgrn.us-east-1.rds.amazonaws.com";
-    private static final String port = "3306";
-    */
-
-    //private static final String jdbcUrl = "jdbc:mysql://" + reader.getString(hostname) + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
-
-
     //Driver Interface Reference
     private static final String MYSQLJDBCDriver = "com.mysql.cj.jdbc.Driver";
     private static Connection conn = null;
